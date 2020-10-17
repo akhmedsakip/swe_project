@@ -18,7 +18,7 @@ This way database named "sweproj" will be created. <br/>
 Do not forget to grant user you just created privileges to manipulate with this database.
 You can do it using following command: <br/>
 
-**GRANT ALL PRIVILEGES ON swerproj. TO 'university' with grant option;**
+**GRANT ALL PRIVILEGES ON sweproj.\* TO 'university' with grant option;**
 
 
 After you created a user, created a database and granted user all needed privileges, you need to connect 
