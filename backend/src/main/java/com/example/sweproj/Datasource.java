@@ -9,7 +9,6 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan("com.baeldung.jdbc")
 public class Datasource {
     @Bean
     public DataSource mysqlDataSource() {
