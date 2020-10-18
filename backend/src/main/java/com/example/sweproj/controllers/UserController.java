@@ -51,7 +51,7 @@ public class UserController {
         return ResponseEntity.ok().body("{message: 'Successfully registered'}");
     }
 
-    @GetMapping
+    @GetMapping("/login")
     ResponseEntity<String> loginUser(@Valid @RequestBody UserLoginDetails loginDetails, HttpServletResponse response, BindingResult bindingResult) {
         Gson gson = new Gson();
         List<BaseServerError> serverErrors = new ArrayList<>();
