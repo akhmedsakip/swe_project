@@ -52,7 +52,7 @@ public class HotelController {
         try {
             hotels = new ArrayList<>(this.hotelService.getHotels());
         } catch(Exception error) {
-            serverErrors.add(new BaseServerError("There are no hotels"));
+            serverErrors.add(new BaseServerError("Error fetching hotels"));
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
         json = gson.toJson(hotels);
