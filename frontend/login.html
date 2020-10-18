@@ -3,15 +3,14 @@
 <head>
 <!-- <meta charset="UTF-8"> -->
 <title>Hotel Chain</title>
-<link rel="stylesheet" href="login_style.css"> 
+<link rel="stylesheet" href="login_style.css">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> 
 </head>
 <body>
-	<section class="header">
+	<div class="header">
 		<div class="container">
-			<!-- <img src="images/logo.jpg"> -->
 			<button type="button" class="login-button" onclick="location.href='index.html'">Home</button>
 			<button type="button" class="about-button" onclick="location.href='about_us.html'">About us</button>
 		</div>
@@ -32,19 +31,12 @@
 				<input type="text" class="input-field" placeholder="Last name" required="">
 				<input type="text" class="input-field" placeholder="Email" required="">
 				<input type="password" class="input-field" placeholder="Password" required="">
-				<label for="birthday" style="margin-bottom: 0px;">Birthday:</label>
-				<input type="date" class="input-field-date" placeholder="Date Of Birth" required="">
-				<input type="radio" class="check-box" value="Male" name="gender"required=""><span>Male</span><input type="radio" class="check-box" value="Female" name="gender"required=""><span>Female</span>
+				<input type="text" class="input-field-date" placeholder="Date Of Birth" required="" onfocus="(this.type='date')" onblur="(this.type='text')">
+				<input type="radio" class="check-box" value="Male" name="gender" required=""><span>Male</span><input type="radio" class="check-box" value="Female" name="gender"required=""><span>Female</span>
 				<button type="submit" class="submit-button">Register</button>
 			</form>
 		</div>
-		<!-- <div class="input-class">
-			<input type="text" class="form-control" placeholder="Search">
-			<div class="input-group-append">
-				<button type="submit" class="input-group-text button">Search</button>
-			</div>
-		</div> -->
-	</section>
+	</div>
 
 	<script type="text/javascript">
 		var loginvar = document.getElementById("login");
@@ -52,14 +44,18 @@
 		var buttonvar = document.getElementById("button");
 
 		function register(){
+			loginvar.style.display = 'none';
 			loginvar.style.left = "-400px";
 			registervar.style.left = "0";
+			registervar.style.display = "block";
 			buttonvar.style.left = "115px";
 		}
 
 		function login(){
+			loginvar.style.display = 'block';
 			loginvar.style.left = "0";
 			registervar.style.left = "400px";
+			registervar.style.display = 'none';
 			buttonvar.style.left = "0";
 		}
 

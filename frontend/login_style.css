@@ -4,13 +4,14 @@
     font-family: sans-serif;
 }
 
+
 .header {
-    height: 100%;
-    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(images/airport.jpg);
+    min-height: 100vh;
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(images/airport.jpg);
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    padding-top: 30px;
+    /*padding-top: 30px;*/
     text-align: center; 
     color: #fff;
 }
@@ -23,22 +24,9 @@
     border-radius: 50px;
     background: transparent;
     color: #fff;
-    float: right;
 }
 
 .about-button {
-    width: 100px;
-    padding: 8px 0;
-    margin-right: 10px;
-    outline: none !important;
-    border: 2px solid #fff;
-    border-radius: 50px;
-    background: transparent;
-    color: #fff;
-    float: right;
-}
-
-.register-button {
     width: 100px;
     padding: 8px 0;
     margin-left: 10px;
@@ -50,6 +38,24 @@
     float: right;
 }
 
+.register-button {
+    width: 100px;
+    padding: 8px 0;
+    margin-right: 10px;
+    outline: none !important;
+    border: 2px solid #fff;
+    border-radius: 50px;
+    background: transparent;
+    color: #fff;
+}
+
+.container {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 10px;
+    margin-bottom: 20px;
+}
+
 .header h1 {
     padding-top: 250px;
     padding-bottom: 0;
@@ -59,7 +65,7 @@
 .header h4 {
     padding-top: 250px;
     padding-bottom: 0;
-    font-size: 18 px;
+    font-size: 18px;
     padding-left: 50px;
     padding-right: 50px;
 }
@@ -78,12 +84,16 @@
 }
 
 .form-box {
-    width: 380px;
-    height: 500px;
     position: relative;
-    margin: 6% auto;
+    margin-left: auto;
+    margin-right: auto;
+    left: auto;
+    right: auto;
+    width: 380px;
+    /*margin: 6% auto;*/
     background: #ffffffcf;
-    padding: 5px;
+    padding: 50px;
+    border-radius: 10px;
     overflow: hidden;
 }
 
@@ -149,7 +159,6 @@
     padding: 10px 30px;
     cursor: pointer;
     display: block;
-    margin: auto;
     background: linear-gradient(to right, #ffd700, #9f8700);
     border: 0;
     outline: none;
@@ -178,8 +187,8 @@ label {
 }
 
 #register {
+    display: none;
     left: 400px;
-    top: -165px;
 }
 
 

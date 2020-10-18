@@ -4,12 +4,11 @@
 }
 
 .header {
-    height: 100%;
+    min-height: 100vh;
     background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(images/airport.jpg);
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    padding-top: 30px;
     text-align: center; 
     color: #fff;
 }
@@ -27,7 +26,6 @@
     border-radius: 50px;
     background: transparent;
     color: #fff;
-    float: right;
 }
 
 .about-button {
@@ -39,7 +37,6 @@
     border-radius: 50px;
     background: transparent;
     color: #fff;
-    float: right;
 }
 
 .register-button {
@@ -55,17 +52,12 @@
 }
 
 .header h1 {
-    padding-top: 250px;
     padding-bottom: 0;
     font-size: 65px;
 }
 
 .header h4 {
-    padding-top: 200px;
-    padding-bottom: 0;
     font-size: 18px;
-    padding-left: 100px;
-    padding-right: 100px;
     text-align: justify;
 }
 
@@ -73,8 +65,6 @@
     margin: 20px 0;
     padding-bottom: 0;
     font-size: 18px;
-    padding-left: 100px;
-    padding-right: 100px;
     text-align: justify;
 }
 
@@ -102,8 +92,7 @@
 
 .input-group-text {
     width: 100px;
-    background-image: 
-    border: 0 !important;
+    border: 0 solid black !important;
     color: #fff !important;
     text-align: center;
     margin-left: 200px;
@@ -112,6 +101,12 @@
     box-shadow: none !important;
 }
 
+.container {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 10px;
+    margin-bottom: 20px;
+}
 
 .hotels {
     padding: 100px 0;
@@ -155,12 +150,16 @@ h1 {
 }
 
 .hotel-details h4 {
-    margin-top: : 20px;
+    margin-top: 20px;
     font-weight: 600;
 }
 
 a {
     color: #000 !important;
+}
+
+.about {
+    padding: 0px 20px 20px;
 }
 
 
