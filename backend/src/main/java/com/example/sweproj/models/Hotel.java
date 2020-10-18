@@ -40,14 +40,4 @@ public class Hotel {
 
     public Hotel() { }
 
-//    Hotel(String name, String numberOfFloors, String numberOfRooms, String country, String city, String street,
-//          String zipCode) {
-//        this.name = name;
-//        this.numberOfFloors = numberOfFloors;
-//        this.country = country;
-//        this.city = city;
-//        this.street = street;
-//        this.zipCode = zipCode;
-//    }
-
 }

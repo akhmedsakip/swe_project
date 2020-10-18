@@ -32,5 +32,21 @@ public class HotelDataAccessService {
         });
     }
     
+    List<RoomType> getRoomTypes(int hotelID) {
+        String sql = "SELECT * FROM RoomTypes WHERE HotelID = " + hotelID;
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            RoomType roomType= new RoomType();
+            roomType.hotelID = rs.getString("HotelID");
+            roomType.roomTypeID = rs.getString("RoomTypeID");
+            roomType.roomTypeName = rs.getString("RoomTypeName");
+            roomType.roomCapacity = rs.getString("RoomCapacity");
+            roomType.photo = rs.getString("Photo");
+            roomType.description = rs.getString("Description");
+
+            return roomType;
+        });
+    }
+    
     
 }

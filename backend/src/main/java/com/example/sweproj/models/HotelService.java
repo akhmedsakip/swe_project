@@ -12,8 +12,9 @@ public class HotelService {
         this.hotelDataAccessService = hotelDataAccessService;
     }
 
-    
     public List<Hotel> getHotels() {
     	return hotelDataAccessService.getHotels();
     }
+
+    public List<RoomType> getRoomTypes(int id) { return hotelDataAccessService.getRoomTypes(id); }
 }
