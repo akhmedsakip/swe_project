@@ -1,53 +1,40 @@
 package com.example.sweproj.models;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.validation.constraints.NotBlank;
 
 public class Hotel {
 
     public String hotelID;
 
-    @JsonProperty @NotNull(message = "Hotel name is empty")
+    @JsonProperty @NotBlank(message = "Hotel name is empty")
     public String name;
 
-    @JsonProperty @NotNull(message = "Number of floors is empty")
+    @JsonProperty @NotBlank(message = "Number of floors is empty")
     public String numberOfFloors;
 
-    @JsonProperty @NotNull(message = "Number of rooms is empty")
+    @JsonProperty @NotBlank(message = "Number of rooms is empty")
     public String numberOfRooms;
 
     @JsonProperty
     public String numberOfFreeRooms;
 
-    @JsonProperty @NotNull(message = "Country is empty")
+    @JsonProperty @NotBlank(message = "Country is empty")
     public String country;
 
-    @JsonProperty @NotNull(message = "City is empty")
+    @JsonProperty @NotBlank(message = "City is empty")
     public String city;
 
-    @JsonProperty @NotNull(message = "Street is empty")
+    @JsonProperty @NotBlank(message = "Street is empty")
     public String street;
 
-    @JsonProperty @NotNull(message = "ZIPCode is empty")
+    @JsonProperty @NotBlank(message = "ZIPCode is empty")
     public String zipCode;
 
     @JsonProperty
     public String mainHotelPicture;
 
     public Hotel() { }
-
-//    Hotel(String name, String numberOfFloors, String numberOfRooms, String country, String city, String street,
-//          String zipCode) {
-//        this.name = name;
-//        this.numberOfFloors = numberOfFloors;
-//        this.country = country;
-//        this.city = city;
-//        this.street = street;
-//        this.zipCode = zipCode;
-//    }
 
 }
