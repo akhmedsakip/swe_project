@@ -1,5 +1,6 @@
-package com.example.sweproj.models;
+package com.example.sweproj.services;
 
+import com.example.sweproj.models.Hotel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,4 @@ public class HotelService {
     public List<Hotel> getHotels() {
     	return hotelDataAccessService.getHotels();
     }
-
-    public List<RoomType> getRoomTypes(int id) { return hotelDataAccessService.getRoomTypes(id); }
 }
