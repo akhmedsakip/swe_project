@@ -1,5 +1,6 @@
-package com.example.sweproj.models;
+package com.example.sweproj.services;
 
+import com.example.sweproj.models.Hotel;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -31,6 +32,4 @@ public class HotelDataAccessService {
             return hotel;
         });
     }
-    
-    
 }

@@ -1,8 +1,8 @@
 package com.example.sweproj.controllers;
-
 import com.example.sweproj.models.Hotel;
-import com.example.sweproj.models.HotelService;
+import com.example.sweproj.services.HotelService;
 import com.example.sweproj.utils.BaseServerError;
+import com.example.sweproj.utils.FieldValidationError;
 import com.google.gson.Gson;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
