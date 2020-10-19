@@ -9,6 +9,7 @@ import com.example.sweproj.models.UserRegistrationGroup;
 import com.example.sweproj.services.UserService;
 import com.example.sweproj.utils.BaseServerError;
 import com.example.sweproj.utils.FieldValidationError;
+import com.example.sweproj.utils.Message;
 import com.google.gson.Gson;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -49,11 +50,12 @@ public class UserController {
             serverErrors.add(new BaseServerError("Email already exists"));
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
-        return ResponseEntity.ok().body("{message: 'Successfully registered'}");
+        return ResponseEntity.ok().body(gson.toJson(new Message("Successfully registered")));
     }
 
     @PostMapping("/login")
     ResponseEntity<String> loginUser(@RequestBody User user, HttpServletResponse response) {
+        System.out.println(user.email);
         Gson gson = new Gson();
         List<BaseServerError> serverErrors = validateUser(user, UserLoginGroup.class);
         if(serverErrors.size() > 0) {
@@ -79,7 +81,7 @@ public class UserController {
 //        cookie.setSecure(true); TODO: https
         response.addCookie(cookie);
 
-        return ResponseEntity.ok().body("{message: 'Successfully authorized'}");
+        return ResponseEntity.ok().body(gson.toJson(new Message("Successfully authorized")));
     }
 
      List<BaseServerError> validateUser(User user, Class validationGroup) {

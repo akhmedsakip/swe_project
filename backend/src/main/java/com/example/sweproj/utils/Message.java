@@ -1,10 +1,8 @@
 package com.example.sweproj.utils;
 
-
-public class BaseServerError{
+public class Message {
     public String message;
-
-    public BaseServerError(String message) {
+    public Message(String message) {
         this.message = message;
     }
 }
