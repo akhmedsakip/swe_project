@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 
 public class Hotel {
 
-    public String hotelID;
+    public String hotelId;
 
     @JsonProperty @NotBlank(message = "Hotel name is empty")
     public String name;

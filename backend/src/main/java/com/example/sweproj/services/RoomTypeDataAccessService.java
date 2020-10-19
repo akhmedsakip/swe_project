@@ -21,8 +21,8 @@ public class RoomTypeDataAccessService {
             RoomType roomType= new RoomType();
             roomType.hotelID = rs.getString("HotelID");
             roomType.roomTypeID = rs.getString("RoomTypeID");
-            roomType.roomTypeName = rs.getString("RoomTypeName");
-            roomType.roomCapacity = rs.getString("RoomCapacity");
+            roomType.name = rs.getString("RoomTypeName");
+            roomType.capacity = rs.getString("RoomCapacity");
             roomType.photo = rs.getString("Photo");
             roomType.description = rs.getString("Description");
 
