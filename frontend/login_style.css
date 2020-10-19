@@ -22,7 +22,8 @@
     outline: none !important;
     border: 2px solid #fff;
     border-radius: 50px;
-    margin-right: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
     background: transparent;
     color: #fff;
 }
@@ -30,7 +31,8 @@
 .about-button {
     width: 100px;
     padding: 8px 0;
-    margin-left: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
     outline: none !important;
     border: 2px solid #fff;
     border-radius: 50px;
@@ -42,7 +44,8 @@
 .register-button {
     width: 100px;
     padding: 8px 0;
-    margin-right: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
     outline: none !important;
     border: 2px solid #fff;
     border-radius: 50px;
