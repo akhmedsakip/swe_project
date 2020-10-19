@@ -19,7 +19,7 @@ public class HotelDataAccessService {
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Hotel hotel = new Hotel();
-            hotel.hotelID = rs.getString("HotelID");
+            hotel.hotelId = rs.getString("HotelID");
             hotel.name = rs.getString("Name");
             hotel.description = rs.getString("Description");
             hotel.numberOfFloors = rs.getString("NumberOfFloors");

@@ -1,8 +1,8 @@
 package com.example.sweproj.models;
 
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.validation.constraints.NotNull;
 
 public class RoomType {
 	
@@ -10,10 +10,10 @@ public class RoomType {
 	public String roomTypeID;
 
     @JsonProperty @NotNull(message = "Room type name is empty")
-    public String roomTypeName;
+    public String name;
 
     @JsonProperty @NotNull(message = "Room capacity is empty")
-    public String roomCapacity;
+    public String capacity;
 
     @JsonProperty
     public String photo;

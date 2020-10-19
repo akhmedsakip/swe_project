@@ -5,18 +5,13 @@ import com.example.sweproj.services.RoomTypeService;
 import com.example.sweproj.utils.BaseServerError;
 import com.google.gson.Gson;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
-@CrossOrigin
+@RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/roomTypes")
 public class RoomTypeController {
 
@@ -27,7 +22,7 @@ public class RoomTypeController {
     }
 
     @GetMapping
-    ResponseEntity<String> getRoomTypes(@RequestParam("hotelId") int hotelId, BindingResult bindingResult) {
+    ResponseEntity<String> getRoomTypes(@RequestParam(value = "hotelId") Integer hotelId) {
         Gson gson = new Gson();
         List<BaseServerError> serverErrors = new ArrayList<>();
         ArrayList<RoomType> roomTypes;
