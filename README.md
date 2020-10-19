@@ -25,7 +25,8 @@ After you created a user, created a database and granted user all needed privile
 to this database as this user; It can be done from MySQL Workbranch, however I would recommend DataGrip.
 <br>
 
-After successful connection, run .sql scrip from the database folder in order to create all necessary tables.
+After successful connection, run sweproj.sql script from the database folder in order to create all necessary tables.
+Then, run fillDatabase.sql to fill the tables with some pregenerated rows.
 
 Congratulations, you have just deployed the database for our project.
 
