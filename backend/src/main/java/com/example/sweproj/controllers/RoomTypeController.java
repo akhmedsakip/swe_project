@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Controller
 @CrossOrigin
+@RequestMapping("/api/roomTypes")
 public class RoomTypeController {
 
     private final RoomTypeService roomTypeService;
@@ -24,13 +26,13 @@ public class RoomTypeController {
         this.roomTypeService = roomTypeService;
     }
 
-    @GetMapping("/room-types")
-    ResponseEntity<String> getRoomTypes(@RequestParam("hotelID") int hotelID, BindingResult bindingResult) {
+    @GetMapping
+    ResponseEntity<String> getRoomTypes(@RequestParam("hotelId") int hotelId, BindingResult bindingResult) {
         Gson gson = new Gson();
         List<BaseServerError> serverErrors = new ArrayList<>();
         ArrayList<RoomType> roomTypes;
         try {
-            roomTypes = new ArrayList<>(this.roomTypeService.getRoomTypes(hotelID));
+            roomTypes = new ArrayList<>(this.roomTypeService.getRoomTypes(hotelId));
         } catch(Exception error) {
             serverErrors.add(new BaseServerError("There are no room-types"));
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
