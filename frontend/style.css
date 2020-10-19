@@ -122,22 +122,27 @@ h1 {
     width: 100%;
 }
 
-.price {
-    width: 50px;
-    height: 50px;
+.countryCity {
     font-weight: 600;
     margin-left: 20px;
-    position: absolute;
-    bottom: -30px;
 }
 
 .rating {
     padding: 3px;
     float: right;
     background: #fff;
-    bottom: -1px;
     right: 0;
+    bottom:3px;
     position: absolute;
+}
+
+.hotel {
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    height: 350px;
+    box-sizing:border-box;
+    position: relative;
 }
 
 .hotels .fa {
@@ -146,7 +151,8 @@ h1 {
 }
 
 .hotel-details {
-    padding: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
     text-align: justify;
 }
 
