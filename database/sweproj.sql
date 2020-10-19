@@ -98,13 +98,13 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `sweproj`.`RoomTypes` ;
 
 CREATE TABLE IF NOT EXISTS `sweproj`.`RoomTypes` (
-  `RoomTypeID` INT NOT NULL AUTO_INCREMENT,
   `HotelID` INT NOT NULL,
+  `RoomTypeID` INT NOT NULL,
   `RoomTypeName` VARCHAR(45) NULL,
   `RoomCapacity` INT NULL,
   `Photo` TEXT NULL,
   `Description` TEXT NULL,
-  PRIMARY KEY (`RoomTypeID`, `HotelID`),
+  PRIMARY KEY (`HotelID`, `RoomTypeID`),
   UNIQUE INDEX `RoomTypeName_UNIQUE` (`RoomTypeName` ASC) VISIBLE,
   CONSTRAINT `fk_ROOMTYPE_HOTEL1`
     FOREIGN KEY (`HotelID`)
