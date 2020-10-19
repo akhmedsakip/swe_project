@@ -127,9 +127,8 @@
 						error.innerText = body[0].message;
 					})
 				} else {
-					localStorage.setItem("loggedIn", "token");
 					const urlSplitted = window.location.href.split("/");
-					urlSplitted[urlSplitted.length - 1] = 'index.html';
+					urlSplitted[urlSplitted.length - 1] = 'login.html';
 					window.location.href = urlSplitted.join("/");
 					return res.json();
 				}
