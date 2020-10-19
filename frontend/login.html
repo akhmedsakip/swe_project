@@ -30,12 +30,12 @@
 				<button type="submit" class="submit-button">Log In</button>
 			</form>
 			<form id="register" class="input-group">
-				<input type="text" class="input-field" placeholder="First name" required="">
-				<input type="text" class="input-field" placeholder="Last name" required="">
-				<input type="text" class="input-field" placeholder="Email" required="">
-				<input type="password" class="input-field" placeholder="Password" required="">
-				<input type="text" class="input-field-date" placeholder="Date Of Birth" required="" onfocus="(this.type='date')" onblur="(this.type='text')">
-				<input type="radio" class="check-box" value="Male" name="gender" required=""><span>Male</span><input type="radio" class="check-box" value="Female" name="gender"required=""><span>Female</span>
+				<input type="text" class="input-field" placeholder="First name" required="" id="firstNameReg">
+				<input type="text" class="input-field" placeholder="Last name" required="" id="lastNameReg">
+				<input type="text" class="input-field" placeholder="Email" required="" id="emailReg">
+				<input type="password" class="input-field" placeholder="Password" required="" id="passReg">
+				<input type="text" class="input-field-date" placeholder="Date Of Birth" required="" onfocus="(this.type='date')" onblur="(this.type='text')" id="dobReg">
+				<input type="radio" class="check-box" value="Male" name="gender" required="" id="maleReg"><span>Male</span><input type="radio" class="check-box" value="Female" name="gender"required="" id="femaleReg"><span>Female</span>
 				<button type="submit" class="submit-button">Register</button>
 			</form>
 		</div>
@@ -73,6 +73,50 @@
 				body: JSON.stringify({
 					email: email,
 					password: password
+				}),
+				method: "POST"
+			}).then((res) => {
+				if(!res.ok) {
+					let error = document.getElementById('error');
+					error.style.opacity = '100%';
+					return res.json().then((body) => {
+						error.innerText = body[0].message;
+					})
+				} else {
+					localStorage.setItem("loggedIn", "token");
+					const urlSplitted = window.location.href.split("/");
+					urlSplitted[urlSplitted.length - 1] = 'index.html';
+					window.location.href = urlSplitted.join("/");
+					return res.json();
+				}
+			})
+			// alert('submitted');
+		}));
+
+		if(registervar.addEventListener("submit", (e) => {
+			let firstName = document.getElementById('firstNameReg').value;
+			let lastName = document.getElementById('lastNameReg').value;
+			let email = document.getElementById('emailReg').value;
+			let password = document.getElementById('passReg').value;
+			let dateOfBirth = document.getElementById('dobReg').value;
+			let gender;
+			if (document.getElementById('maleReg').checked)
+				gender = 'male';
+			else if (document.getElementById('femaleReg').checked)
+				gender = 'female';
+			e.preventDefault();
+			fetch('http://localhost:8080/api/users/', {
+				headers: {
+					'Accept': 'application/json, text/plain',
+					'Content-Type': 'application/json;charset=UTF-8'
+				},
+				body: JSON.stringify({
+					firstName: firstName,
+					lastName: lastName,
+					email: email,
+					password: password,
+					dateOfBirth: dateOfBirth,
+					gender: gender
 				}),
 				method: "POST"
 			}).then((res) => {
