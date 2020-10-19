@@ -26,12 +26,13 @@
     border-radius: 50px;
     background: transparent;
     color: #fff;
+    margin-right: 10px;
 }
 
 .about-button {
     width: 100px;
     padding: 8px 0;
-    margin-right: 10px;
+    margin-left: 10px;
     outline: none !important;
     border: 2px solid #fff;
     border-radius: 50px;

@@ -13,7 +13,7 @@
 		<div class="container">
 			<!-- <img src="images/logo.jpg"> -->
 			<!-- <button type="button" class="register-button">Register</button> -->
-			<button type="button" class="login-button" onclick="location.href='login.html'">Login</button>
+			<button type="button" class="login-button" id='logButton' onclick="location.href='login.html'">Login</button>
 			<button type="button" class="about-button" onclick="location.href='about_us.html'">About us</button>
 		</div>
 		<h1>Find a Hotel You Like</h1>
@@ -138,6 +138,22 @@
 			</div>
 		</div>
 	</section>
+	<script>
+		if(localStorage.getItem('loggedIn')) {
+			const logButton = document.getElementById('logButton');
+			logButton.innerText = "Logout";
+		}
+		const logButton = document.getElementById('logButton');
+		logButton.addEventListener("click", (e) => {
+			if(localStorage.getItem('loggedIn')) {
+				e.preventDefault();
+				localStorage.clear();
+				const urlSplitted = window.location.href.split("/");
+				urlSplitted[urlSplitted.length - 1] = 'index.html';
+				window.location.href = urlSplitted.join("/");
+			}
+		})
+	</script>
 
 <!-- <h2>Paging Application</h2>
 

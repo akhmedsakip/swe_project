@@ -22,6 +22,7 @@
     outline: none !important;
     border: 2px solid #fff;
     border-radius: 50px;
+    margin-right: 10px;
     background: transparent;
     color: #fff;
 }
@@ -191,6 +192,12 @@ label {
     left: 400px;
 }
 
+#error {
+    color: red;
+    text-align: center;
+    opacity: 0;
+    opacity: 0;
+}
 
 
 

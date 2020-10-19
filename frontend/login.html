@@ -20,9 +20,12 @@
 				<button type="button" class="toggle_button" onclick="login()">Log In</button> 
 				<button type="button" class="toggle_button" onclick="register()">Register</button> 
 			</div>
+			<div id="error">
+				Error
+			</div>
 			<form id="login" class="input-group">
-				<input type="text" class="input-field" placeholder="Email" required="">
-				<input type="password" class="input-field" placeholder="Password" required="">
+				<input type="text" class="input-field" placeholder="Email" required="" id="emailAuth">
+				<input type="password" class="input-field" placeholder="Password" required="" id="passAuth">
 				<!-- <input type="checkbox" class="check-box"><span>Remeber Password</span> -->
 				<button type="submit" class="submit-button">Log In</button>
 			</form>
@@ -57,6 +60,43 @@
 			registervar.style.left = "400px";
 			registervar.style.display = 'none';
 			buttonvar.style.left = "0";
+		}
+		if(loginvar.addEventListener("submit", (e) => {
+			let email = document.getElementById('emailAuth').value;
+			let password = document.getElementById('passAuth').value;
+			e.preventDefault();
+			fetch('http://localhost:8080/api/users/login', {
+				headers: {
+					'Accept': 'application/json, text/plain',
+					'Content-Type': 'application/json;charset=UTF-8'
+				},
+				body: JSON.stringify({
+					email: email,
+					password: password
+				}),
+				method: "POST"
+			}).then((res) => {
+				if(!res.ok) {
+					let error = document.getElementById('error');
+					error.style.opacity = '100%';
+					return res.json().then((body) => {
+						error.innerText = body[0].message;
+					})
+				} else {
+					localStorage.setItem("loggedIn", "token");
+					const urlSplitted = window.location.href.split("/");
+					urlSplitted[urlSplitted.length - 1] = 'index.html';
+					window.location.href = urlSplitted.join("/");
+					return res.json();
+				}
+			})
+			// alert('submitted');
+		}));
+
+		if(localStorage.getItem("loggedIn")) {
+			const urlSplitted = window.location.href.split("/");
+			urlSplitted[urlSplitted.length - 1] = 'index.html';
+			window.location.href = urlSplitted.join("/");
 		}
 
 	</script>
