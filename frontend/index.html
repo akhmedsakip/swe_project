@@ -181,8 +181,11 @@
 			document.getElementById('hotels').append(html);
 		}
 		fetch('http://localhost:8080/api/hotels')
-				.then((res) => res.json())
-				.then((hotels) => hotels.map(hotel => append_hotel(hotel)))
+				.then((res) => {
+					if(res.ok) {
+						res.json().then((hotels) => hotels.map(hotel => append_hotel(hotel)))
+					}
+				})
 	</script>
 
 <!-- <h2>Paging Application</h2>
