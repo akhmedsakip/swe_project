@@ -21,6 +21,7 @@ public class HotelDataAccessService {
             Hotel hotel = new Hotel();
             hotel.hotelID = rs.getString("HotelID");
             hotel.name = rs.getString("Name");
+            hotel.description = rs.getString("Description");
             hotel.numberOfFloors = rs.getString("NumberOfFloors");
             hotel.numberOfRooms = rs.getString("NumberOfRooms");
             hotel.numberOfFreeRooms = rs.getString("NumberOfFreeRooms");
@@ -28,6 +29,7 @@ public class HotelDataAccessService {
             hotel.city = rs.getString("City");
             hotel.street = rs.getString("Street");
             hotel.zipCode = rs.getString("ZIPCode");
+            hotel.starCount = rs.getInt("StarsCount");
             hotel.mainHotelPicture = rs.getString("MainHotelPicture");
             return hotel;
         });

@@ -1,10 +1,11 @@
 package com.example.sweproj.controllers;
+
 import com.example.sweproj.models.Hotel;
 import com.example.sweproj.services.HotelService;
 import com.example.sweproj.utils.BaseServerError;
-import com.example.sweproj.utils.FieldValidationError;
 import com.google.gson.Gson;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/hotels")
 public class HotelController {

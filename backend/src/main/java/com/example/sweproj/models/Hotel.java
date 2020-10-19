@@ -2,6 +2,8 @@ package com.example.sweproj.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 public class Hotel {
@@ -10,6 +12,9 @@ public class Hotel {
 
     @JsonProperty @NotBlank(message = "Hotel name is empty")
     public String name;
+
+    @JsonProperty @NotBlank(message = "Description is empty")
+    public String description;
 
     @JsonProperty @NotBlank(message = "Number of floors is empty")
     public String numberOfFloors;
@@ -34,6 +39,9 @@ public class Hotel {
 
     @JsonProperty
     public String mainHotelPicture;
+
+    @JsonProperty @Min(0) @Max(5)
+    public int starCount;
 
     public Hotel() { }
 
