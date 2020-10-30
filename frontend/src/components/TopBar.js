@@ -4,8 +4,9 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
+import AuthenticationDialog from "./AuthenticationDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,25 +31,11 @@ const useStyles = makeStyles((theme) => ({
 export default function ButtonAppBar() {
   const classes = useStyles();
 
-  const [open, setOpen] = React.useState(false);
-  const [isRegistration, setRegistration] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
-
-  const handleClose = () => {
-    setRegistration(false);
-    setOpen(false);
-  };
-
-  const login = () => {
-
-  }
-
-  const register = () => {
-
-  }
 
   return (
     <div className={classes.root}>
@@ -67,46 +54,10 @@ export default function ButtonAppBar() {
           <Link to="/about" className={classes.link}>
             <Button color="inherit">About Us</Button>
           </Link>
-
           <Button color="inherit" className={classes.menuButton} onClick={handleClickOpen}>Login</Button>
         </Toolbar>
       </AppBar>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Login</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To log-in to this website, please enter your email address and password here.
-            If you do not have an Amita Hotels account, please register.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="email"
-            label="Email Address"
-            type="email"
-            fullWidth
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="password"
-            label="Password"
-            type="password"
-            fullWidth
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleClose} color="primary" disabled={isRegistration}>
-            Login
-          </Button>
-          <Button onClick={() => setRegistration(true)} color="secondary">
-            Register
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <AuthenticationDialog toggleDialog={setOpen} open={open} />
     </div>
   );
 }
