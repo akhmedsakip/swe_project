@@ -13,9 +13,14 @@ const useStyles = makeStyles({
     maxWidth: 345,
     margin: '1vmax'
   },
+
+  description: {
+    height: 200,
+    overflowY: "auto"
+  }
 });
 
-export default function RoomCard(props) {
+export default function HotelCard({ hotelName, hotelDescription, hotelMainPhoto }) {
   const classes = useStyles();
 
   return (
@@ -25,24 +30,21 @@ export default function RoomCard(props) {
           component="img"
           alt="Contemplative Reptile"
           height="140"
-          image="https://dammedia.ledvance.info/media/img/asset-4086347//c,x,0,y,1058,w,4165,h,2342/s,x,1600,y,0/iStock-185270129.jpg"
+          image={hotelMainPhoto}
           title="Contemplative Reptile"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            Luxurious Room
+            {hotelName}
           </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            This is the best room you will ever have! 
+          <Typography className={classes.description} variant="body2" color="textSecondary" component="p">
+            {hotelDescription}
           </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
         <Button size="small" color="primary">
-          Share
-        </Button>
-        <Button size="small" color="primary">
-          Learn More
+          Rooms
         </Button>
       </CardActions>
     </Card>

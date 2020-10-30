@@ -48,8 +48,8 @@ export default function ButtonAppBar() {
           </Link>
           <div className={classes.title}>
           </div>
-          <Link to="/rooms" className={classes.link}>
-            <Button color="inherit">Rooms</Button>
+          <Link to="/hotels" className={classes.link}>
+            <Button color="inherit">Hotels</Button>
           </Link>
           <Link to="/about" className={classes.link}>
             <Button color="inherit">About Us</Button>
