@@ -39,6 +39,10 @@ function Hotels() {
                 justify="space-evenly"
                 alignItems="center"
             >
+                <Grid item xs >
+                    <HotelCard hotelName={"rixos"} hotelDescription={"dsflksdnflksdnflnsdlfn"}
+                               hotelMainPhoto={"dasdasd"} />
+                </Grid>
                 {
                     hotels.map(hotel => {
                         return (
