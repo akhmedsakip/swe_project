@@ -37,8 +37,9 @@ function LoginForm() {
                     type="email"
                     fullWidth
                     error={touched.email && !!errors.email}
+                    errorMessage={errors.email}
                 />
-                <TextField
+                <TextFieldWithError
                     autoFocus
                     margin="dense"
                     id="password"
@@ -46,6 +47,7 @@ function LoginForm() {
                     type="password"
                     fullWidth
                     error={touched.password && !!errors.password}
+                    errorMessage={errors.email}
                 />
                 <Button disabled={!isValid} className={classes.marginTop16}
                         type={'submit'} variant={'outlined'} color={'primary'}>
