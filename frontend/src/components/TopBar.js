@@ -57,7 +57,7 @@ export default function ButtonAppBar() {
           <Button color="inherit" className={classes.menuButton} onClick={handleClickOpen}>Login</Button>
         </Toolbar>
       </AppBar>
-      <AuthenticationDialog toggleDialog={setOpen} open={open} />
+      <AuthenticationDialog onClose={() => setOpen(false)} open={open} />
     </div>
   );
 }
