@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles({
   root: {
@@ -20,7 +21,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default function HotelCard({ hotelName, hotelDescription, hotelMainPhoto }) {
+function HotelCard({ hotelName, hotelDescription, hotelMainPhoto }) {
   const classes = useStyles();
 
   return (
@@ -50,3 +51,11 @@ export default function HotelCard({ hotelName, hotelDescription, hotelMainPhoto 
     </Card>
   );
 }
+
+HotelCard.propTypes = {
+  hotelName: PropTypes.string.isRequired,
+  hotelDescription: PropTypes.string.isRequired,
+  hotelMainPhoto: PropTypes.string.isRequired
+}
+
+export default HotelCard;

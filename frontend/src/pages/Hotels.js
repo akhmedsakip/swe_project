@@ -27,7 +27,7 @@ function Hotels() {
                 setHotels(response.data);
             })
             .catch(error => {
-                console.log(error);
+                alert("Error fetching hotels!");
             });
     }
 
@@ -39,15 +39,6 @@ function Hotels() {
                 justify="space-evenly"
                 alignItems="center"
             >
-                {/*<Grid item xs >*/}
-                {/*    <HotelCard hotelName={"Rixos Almaty"} hotelDescription={"Lorem ipsum"} hotelMainPhoto={"https://cf.bstatic.com/images/hotel/max1280x900/426/42696320.jpg"} />*/}
-                {/*</Grid>*/}
-                {/*<Grid item xs >*/}
-                {/*    <HotelCard hotelName={"Rixos Almaty"} hotelDescription={"Lorem ipsum"} hotelMainPhoto={"https://cf.bstatic.com/images/hotel/max1280x900/426/42696320.jpg"} />*/}
-                {/*</Grid>*/}
-                {/*<Grid item xs >*/}
-                {/*    <HotelCard hotelName={"Rixos Almaty"} hotelDescription={"Lorem ipsum"} hotelMainPhoto={"https://cf.bstatic.com/images/hotel/max1280x900/426/42696320.jpg"} />*/}
-                {/*</Grid>*/}
                 {
                     hotels.map(hotel => {
                         return (
