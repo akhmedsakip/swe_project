@@ -40,7 +40,6 @@ function LoginForm() {
                     errorMessage={errors.email}
                 />
                 <TextFieldWithError
-                    autoFocus
                     margin="dense"
                     id="password"
                     label="Password"
