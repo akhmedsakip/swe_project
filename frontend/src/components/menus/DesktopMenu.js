@@ -9,9 +9,14 @@ const useStyles = makeStyles({
         color: 'black',
         textDecoration: 'none',
     },
+    loginButton: {
+        color: 'black',
+        textDecoration: 'none',
+        fontWeight: 'bold',
+    }
 });
 
-const DesktopMenu = ({openAuthDialog}) => {
+const DesktopMenu = ({openAuthDialog, signOut}) => {
     const classes = useStyles();
     return <div>
         <Link to="/" className={classes.link}>
@@ -23,12 +28,21 @@ const DesktopMenu = ({openAuthDialog}) => {
         <Link to="/about" className={classes.link}>
             <Button color="inherit">About Us</Button>
         </Link>
-        <Button color="inherit" className={classes.loginButton} onClick={openAuthDialog}>Login</Button>
+        {
+            (localStorage.getItem("email") == null)
+                ? <Button color="inherit" className={classes.loginButton} onClick={openAuthDialog}>
+                    Login
+                </Button>
+                : <Button color="inherit" className={classes.link} onClick={signOut}>
+                    Sign Out
+                </Button>
+        }
     </div>
 };
 
 DesktopMenu.propTypes = {
     openAuthDialog: PropTypes.func.isRequired,
+    signOut: PropTypes.func.isRequired
 };
 
 export default DesktopMenu;

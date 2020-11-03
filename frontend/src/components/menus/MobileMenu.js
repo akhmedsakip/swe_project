@@ -12,7 +12,7 @@ const useStyles = makeStyles({
     },
 });
 
-const MobileMenu = ({openAuthDialog}) => {
+const MobileMenu = ({openAuthDialog, signOut}) => {
     const classes = useStyles();
     const anchorEl = useRef(null);
     const [open, setOpen] = useState(false);
@@ -42,6 +42,18 @@ const MobileMenu = ({openAuthDialog}) => {
                     About Us
                 </Link>
             </MenuItem>
+            {
+                (localStorage.getItem("email") == null)
+                ? <MenuItem onClick={() => {
+                        openAuthDialog();
+                        setOpen(false)
+                    }}>
+                        Login
+                    </MenuItem>
+                : <MenuItem onClick={signOut}>
+                        Sign Out
+                    </MenuItem>
+            }
             <MenuItem onClick={() => {
                 openAuthDialog();
                 setOpen(false)
@@ -55,6 +67,7 @@ const MobileMenu = ({openAuthDialog}) => {
 
 MobileMenu.propTypes = {
     openAuthDialog: PropTypes.func.isRequired,
+    signOut: PropTypes.func.isRequired
 };
 
 export default MobileMenu;

@@ -1,10 +1,12 @@
 import {DialogContent, FormHelperText} from "@material-ui/core";
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import {useFormik} from "formik";
 import TextFieldWithError from "../shared/TextFieldWithError";
 import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
 import {loginSchema} from "../utils/validationSchemas";
+import axios from "axios";
+import PropTypes from "prop-types";
 import AuthenticationContext from "../contexts/authenticationContext";
 
 const useStyles = makeStyles({
@@ -13,15 +15,31 @@ const useStyles = makeStyles({
     },
     success: {
         color: "green"
+    },
+    fail: {
+        color: "red"
     }
 });
 
-function LoginForm() {
+function LoginForm({ onClose }) {
     const { isRegistered } = useContext(AuthenticationContext);
+    const [failedLogin, setFailedLogin] = useState(false);
 
     const classes = useStyles();
-    const {handleBlur, handleChange, handleSubmit, errors, touched, isValid} = useFormik({
-        onSubmit: () => console.log("helloworld"),
+    const {handleBlur, handleChange, values, handleSubmit, errors, touched, isValid} = useFormik({
+        onSubmit: () => {
+            axios.post("/api/authenticate", {
+                email: values.email,
+                password: values.password
+            })
+            .then(() => {
+                localStorage.setItem("email", values.email);
+                onClose();
+            })
+            .catch(() => {
+                setFailedLogin(true);
+            })
+        },
         initialValues: {
             email: "",
             password: "",
@@ -34,6 +52,9 @@ function LoginForm() {
     });
     return (
         <DialogContent>
+            {
+                failedLogin ? <FormHelperText className={classes.fail}>Email or password is incorrect</FormHelperText> : null
+            }
             {
                 isRegistered ? <FormHelperText className={classes.success}>Successfully registered</FormHelperText> : null
             }
@@ -65,5 +86,9 @@ function LoginForm() {
         </DialogContent>
     );
 }
+
+LoginForm.propTypes = {
+    onClose: PropTypes.func.isRequired
+};
 
 export default LoginForm;

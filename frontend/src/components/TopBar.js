@@ -9,6 +9,7 @@ import AuthenticationDialog from "./AuthenticationDialog";
 import useTheme from '@material-ui/core/styles/useTheme';
 import DesktopMenu from "./menus/DesktopMenu";
 import MobileMenu from "./menus/MobileMenu";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,11 +30,6 @@ const useStyles = makeStyles((theme) => ({
     color: 'black',
     textDecoration: 'none',
   },
-  loginButton: {
-    color: 'black',
-    textDecoration: 'none',
-    fontWeight: 'bold',
-  },
   menuIcon: {
     color: 'black'
   }
@@ -51,6 +47,17 @@ export default function ButtonAppBar() {
     setOpen(true);
   };
 
+  const signOut = () => {
+    axios.post("/api/logout")
+        .then(() => {
+          localStorage.clear();
+        })
+        .catch((err) => {
+          alert("Server did not respond");
+          console.log(err);
+        })
+  }
+
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.bar}>
@@ -65,8 +72,8 @@ export default function ButtonAppBar() {
           <div className={classes.title}>
           </div>
 
-          {!isMobileScreen ? <DesktopMenu openAuthDialog={openAuthDialog} />
-            : <MobileMenu openAuthDialog={openAuthDialog}/>
+          {!isMobileScreen ? <DesktopMenu openAuthDialog={openAuthDialog} signOut={signOut} />
+            : <MobileMenu openAuthDialog={openAuthDialog} signOut={signOut} />
 
           }
         </Toolbar>
