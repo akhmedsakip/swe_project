@@ -1,11 +1,11 @@
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@material-ui/core";
+import {Dialog, DialogActions, DialogTitle} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import LoginForm from "./LoginForm";
 import RegistrationForm from "./RegistrationForm";
 import {makeStyles} from "@material-ui/core/styles";
-import AuthenticationContext  from "./authenticationContext";
+import AuthenticationContext  from "../contexts/authenticationContext";
 
 const useStyles = makeStyles({
     root: {

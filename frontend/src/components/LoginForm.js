@@ -5,7 +5,7 @@ import TextFieldWithError from "../shared/TextFieldWithError";
 import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
 import {loginSchema} from "../utils/validationSchemas";
-import AuthenticationContext from "./authenticationContext";
+import AuthenticationContext from "../contexts/authenticationContext";
 
 const useStyles = makeStyles({
     marginTop16: {

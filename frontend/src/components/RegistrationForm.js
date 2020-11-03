@@ -1,5 +1,5 @@
-import {DialogContent, DialogContentText, TextField} from "@material-ui/core";
-import React, {useState, useEffect, useContext} from "react";
+import {DialogContent} from "@material-ui/core";
+import React, {useState, useContext} from "react";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -10,8 +10,7 @@ import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
 import {registrationSchema} from "../utils/validationSchemas";
 import axios from "axios";
-import PropTypes from "prop-types";
-import AuthenticationContext from "./authenticationContext";
+import AuthenticationContext from "../contexts/authenticationContext";
 
 const useStyles = makeStyles({
     marginTop16: {
@@ -56,8 +55,15 @@ function RegistrationForm() {
                 setIsRegistered(true);
             })
             .catch((err) => {
-                console.log(err);
-                setFieldError("email", "Email already exists");
+                if(err.response.data && err.response.data instanceof Array) {
+                    err.response.data.map((error) => {
+                        if(error.field && error.message) {
+                            setFieldError(error.field, error.message);
+                        }
+                    })
+                } else {
+                    setFieldError("email", "Server error");
+                }
             })
         },
     });
