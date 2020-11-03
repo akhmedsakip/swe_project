@@ -21,7 +21,7 @@ function Hotels() {
     }, []);
 
     const fetchRooms = async () => {
-        axios.get("http://localhost:8080/api/hotels/")
+        axios.get("/api/hotels")
             .then(response => {
                 setHotels(response.data);
             })
