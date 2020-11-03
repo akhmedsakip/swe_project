@@ -2,7 +2,7 @@ package com.example.sweproj.controllers;
 
 import com.example.sweproj.models.Hotel;
 import com.example.sweproj.services.HotelService;
-import com.example.sweproj.utils.BaseServerError;
+import com.example.sweproj.utils.Message;
 import com.google.gson.Gson;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,13 +27,13 @@ public class HotelController {
     @GetMapping
     ResponseEntity<String> getHotels() {
         Gson gson = new Gson();
-        List<BaseServerError> serverErrors = new ArrayList<>();
+        List<Message> serverErrors = new ArrayList<>();
         ArrayList<Hotel> hotels;
 
         try {
             hotels = new ArrayList<>(this.hotelService.getHotels());
         } catch(Exception error) {
-            serverErrors.add(new BaseServerError("Error fetching hotels"));
+            serverErrors.add(new Message("Error fetching hotels"));
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
         return ResponseEntity.ok().body(gson.toJson(hotels));

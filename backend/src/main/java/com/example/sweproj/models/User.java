@@ -1,14 +1,27 @@
 package com.example.sweproj.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 
 @Valid
-public class User {
+public class User implements UserDetails {
+
+    public User() {}
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 
     private final String dateRegEx = "\\d{4}-\\d{2}-\\d{2}";
 
@@ -37,8 +50,6 @@ public class User {
     @NotBlank(message = "Gender is empty", groups = UserRegistrationGroup.class)
     private String gender;
 
-    public User() {}
-
     public int getAge() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(dateOfBirth, formatter);
@@ -52,6 +63,69 @@ public class User {
 
     public void encodePassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
     }
 
 

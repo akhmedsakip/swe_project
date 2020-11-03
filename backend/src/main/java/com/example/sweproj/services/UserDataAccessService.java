@@ -1,4 +1,5 @@
 package com.example.sweproj.services;
+
 import com.example.sweproj.models.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -21,6 +22,18 @@ public class UserDataAccessService {
 
     String selectPasswordByEmail(User user) {
         String sql = "SELECT Password FROM Users WHERE Email = ?";
-        return jdbcTemplate.queryForObject(sql, String.class, user.email);
+        return jdbcTemplate.queryForObject(sql, String.class, user.getUsername());
+    }
+
+    User loadUserByUsername(String email) {
+        String sql = "SELECT * FROM Users WHERE Email = ?";
+        return jdbcTemplate.query(sql,(rs, rowNum) -> {
+            User user = new User(rs.getString("Email"), rs.getString("Password"));
+            user.setFirstName(rs.getString("FirstName"));
+            user.setLastName(rs.getString("LastName"));
+            user.setGender(rs.getString("Gender"));
+            user.setDateOfBirth(rs.getString("DateOfBirth"));
+            return user;
+        }, email).get(0);
     }
 }
