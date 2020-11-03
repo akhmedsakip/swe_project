@@ -24,7 +24,7 @@ function AuthenticationDialog({ onClose, open }) {
     return (
         <Dialog classes={{paper: classes.root}} open={open} onClose={onClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Login</DialogTitle>
-            {isRegistration ? <RegistrationForm /> : <LoginForm/>}
+            {isRegistration ? <RegistrationForm setIsRegistration={setIsRegistration} /> : <LoginForm/>}
             <DialogActions>
                 <Button onClick={onClose} color="primary">
                     Cancel

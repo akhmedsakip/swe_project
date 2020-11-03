@@ -27,7 +27,8 @@ const useStyles = makeStyles({
     '&::-webkit-scrollbar-thumb': {
       backgroundColor: 'rgba(0,0,0,.1)',
       outline: '1px solid slategrey'
-    }
+    },
+    paddingRight: "1rem"
   }
 });
 
