@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowCredentials = "true")
 @RestController
 @RequestMapping("/api/hotels")
 public class HotelController {
