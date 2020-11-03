@@ -1,5 +1,5 @@
 import {DialogContent, DialogContentText, TextField} from "@material-ui/core";
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -11,6 +11,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import {registrationSchema} from "../utils/validationSchemas";
 import axios from "axios";
 import PropTypes from "prop-types";
+import AuthenticationContext from "./authenticationContext";
 
 const useStyles = makeStyles({
     marginTop16: {
@@ -18,8 +19,8 @@ const useStyles = makeStyles({
     }
 });
 
-function RegistrationForm({ setIsRegistration }) {
-    let emailInput = React.createRef();
+function RegistrationForm() {
+    const { setIsRegistration, setIsRegistered } = useContext(AuthenticationContext);
     const classes = useStyles();
     const {handleSubmit, handleBlur, handleChange, values, touched, errors, isValid, setFieldError} = useFormik({
         initialValues: {
@@ -42,7 +43,7 @@ function RegistrationForm({ setIsRegistration }) {
         },
         validationSchema: registrationSchema,
         onSubmit: () => {
-            axios.post("http://localhost:8080/api/users/", {
+            axios.post("/api/register", {
                 firstName: values.firstName,
                 lastName: values.lastName,
                 email: values.email,
@@ -52,10 +53,11 @@ function RegistrationForm({ setIsRegistration }) {
             })
             .then(() => {
                 setIsRegistration(false);
+                setIsRegistered(true);
             })
-            .catch(() => {
+            .catch((err) => {
+                console.log(err);
                 setFieldError("email", "Email already exists");
-                console.log(emailInput.current);
             })
         },
     });
@@ -90,8 +92,7 @@ function RegistrationForm({ setIsRegistration }) {
                     label="Email"
 
                     type="email"
-                    fullWidth
-                    ref={emailInput}>
+                    fullWidth>
                 </TextFieldWithError>
                 <TextFieldWithError
                     error={touched.password && !!errors.password}
@@ -140,9 +141,5 @@ function RegistrationForm({ setIsRegistration }) {
         </DialogContent>
     );
 }
-
-RegistrationForm.propTypes = {
-    setIsRegistration: PropTypes.func.isRequired,
-};
 
 export default RegistrationForm;

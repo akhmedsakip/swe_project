@@ -1,18 +1,24 @@
-import {DialogContent} from "@material-ui/core";
-import React from "react";
+import {DialogContent, FormHelperText} from "@material-ui/core";
+import React, {useContext} from "react";
 import {useFormik} from "formik";
 import TextFieldWithError from "../shared/TextFieldWithError";
 import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
 import {loginSchema} from "../utils/validationSchemas";
+import AuthenticationContext from "./authenticationContext";
 
 const useStyles = makeStyles({
     marginTop16: {
         marginTop: 16,
+    },
+    success: {
+        color: "green"
     }
 });
 
 function LoginForm() {
+    const { isRegistered } = useContext(AuthenticationContext);
+
     const classes = useStyles();
     const {handleBlur, handleChange, handleSubmit, errors, touched, isValid} = useFormik({
         onSubmit: () => console.log("helloworld"),
@@ -28,6 +34,9 @@ function LoginForm() {
     });
     return (
         <DialogContent>
+            {
+                isRegistered ? <FormHelperText className={classes.success}>Successfully registered</FormHelperText> : null
+            }
             <form onChange={handleChange} onBlur={handleBlur} onSubmit={handleSubmit}>
                 <TextFieldWithError
                     margin="dense"
@@ -43,6 +52,7 @@ function LoginForm() {
                     id="password"
                     label="Password"
                     type="password"
+                    autoComplete="on"
                     fullWidth
                     error={touched.password && !!errors.password}
                     errorMessage={errors.email}
