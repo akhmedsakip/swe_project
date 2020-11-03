@@ -41,7 +41,7 @@ function Hotels() {
                 {
                     hotels.map(hotel => {
                         return (
-                            <Grid item xs >
+                            <Grid key={hotel.hotelId} >
                                 <HotelCard hotelName={hotel.name} hotelDescription={hotel.description} hotelMainPhoto={hotel.mainHotelPicture} />
                             </Grid>
                         );

@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   },
 
   description: {
-    height: 200,
+    maxHeight: 200,
     overflowY: "auto",
     '&::-webkit-scrollbar': {
       width: '0.3em',
