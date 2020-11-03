@@ -72,7 +72,7 @@ export default function ButtonAppBar() {
 
           {!isMobileScreen ?
             <div>
-              <Link to="/" className={classes.link} exact>
+              <Link to="/" className={classes.link}>
                 <Button color="inherit">Home</Button>
               </Link>
               <Link to="/hotels" className={classes.link}>

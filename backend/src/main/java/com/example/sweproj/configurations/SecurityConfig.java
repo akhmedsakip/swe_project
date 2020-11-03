@@ -33,12 +33,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/api/register").permitAll()
-                .antMatchers("/api/authenticate").permitAll()
-                .antMatchers("/api/hotels").permitAll()
-                .anyRequest().authenticated().and().exceptionHandling()
-                .authenticationEntryPoint(new UnauthorizedEntryPoint()).
-                and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .antMatchers("/api/users").authenticated()
+                .antMatchers("/api/book").authenticated()
+                .and().exceptionHandling().authenticationEntryPoint(new UnauthorizedEntryPoint());
+
+        http.authorizeRequests().anyRequest().permitAll().and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
