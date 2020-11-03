@@ -8,6 +8,7 @@ import {loginSchema} from "../utils/validationSchemas";
 import axios from "axios";
 import PropTypes from "prop-types";
 import AuthenticationContext from "../contexts/authenticationContext";
+import UserContext from "../contexts/userContext";
 
 const useStyles = makeStyles({
     marginTop16: {
@@ -21,8 +22,9 @@ const useStyles = makeStyles({
     }
 });
 
-function LoginForm({ onClose }) {
-    const { isRegistered } = useContext(AuthenticationContext);
+function LoginForm() {
+    const { isRegistered, closeAuthDialog } = useContext(AuthenticationContext);
+    const {dispatch} = useContext(UserContext);
     const [failedLogin, setFailedLogin] = useState(false);
 
     const classes = useStyles();
@@ -34,7 +36,8 @@ function LoginForm({ onClose }) {
             })
             .then(() => {
                 localStorage.setItem("email", values.email);
-                onClose();
+                dispatch({type: 'login'});
+                closeAuthDialog();
             })
             .catch(() => {
                 setFailedLogin(true);
@@ -87,8 +90,5 @@ function LoginForm({ onClose }) {
     );
 }
 
-LoginForm.propTypes = {
-    onClose: PropTypes.func.isRequired
-};
 
 export default LoginForm;

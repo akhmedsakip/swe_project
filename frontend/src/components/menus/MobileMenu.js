@@ -1,9 +1,10 @@
+import React, {useRef, useState, useContext} from "react";
 import {IconButton, Menu, MenuItem} from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import {Link} from "react-router-dom";
-import React, {useRef, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import PropTypes from 'prop-types';
+import UserContext from "../../contexts/userContext";
 
 const useStyles = makeStyles({
     link: {
@@ -16,6 +17,8 @@ const MobileMenu = ({openAuthDialog, signOut}) => {
     const classes = useStyles();
     const anchorEl = useRef(null);
     const [open, setOpen] = useState(false);
+    const {state, dispatch} = useContext(UserContext);
+
     return (
     <div>
         <IconButton edge="start" className={classes.menuButton} ref={anchorEl}
@@ -43,14 +46,14 @@ const MobileMenu = ({openAuthDialog, signOut}) => {
                 </Link>
             </MenuItem>
             {
-                (localStorage.getItem("email") == null)
+                !state.loggedIn
                 ? <MenuItem onClick={() => {
                         openAuthDialog();
                         setOpen(false)
                     }}>
                         Login
                     </MenuItem>
-                : <MenuItem onClick={signOut}>
+                : <MenuItem onClick={() => dispatch({type: "signOut"})}>
                         Sign Out
                     </MenuItem>
             }
