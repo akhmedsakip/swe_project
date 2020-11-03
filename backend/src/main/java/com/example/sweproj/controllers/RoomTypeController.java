@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/api/roomTypes")
 public class RoomTypeController {
 
