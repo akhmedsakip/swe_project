@@ -56,7 +56,7 @@ function RegistrationForm() {
             })
             .catch((err) => {
                 if(err.response.data && err.response.data instanceof Array) {
-                    err.response.data.map((error) => {
+                    err.response.data.forEach((error) => {
                         if(error.field && error.message) {
                             setFieldError(error.field, error.message);
                         }

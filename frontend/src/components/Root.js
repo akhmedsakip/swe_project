@@ -8,7 +8,7 @@ const Root = ({children}) => {
     const location = useLocation();
     useEffect(() => {
         fetchUserAction(dispatch);
-    }, [location]);
+    }, [location, dispatch]);
 
     return <>{children}</>
 };
