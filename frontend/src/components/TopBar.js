@@ -1,11 +1,11 @@
-import { IconButton, Menu, MenuItem, useMediaQuery } from '@material-ui/core';
+import { Avatar, IconButton, Menu, MenuItem, useMediaQuery } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import AuthenticationDialog from "./AuthenticationDialog";
 import useTheme from '@material-ui/core/styles/useTheme';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ButtonAppBar() {
   const classes = useStyles();
+  const history = useHistory();
 
   const [open, setOpen] = useState(false);
   const [anchorEl, setAcnhorEl] = useState(false);
@@ -82,7 +83,11 @@ export default function ButtonAppBar() {
                 <Button color="inherit">About Us</Button>
               </Link>
               <Button color="inherit" className={classes.loginButton} onClick={handleClickOpen}>Login</Button>
+              <Button onClick={() => history.push('/profile')}>
+                <Avatar alt="Profile" src='https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png' />
+              </Button>
             </div>
+
             : <div>
               <IconButton edge="start" onClick={handleMenuClick} className={classes.menuButton} color="inherit" aria-label="menu">
                 <MenuIcon />
