@@ -96,7 +96,6 @@ function RegistrationForm() {
                     margin="dense"
                     name="email"
                     label="Email"
-
                     type="email"
                     fullWidth>
                 </TextFieldWithError>

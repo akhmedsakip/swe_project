@@ -7,7 +7,7 @@ import Home from './pages/Home';
 import { makeStyles } from '@material-ui/core';
 import UserContextProvider from "./components/UserContextProvider";
 import Root from "./components/Root";
-import Profile from './pages/Profile';
+import ProfilePage from "./pages/profile/ProfilePage";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,7 +27,7 @@ function App() {
             <Route path="/" component={Home} exact />
             <Route path="/hotels" component={Hotels} />
             <Route path="/about" component={AboutUs} />
-            <Route path="/profile" component={Profile} />
+            <Route path="/profile" component={ProfilePage} />
             <Route path="*" render={() => (<Redirect to="/" />)} />
           </Root>
         </div>
