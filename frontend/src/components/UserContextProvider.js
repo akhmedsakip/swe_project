@@ -3,10 +3,9 @@ import UserContext from "../contexts/userContext";
 
 function reducer(state, action) {
     switch (action.type) {
-        case 'login':
+        case 'setUser':
             return {...action.payload, loggedIn: true};
         case 'signOut':
-            localStorage.clear();
             return {loggedIn: false};
         default:
             return state;
@@ -15,7 +14,7 @@ function reducer(state, action) {
 
 
 const UserContextProvider = ({children}) => {
-    const [state, dispatch] = useReducer(reducer, {loggedIn: localStorage.getItem("email") !== null}, undefined);
+    const [state, dispatch] = useReducer(reducer, {loggedIn: false}, undefined);
     return <UserContext.Provider value={{state, dispatch}}>
         {children}
     </UserContext.Provider>

@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import {makeStyles} from "@material-ui/core/styles";
 import PropTypes from 'prop-types';
 import UserContext from "../../contexts/userContext";
+import logoutAction from "../../actions/logoutAction";
 
 const useStyles = makeStyles({
     link: {
@@ -53,16 +54,10 @@ const MobileMenu = ({openAuthDialog, signOut}) => {
                     }}>
                         Login
                     </MenuItem>
-                : <MenuItem onClick={() => dispatch({type: "signOut"})}>
+                : <MenuItem onClick={() => logoutAction(dispatch)}>
                         Sign Out
                     </MenuItem>
             }
-            <MenuItem onClick={() => {
-                openAuthDialog();
-                setOpen(false)
-            }}>
-                Login
-            </MenuItem>
         </Menu>
     </div>
     )

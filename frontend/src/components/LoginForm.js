@@ -6,8 +6,9 @@ import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
 import {loginSchema} from "../utils/validationSchemas";
 import axios from "axios";
-import PropTypes from "prop-types";
 import AuthenticationContext from "../contexts/authenticationContext";
+import fetchUserAction from "../actions/fetchUserAction";
+import loginAction from "../actions/loginAction";
 import UserContext from "../contexts/userContext";
 
 const useStyles = makeStyles({
@@ -16,32 +17,23 @@ const useStyles = makeStyles({
     },
     success: {
         color: "green"
-    },
-    fail: {
-        color: "red"
     }
 });
 
 function LoginForm() {
-    const { isRegistered, closeAuthDialog } = useContext(AuthenticationContext);
     const {dispatch} = useContext(UserContext);
+    const { isRegistered, closeAuthDialog } = useContext(AuthenticationContext);
     const [failedLogin, setFailedLogin] = useState(false);
 
     const classes = useStyles();
     const {handleBlur, handleChange, values, handleSubmit, errors, touched, isValid} = useFormik({
-        onSubmit: () => {
-            axios.post("/api/authenticate", {
-                email: values.email,
-                password: values.password
-            })
-            .then(() => {
-                localStorage.setItem("email", values.email);
-                dispatch({type: 'login'});
+        onSubmit: async () => {
+            const loggedIn = await loginAction(dispatch, values.email, values.password);
+            if(loggedIn) {
                 closeAuthDialog();
-            })
-            .catch(() => {
+            } else {
                 setFailedLogin(true);
-            })
+            }
         },
         initialValues: {
             email: "",
@@ -56,7 +48,7 @@ function LoginForm() {
     return (
         <DialogContent>
             {
-                failedLogin ? <FormHelperText className={classes.fail}>Email or password is incorrect</FormHelperText> : null
+                failedLogin ? <FormHelperText error>Email or password is incorrect</FormHelperText> : null
             }
             {
                 isRegistered ? <FormHelperText className={classes.success}>Successfully registered</FormHelperText> : null
