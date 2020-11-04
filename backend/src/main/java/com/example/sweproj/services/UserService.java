@@ -22,4 +22,8 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userDataAccessService.loadUserByUsername(email);
     }
+
+    public int changePassword(String newPasswordEncoded) {
+        return userDataAccessService.changePassword(newPasswordEncoded);
+    }
 }

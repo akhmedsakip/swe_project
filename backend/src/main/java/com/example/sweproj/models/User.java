@@ -23,31 +23,32 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    private final String dateRegEx = "\\d{4}-\\d{2}-\\d{2}";
+    private final transient String dateRegEx = "\\d{4}-\\d{2}-\\d{2}";
 
     @JsonProperty
-    @NotBlank(message = "First name is empty", groups = UserRegistrationGroup.class)
+    @NotBlank(message = "First name is empty")
     public String firstName;
 
     @JsonProperty
-    @NotBlank(message = "Last name is empty", groups = UserRegistrationGroup.class)
+    @NotBlank(message = "Last name is empty")
     public String lastName;
 
     @JsonProperty
-    @NotBlank(message = "Email is empty", groups={UserLoginGroup.class, UserRegistrationGroup.class})
-    @Email(message = "Invalid email", groups={UserLoginGroup.class, UserRegistrationGroup.class})
+    @NotBlank(message = "Email is empty")
+    @Email(message = "Invalid email")
     public String email;
 
     @JsonProperty
-    @Size(min=6, message = "Password is too short", groups={UserLoginGroup.class, UserRegistrationGroup.class})
-    public String password;
+    @NotBlank(message = "Password is empty")
+    @Size(min=6, message = "Password is too short")
+    public transient String password;
 
     @JsonProperty
-    @Pattern(regexp = dateRegEx, message = "Date is not in valid form (should be yyyy-MM-dd)", groups = UserRegistrationGroup.class)
+    @Pattern(regexp = dateRegEx, message = "Date is not in valid form (should be yyyy-MM-dd)")
     public String dateOfBirth;
 
     @JsonProperty
-    @NotBlank(message = "Gender is empty", groups = UserRegistrationGroup.class)
+    @NotBlank(message = "Gender is empty")
     private String gender;
 
     public int getAge() {
@@ -128,6 +129,8 @@ public class User implements UserDetails {
         return dateOfBirth;
     }
 
+    public class PasswordSubModel {
 
+    }
 }
 
