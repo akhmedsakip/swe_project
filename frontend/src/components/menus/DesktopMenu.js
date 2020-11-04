@@ -5,7 +5,7 @@ import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import PropTypes from 'prop-types';
 import UserContext from "../../contexts/userContext";
-import logoutAction from "../../actions/logoutAction";
+import logoutAction from "../../actions/userContextActions/logoutAction";
 
 const useStyles = makeStyles({
     link: {

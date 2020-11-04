@@ -7,8 +7,8 @@ import {makeStyles} from "@material-ui/core/styles";
 import {loginSchema} from "../utils/validationSchemas";
 import axios from "axios";
 import AuthenticationContext from "../contexts/authenticationContext";
-import fetchUserAction from "../actions/fetchUserAction";
-import loginAction from "../actions/loginAction";
+import fetchUserAction from "../actions/userContextActions/fetchUserAction";
+import loginAction from "../actions/userContextActions/loginAction";
 import UserContext from "../contexts/userContext";
 
 const useStyles = makeStyles({
