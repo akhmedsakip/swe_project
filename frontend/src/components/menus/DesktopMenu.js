@@ -44,9 +44,11 @@ const DesktopMenu = ({openAuthDialog}) => {
                 </Button>
             )
         }
-        <Button onClick={() => history.push('/profile')}>
-            <Avatar alt="Profile" src='https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png' />
-        </Button>
+        {
+            state.loggedIn ? <Button onClick={() => history.push('/profile')}>
+                <Avatar alt="Profile" src='https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png' />
+            </Button> : null
+        }
     </div>
 };
 

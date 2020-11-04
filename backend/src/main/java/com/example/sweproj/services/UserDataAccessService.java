@@ -16,10 +16,10 @@ public class UserDataAccessService {
     }
 
     int insertUser(User user) {
-        String sql = "INSERT INTO USERS (FirstName, LastName, Password, Email, DateOfBirth, Age, Gender, RegistrationDate)" +
-                            "VALUES (?, ?, ?, ?, ?, ? ,?, ?)";
+        String sql = "INSERT INTO USERS (FirstName, LastName, Password, Email, DateOfBirth, Gender, RegistrationDate)" +
+                            "VALUES (?, ?, ?, ?, ?, ? ,?)";
         return jdbcTemplate.update(sql, user.getFirstName(), user.getLastName(),
-                user.getPassword(), user.getUsername(), user.getDateOfBirth(), user.getAge(), user.getGender(), LocalDate.now());
+                user.getPassword(), user.getUsername(), user.getDateOfBirth(), user.getGender(), LocalDate.now());
     }
 
     User loadUserByUsername(String email) {
