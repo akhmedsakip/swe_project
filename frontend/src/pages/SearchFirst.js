@@ -57,7 +57,7 @@ export default function SearchFirst() {
         fetchCities();
     }, []);
 
-    const fetchCities = async () => {
+    const fetchCities = () => {
         axios.get("/api/hotels/cities")
             .then(response => {
                 setCities(response.data);

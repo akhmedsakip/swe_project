@@ -101,6 +101,7 @@ function SearchFirstComponent({ setSearchSuccess, cities }) {
                 <TextFieldWithError
                     required
                     id="numPeople"
+                    name="numPeople"
                     label="Number of people"
                     fullWidth
                     autoComplete="shipping postal-code"
@@ -112,6 +113,7 @@ function SearchFirstComponent({ setSearchSuccess, cities }) {
                 <TextFieldWithError
                     required
                     id="country"
+                    name="country"
                     name="country"
                     label="Country"
                     fullWidth
@@ -126,6 +128,7 @@ function SearchFirstComponent({ setSearchSuccess, cities }) {
                     <Select
                         labelId="demo-controlled-open-select-label"
                         id="city"
+                        name="city"
                         open={open}
                         onClose={handleClose}
                         onOpen={handleOpen}
@@ -148,6 +151,7 @@ function SearchFirstComponent({ setSearchSuccess, cities }) {
                 <TextFieldWithError
                     required
                     id="fromDate"
+                    name="fromDate"
                     label="From"
                     type="date"
                     // className={classes.textField}
@@ -162,6 +166,7 @@ function SearchFirstComponent({ setSearchSuccess, cities }) {
                 <TextFieldWithError
                     required
                     id="toDate"
+                    name="toDate"
                     label="To"
                     type="date"
                     // className={classes.textField}
