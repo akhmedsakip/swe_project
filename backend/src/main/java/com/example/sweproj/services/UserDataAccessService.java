@@ -36,8 +36,8 @@ public class UserDataAccessService {
 
     int editUser(User newUser) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String sql = "UPDATE USERS SET FirstName = ?, LastName = ?, Email = ?, DateOfBirth = ?, Gender = ? WHERE Email = ?";
-        return jdbcTemplate.update(sql, newUser.getFirstName(), newUser.getLastName(), newUser.getUsername(),
+        String sql = "UPDATE USERS SET FirstName = ?, LastName = ?,DateOfBirth = ?, Gender = ? WHERE Email = ?";
+        return jdbcTemplate.update(sql, newUser.getFirstName(), newUser.getLastName(),
                 newUser.getDateOfBirth(), newUser.getGender(), user.getUsername());
     }
 

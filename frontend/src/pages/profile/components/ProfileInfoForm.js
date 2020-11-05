@@ -32,6 +32,7 @@ function ProfileInfoForm() {
     initialValues: state,
     initialErrors: Object.fromEntries(Object.entries(state).map(([key]) => [key, ""])),
     validationSchema: editInfoSchema,
+    enableReinitialize: true,
     onSubmit: async () => {
       const errors = await editProfileAction(values, dispatch);
       if(errors && errors.length) {

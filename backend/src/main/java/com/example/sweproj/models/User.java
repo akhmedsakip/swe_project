@@ -32,8 +32,8 @@ public class User implements UserDetails {
     private String lastName;
 
     @JsonProperty
-    @NotBlank(message = "Email is empty", groups = {UserEditGroup.class, UserRegisterGroup.class})
-    @Email(message = "Invalid email", groups = {UserEditGroup.class, UserRegisterGroup.class})
+    @NotBlank(message = "Email is empty", groups = {UserRegisterGroup.class})
+    @Email(message = "Invalid email", groups = {UserRegisterGroup.class})
     private String email;
 
     @JsonProperty

@@ -34,7 +34,10 @@ const ProfileInfoButtons = () => {
                     Submit
                 </Button>
                 <Button variant="outlined" color="secondary"
-                        onClick={() => setEditing(false)}
+                        onClick={() => {
+                            setEditing(false);
+                            resetForm();
+                        }}
                         className={`${classes.button} ${classes.marginBottom12}`}>
                     Cancel
                 </Button>
@@ -43,14 +46,15 @@ const ProfileInfoButtons = () => {
             <div className={`${classes.row}`}>
                 <Button variant="outlined" color={'primary'} className={`${classes.button} ${classes.marginBottom12}`}
                     onClick={() => {
-                        setEditing(!editing);
-                        resetForm();
+                        setEditing(true);
                     }}>
                     Edit
                     <EditIcon fontSize={"inherit"}/>
                 </Button>
                 <Button variant="outlined" color="secondary" className={`${classes.button} ${classes.marginBottom12}`}
-                    onClick={() => setChangePassword(true)}>
+                    onClick={() => {
+                        setChangePassword(true);
+                    }}>
                     Change password
                 </Button>
             </div>
