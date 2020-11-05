@@ -19,7 +19,7 @@ function App() {
       <BrowserRouter>
         <Root>
           <ButtonAppBar />
-          <Route path="/" component={Home}/>
+          <Route path="/" component={Home} exact/>
           <Route path="/hotels" component={Hotels} />
           <Route path="/about" component={AboutUs} />
           <Route path="/roomTypes" component={RoomType} />
