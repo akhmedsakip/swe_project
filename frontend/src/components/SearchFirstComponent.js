@@ -68,8 +68,12 @@ function SearchFirstComponent({ setSearchSuccess, cities }) {
 
     const {handleBlur, handleChange, values, handleSubmit, errors, touched, isValid} = useFormik({
         onSubmit: () => {
-            console.log(values);
-            axios.get("/api/hotels/availableHotels")
+            axios.get("/api/hotels/availableHotels", {params: {
+                    checkInDate: values.fromDate,
+                    checkOutDate: values.toDate,
+                    city: values.city,
+                    numberOfPeople: values.numPeople
+                }})
                 .then(response => {
                     setAvailableHotels(response.data);
                 })
@@ -80,14 +84,12 @@ function SearchFirstComponent({ setSearchSuccess, cities }) {
         },
         initialValues: {
             numPeople: 0,
-            country: "",
             fromDate: "",
             toDate: "",
             city: "",
         },
         initialErrors: {
             numPeople: "",
-            country: "",
             fromDate: "",
             toDate: "",
             city: "",
@@ -104,11 +106,6 @@ function SearchFirstComponent({ setSearchSuccess, cities }) {
                                 errorMessage={errors.numPeople}
                                 error={touched.numPeople && !!errors.numPeople}
                                 className={classes.marginBottom12}
-            />
-            <TextFieldWithError name="country" label="Country" fullWidth
-                errorMessage={errors.country}
-                error={touched.country && !!errors.country}
-                className={classes.marginBottom12}
             />
             <div className={`${classes.row} ${classes.marginBottom12}`}>
                 <FormControl required className={classes.formControl} error={touched.city && !!errors.city}>

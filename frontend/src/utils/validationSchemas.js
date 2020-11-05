@@ -17,7 +17,6 @@ export const loginSchema = yup.object().shape({
 
 export const searchSchema = yup.object().shape({
     numPeople: yup.number().required("Number of people is empty"),
-    country: yup.string().required("Country is empty"),
     fromDate: yup.date("From date is invalid").required("From date is empty"),
     toDate: yup.date("To date is invalid").when(
         'fromDate',
