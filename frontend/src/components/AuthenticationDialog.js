@@ -6,6 +6,7 @@ import LoginForm from "./LoginForm";
 import RegistrationForm from "./RegistrationForm";
 import {makeStyles} from "@material-ui/core/styles";
 import AuthenticationContext  from "../contexts/authenticationContext";
+import DialogContent from "@material-ui/core/DialogContent";
 
 const useStyles = makeStyles({
     root: {
@@ -28,10 +29,12 @@ function AuthenticationDialog({ onClose, open }) {
     return (
         <Dialog classes={{paper: classes.root}} open={open} onClose={onClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Login</DialogTitle>
-            <AuthenticationContext.Provider
-                value={{setIsRegistration, isRegistered, setIsRegistered, closeAuthDialog: onClose}}>
-                {isRegistration ? <RegistrationForm /> : <LoginForm />}
-            </AuthenticationContext.Provider>
+            <DialogContent>
+                <AuthenticationContext.Provider
+                    value={{setIsRegistration, isRegistered, setIsRegistered, closeAuthDialog: onClose}}>
+                    {isRegistration ? <RegistrationForm /> : <LoginForm />}
+                </AuthenticationContext.Provider>
+            </DialogContent>
             <DialogActions>
                 <Button onClick={onClose} color="primary">
                     Cancel

@@ -1,10 +1,11 @@
 import React, {useRef, useState, useContext} from "react";
 import {IconButton, Menu, MenuItem} from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {makeStyles} from "@material-ui/core/styles";
 import PropTypes from 'prop-types';
 import UserContext from "../../contexts/userContext";
+import logoutAction from "../../actions/userContextActions/logoutAction";
 
 const useStyles = makeStyles({
     link: {
@@ -18,6 +19,7 @@ const MobileMenu = ({openAuthDialog, signOut}) => {
     const anchorEl = useRef(null);
     const [open, setOpen] = useState(false);
     const {state, dispatch} = useContext(UserContext);
+    const history = useHistory();
 
     return (
     <div>
@@ -46,6 +48,12 @@ const MobileMenu = ({openAuthDialog, signOut}) => {
                 </Link>
             </MenuItem>
             {
+                state.loggedIn ?
+                    <MenuItem onClick={() => history.push('/profile')}>
+                        Profile
+                    </MenuItem> : null
+            }
+            {
                 !state.loggedIn
                 ? <MenuItem onClick={() => {
                         openAuthDialog();
@@ -53,16 +61,12 @@ const MobileMenu = ({openAuthDialog, signOut}) => {
                     }}>
                         Login
                     </MenuItem>
-                : <MenuItem onClick={() => dispatch({type: "signOut"})}>
+                :
+                    <MenuItem onClick={() => logoutAction(dispatch)}>
                         Sign Out
                     </MenuItem>
+
             }
-            <MenuItem onClick={() => {
-                openAuthDialog();
-                setOpen(false)
-            }}>
-                Login
-            </MenuItem>
         </Menu>
     </div>
     )

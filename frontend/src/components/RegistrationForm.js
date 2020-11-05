@@ -56,9 +56,9 @@ function RegistrationForm() {
             })
             .catch((err) => {
                 if(err.response.data && err.response.data instanceof Array) {
-                    err.response.data.map((error) => {
-                        if(error.field && error.message) {
-                            setFieldError(error.field, error.message);
+                    err.response.data.forEach((error) => {
+                        if(error.message) {
+                            setFieldError(error.field || "email", error.message);
                         }
                     })
                 } else {
@@ -70,7 +70,7 @@ function RegistrationForm() {
     const [dataFocused, setDataFocused] = useState(false);
 
     return (
-        <DialogContent>
+        <>
             <form onSubmit={handleSubmit} onBlur={handleBlur} onChange={handleChange}>
                 <TextFieldWithError
                     error={touched.firstName && !!errors.firstName}
@@ -96,7 +96,6 @@ function RegistrationForm() {
                     margin="dense"
                     name="email"
                     label="Email"
-
                     type="email"
                     fullWidth>
                 </TextFieldWithError>
@@ -144,7 +143,7 @@ function RegistrationForm() {
                     Register
                 </Button>
             </form>
-        </DialogContent>
+        </>
     );
 }
 

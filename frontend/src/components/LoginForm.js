@@ -1,13 +1,12 @@
 import {DialogContent, FormHelperText} from "@material-ui/core";
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {useFormik} from "formik";
 import TextFieldWithError from "../shared/TextFieldWithError";
 import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
 import {loginSchema} from "../utils/validationSchemas";
-import axios from "axios";
-import PropTypes from "prop-types";
 import AuthenticationContext from "../contexts/authenticationContext";
+import loginAction from "../actions/userContextActions/loginAction";
 import UserContext from "../contexts/userContext";
 
 const useStyles = makeStyles({
@@ -16,32 +15,23 @@ const useStyles = makeStyles({
     },
     success: {
         color: "green"
-    },
-    fail: {
-        color: "red"
     }
 });
 
 function LoginForm() {
+    const {dispatch, state} = useContext(UserContext);
     const { isRegistered, closeAuthDialog } = useContext(AuthenticationContext);
-    const {dispatch} = useContext(UserContext);
     const [failedLogin, setFailedLogin] = useState(false);
 
     const classes = useStyles();
     const {handleBlur, handleChange, values, handleSubmit, errors, touched, isValid} = useFormik({
-        onSubmit: () => {
-            axios.post("/api/authenticate", {
-                email: values.email,
-                password: values.password
-            })
-            .then(() => {
-                localStorage.setItem("email", values.email);
-                dispatch({type: 'login'});
+        onSubmit: async () => {
+            const loggedIn = await loginAction(dispatch, values.email, values.password);
+            if(loggedIn) {
                 closeAuthDialog();
-            })
-            .catch(() => {
+            } else {
                 setFailedLogin(true);
-            })
+            }
         },
         initialValues: {
             email: "",
@@ -53,13 +43,15 @@ function LoginForm() {
         },
         validationSchema: loginSchema,
     });
-    return (
-        <DialogContent>
+    return (<>
             {
-                failedLogin ? <FormHelperText className={classes.fail}>Email or password is incorrect</FormHelperText> : null
+                failedLogin ? <FormHelperText error>Email or password is incorrect</FormHelperText> : null
             }
             {
                 isRegistered ? <FormHelperText className={classes.success}>Successfully registered</FormHelperText> : null
+            }
+            {
+                state.changedPassword ? <FormHelperText className={classes.success}>Password successfully changed</FormHelperText> : null
             }
             <form onChange={handleChange} onBlur={handleBlur} onSubmit={handleSubmit}>
                 <TextFieldWithError
@@ -86,7 +78,7 @@ function LoginForm() {
                     Login
                 </Button>
             </form>
-        </DialogContent>
+        </>
     );
 }
 

@@ -23,31 +23,31 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    private final String dateRegEx = "\\d{4}-\\d{2}-\\d{2}";
+    @JsonProperty
+    @NotBlank(message = "First name is empty", groups = {UserEditGroup.class, UserRegisterGroup.class})
+    private String firstName;
 
     @JsonProperty
-    @NotBlank(message = "First name is empty", groups = UserRegistrationGroup.class)
-    public String firstName;
+    @NotBlank(message = "Last name is empty", groups = {UserEditGroup.class, UserRegisterGroup.class})
+    private String lastName;
 
     @JsonProperty
-    @NotBlank(message = "Last name is empty", groups = UserRegistrationGroup.class)
-    public String lastName;
+    @NotBlank(message = "Email is empty", groups = {UserRegisterGroup.class})
+    @Email(message = "Invalid email", groups = {UserRegisterGroup.class})
+    private String email;
 
     @JsonProperty
-    @NotBlank(message = "Email is empty", groups={UserLoginGroup.class, UserRegistrationGroup.class})
-    @Email(message = "Invalid email", groups={UserLoginGroup.class, UserRegistrationGroup.class})
-    public String email;
+    @NotBlank(message = "Password is empty", groups = {UserRegisterGroup.class})
+    @Size(min=6, message = "Password is too short", groups = {UserRegisterGroup.class})
+    private transient String password;
 
     @JsonProperty
-    @Size(min=6, message = "Password is too short", groups={UserLoginGroup.class, UserRegistrationGroup.class})
-    public String password;
-
-    @JsonProperty
-    @Pattern(regexp = dateRegEx, message = "Date is not in valid form (should be yyyy-MM-dd)", groups = UserRegistrationGroup.class)
+    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Date is not in valid form (should be yyyy-MM-dd)",
+            groups = {UserEditGroup.class, UserRegisterGroup.class})
     public String dateOfBirth;
 
     @JsonProperty
-    @NotBlank(message = "Gender is empty", groups = UserRegistrationGroup.class)
+    @NotBlank(message = "Gender is empty", groups = {UserEditGroup.class, UserRegisterGroup.class})
     private String gender;
 
     public int getAge() {
@@ -61,8 +61,8 @@ public class User implements UserDetails {
         return gender.charAt(0) == 'm' || gender.charAt(0) == 'M' ? "Male" : "Female";
     }
 
-    public void encodePassword(String password) {
-        this.password = password;
+    public void encodePassword(String passwordEncoded) {
+        this.password = passwordEncoded;
     }
 
     @Override
@@ -127,7 +127,5 @@ public class User implements UserDetails {
     public String getDateOfBirth() {
         return dateOfBirth;
     }
-
-
 }
 

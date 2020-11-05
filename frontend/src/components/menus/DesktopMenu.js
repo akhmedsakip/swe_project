@@ -1,10 +1,12 @@
 import {useContext} from 'react';
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import PropTypes from 'prop-types';
 import UserContext from "../../contexts/userContext";
+import logoutAction from "../../actions/userContextActions/logoutAction";
+import Avatar from "@material-ui/core/Avatar";
 
 const useStyles = makeStyles({
     link: {
@@ -18,9 +20,10 @@ const useStyles = makeStyles({
     }
 });
 
-const DesktopMenu = ({openAuthDialog, signOut}) => {
+const DesktopMenu = ({openAuthDialog}) => {
     const {state, dispatch} = useContext(UserContext);
     const classes = useStyles();
+    const history = useHistory();
     return <div>
         <Link to="/" className={classes.link}>
             <Button color="inherit">Home</Button>
@@ -36,10 +39,15 @@ const DesktopMenu = ({openAuthDialog, signOut}) => {
                 ? <Button color="inherit" className={classes.loginButton} onClick={openAuthDialog}>
                     Login
                 </Button>
-                : <Button color="inherit" className={classes.link} onClick={() => dispatch({type: 'signOut'})}>
+                : <Button color="inherit" className={classes.link} onClick={() => logoutAction(dispatch)}>
                     Sign Out
                 </Button>
             )
+        }
+        {
+            state.loggedIn ? <Button onClick={() => history.push('/profile')}>
+                <Avatar alt="Profile" src='https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png' />
+            </Button> : null
         }
     </div>
 };

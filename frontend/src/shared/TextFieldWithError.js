@@ -12,10 +12,10 @@ const useStyles = makeStyles({
 
 function TextFieldWithError({errorMessage, ...other}) {
     const classes = useStyles();
-    return (<React.Fragment>
+    return (<>
         <TextField {...other}/>
         {other.error ? <FormHelperText className={classes.marginBottom8} error>{errorMessage}</FormHelperText> : null}
-    </React.Fragment>)
+    </>)
 }
 
 TextFieldWithError.propTypes = {
