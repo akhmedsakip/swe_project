@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import InformationRow from "./InformationRow";
 import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
@@ -23,10 +23,15 @@ const ProfileInfoInputs = () => {
     const classes = useStyles();
     const {formik, editing} = useContext(ProfileContext);
     const {values, handleChange, errors} = formik;
+    useEffect(() => {
+        console.log(values);
+    }, [values])
     return <div className={`${classes.info} ${classes.marginBottom12}`}>
+        <InformationRow label={'Email'} name={'email'}>
+            {values.email}
+        </InformationRow>
         <InformationRow label={'First name'} name={'firstName'} />
         <InformationRow label={'Last name'} name={'lastName'} />
-        <InformationRow label={'Email'} name={'email'} />
         <InformationRow label={'Gender'} name={'gender'}>
             {
                 editing ? <Select fullWidth native onChange={handleChange('gender')} value={values.gender}
@@ -36,7 +41,6 @@ const ProfileInfoInputs = () => {
                     <option value="Female">Female</option>
                 </Select> : values.gender
             }
-
         </InformationRow>
         <InformationRow label={'Birth date'} name={'dateOfBirth'}>
             <TextField type={editing ? 'date' : 'text'}

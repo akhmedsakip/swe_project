@@ -1,27 +1,27 @@
-# INSERT INTO HOTEL (Name,
-#                    `Floors#`,
-#                    `Rooms#`,
-#                    `FreeRooms#`,
-#                    CountryCode,
-#                    City,
-#                    Street,
-#                    ZIPCode,
-#                    Description,
-#                    MainHotelPicture,
-#                    StarCount)
-#                    VALUES (
-#                     'Rixos Almaty',
-#                     10,
-#                     150,
-#                     100,
-#                     'KZ',
-#                     'Almaty',
-#                     'Seifullina',
-#                     '0050012',
-#                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ornare ipsum vitae metus fermentum, a elementum ex maximus. Nam luctus mattis mi, ut aliquet diam cursus eget. Vestibulum tincidunt erat sed sapien auctor, a finibus lectus rhoncus. Aliquam volutpat purus diam, vitae vestibulum lectus luctus ut. Praesent viverra purus id tristique condimentum. Suspendisse potenti. Ut id felis vitae sapien vehicula finibus. Donec interdum volutpat pretium. Sed semper faucibus dapibus. Nulla tortor magna, iaculis eget sapien in, rhoncus malesuada erat.',
-#                     'https://cf.bstatic.com/images/hotel/max1024x768/426/42696320.jpg',
-#                      3
-#                    );
+INSERT INTO HOTEL (Name,
+                   `Floors#`,
+                   `Rooms#`,
+                   `FreeRooms#`,
+                   CountryCode,
+                   City,
+                   Street,
+                   ZIPCode,
+                   Description,
+                   MainHotelPicture,
+                   StarCount)
+                   VALUES (
+                    'Rixos Almaty',
+                    10,
+                    150,
+                    100,
+                    'KZ',
+                    'Almaty',
+                    'Seifullina',
+                    '0050012',
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ornare ipsum vitae metus fermentum, a elementum ex maximus. Nam luctus mattis mi, ut aliquet diam cursus eget. Vestibulum tincidunt erat sed sapien auctor, a finibus lectus rhoncus. Aliquam volutpat purus diam, vitae vestibulum lectus luctus ut. Praesent viverra purus id tristique condimentum. Suspendisse potenti. Ut id felis vitae sapien vehicula finibus. Donec interdum volutpat pretium. Sed semper faucibus dapibus. Nulla tortor magna, iaculis eget sapien in, rhoncus malesuada erat.',
+                    'https://cf.bstatic.com/images/hotel/max1024x768/426/42696320.jpg',
+                     3
+                   );
 
 INSERT INTO HOTEL (Name,
                    `Floors#`,
@@ -200,6 +200,44 @@ INSERT INTO ROOMTYPE (HotelID,
                       MainPhoto)
                         VALUES (
                                 3,
+                                'Luxe',
+                                40,
+                                100,
+                                120,
+                                3,
+                                'https://cf.bstatic.com/images/hotel/max1024x768/426/42696356.jpg',
+                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+                               );
+
+INSERT INTO ROOMTYPE (HotelID,
+                      Name,
+                      Size,
+                      BasePricePerDay,
+                      ActualPricePerDay,
+                      Capacity,
+                      Description,
+                      MainPhoto)
+                        VALUES (
+                                4,
+                                'Standard',
+                                20,
+                                25,
+                                5000,
+                                2,
+                                'https://cf.bstatic.com/images/hotel/max1024x768/426/42696338.jpg',
+                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+                               );
+
+INSERT INTO ROOMTYPE (HotelID,
+                      Name,
+                      Size,
+                      BasePricePerDay,
+                      ActualPricePerDay,
+                      Capacity,
+                      Description,
+                      MainPhoto)
+                        VALUES (
+                                4,
                                 'Luxe',
                                 40,
                                 100,
