@@ -76,7 +76,8 @@ public class UserController {
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(!passwordEncoder.matches(oldPassword, user.getPassword())) {
-            return ResponseEntity.status(400).body(gson.toJson(new Message("Old password is incorrect")));
+            serverErrors.add(new Message("Old password is incorrect"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
         try {
             userService.changePassword(passwordEncoder.encode(newPassword));

@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import AboutUs from './pages/AboutUs';
 import Hotels from './pages/Hotels';
 import Home from './pages/Home';
-import { makeStyles } from '@material-ui/core';
 import UserContextProvider from "./components/UserContextProvider";
 import Root from "./components/Root";
 import ProfilePage from "./pages/profile/ProfilePage";
