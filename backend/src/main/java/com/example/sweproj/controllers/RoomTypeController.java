@@ -1,9 +1,12 @@
 package com.example.sweproj.controllers;
 
+import com.example.sweproj.models.ReservationQuery;
 import com.example.sweproj.models.RoomType;
 import com.example.sweproj.services.RoomTypeService;
 import com.example.sweproj.utils.Message;
+import com.example.sweproj.utils.ValidationUtil;
 import com.google.gson.Gson;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +17,12 @@ import java.util.List;
 @RequestMapping("/api/roomTypes")
 public class RoomTypeController {
 
-    private final RoomTypeService roomTypeService;
+    @Autowired
+    private RoomTypeService roomTypeService;
+
+    @Autowired
+    private ValidationUtil validationUtil;
+
 
     RoomTypeController(RoomTypeService roomTypeService) {
         this.roomTypeService = roomTypeService;
@@ -33,5 +41,22 @@ public class RoomTypeController {
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
         return ResponseEntity.ok().body(gson.toJson(roomTypes));
+    }
+
+    @GetMapping("/available")
+    ResponseEntity<String> getAvailableRooms(@RequestBody ReservationQuery reservationQuery) {
+        Gson gson = new Gson();
+        List<Message> serverErrors = validationUtil.validate(reservationQuery);
+        if(serverErrors.size() > 0) {
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+        try {
+            List<RoomType> availableRooms = this.roomTypeService.getAvailableRooms(reservationQuery);
+            return ResponseEntity.ok().body(gson.toJson(availableRooms));
+        } catch(Exception error) {
+            error.printStackTrace();
+            serverErrors.add(new Message("Server errors"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
     }
 }
