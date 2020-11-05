@@ -8,11 +8,18 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
+import {Link} from "react-router-dom";
+import Rating from '@material-ui/lab/Rating';
 
 const useStyles = makeStyles({
   root: {
     maxWidth: 345,
     margin: '1vmax'
+  },
+
+  link: {
+    color: 'black',
+    textDecoration: 'none',
   },
 
   description: {
@@ -29,10 +36,13 @@ const useStyles = makeStyles({
       outline: '1px solid slategrey'
     },
     paddingRight: "1rem"
+  },
+  rating: {
+    marginTop: '10px',
   }
 });
 
-function HotelCard({ hotelName, hotelDescription, hotelMainPhoto }) {
+function HotelCard({ hotelName, hotelDescription, hotelMainPhoto, hotelStars }) {
   const classes = useStyles();
 
   return (
@@ -52,12 +62,15 @@ function HotelCard({ hotelName, hotelDescription, hotelMainPhoto }) {
           <Typography className={classes.description} variant="body2" color="textSecondary" component="p">
             {hotelDescription}
           </Typography>
+          <Rating className={classes.rating} name="half-rating-read" defaultValue={hotelStars} precision={0.5} readOnly />
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
-          Rooms
-        </Button>
+        <Link to="/roomTypes" className={classes.link}>
+          <Button size="small" color="primary">
+            Rooms
+          </Button>
+        </Link>
       </CardActions>
     </Card>
   );
@@ -66,7 +79,8 @@ function HotelCard({ hotelName, hotelDescription, hotelMainPhoto }) {
 HotelCard.propTypes = {
   hotelName: PropTypes.string.isRequired,
   hotelDescription: PropTypes.string.isRequired,
-  hotelMainPhoto: PropTypes.string.isRequired
+  hotelMainPhoto: PropTypes.string.isRequired,
+  hotelStars: PropTypes.number.isRequired,
 }
 
 export default HotelCard;

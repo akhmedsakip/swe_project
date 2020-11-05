@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import HotelCard from '../components/HotelCard';
+import RoomTypeCard from "../components/RoomTypeCard";
 import { Grid } from '@material-ui/core';
 import axios from 'axios';
 
 
-function Hotels() {
+function RoomType() {
 
-    const [hotels, setHotels] = useState([]);
+    const [roomTypes, setRoomType] = useState([]);
 
     useEffect(() => {
-        fetchRooms();
+        fetchRoomTypes();
     }, []);
 
-    const fetchRooms = async () => {
-        axios.get("/api/hotels")
+    const fetchRoomTypes = async () => {
+        axios.get("/api/roomTypes?hotelId=1")
             .then(response => {
-                setHotels(response.data);
+                setRoomType(response.data);
             })
             .catch(error => {
                 console.log(error);
-                alert("Error fetching hotels!");
+                alert("Error fetching roomTypes!");
             });
     }
 
@@ -32,10 +32,10 @@ function Hotels() {
                 alignItems="center"
             >
                 {
-                    hotels.map(hotel => {
+                    roomTypes.map(roomType => {
                         return (
-                            <Grid key={hotel.hotelId} >
-                                <HotelCard hotelName={hotel.name} hotelDescription={hotel.description} hotelMainPhoto={hotel.mainHotelPicture} hotelStars={hotel.starCount}/>
+                            <Grid key={roomType.hotelId} >
+                                <RoomTypeCard roomTypeName={roomType.name} roomTypeDescription={roomType.description} roomTypeCapacity={roomType.capacity} roomTypeMainPhoto={roomType.photo} />
                             </Grid>
                         );
                     })
@@ -46,6 +46,6 @@ function Hotels() {
             }
         </div>
     )
-    }
+}
 
-export default Hotels;
+export default RoomType;
