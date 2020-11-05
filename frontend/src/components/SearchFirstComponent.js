@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -50,28 +50,16 @@ const useStyles = makeStyles({
     }
 });
 
+/**
+ * @return {boolean}
+ */
 function SearchFirstComponent({ setSearchSuccess, cities }) {
     const classes = useStyles();
-    const [city, setCity] = React.useState('');
-    const [open, setOpen] = React.useState(false);
     const [availableHotels, setAvailableHotels] = useState([]);
-    // const [failedSearch, setFailedSearch] = useState(false);
-
-    const handleChangeCity = (event) => {
-        setCity(event.target.value);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const handleOpen = () => {
-        setOpen(true);
-    };
 
     const {handleBlur, handleChange, values, handleSubmit, errors, touched, isValid} = useFormik({
         onSubmit: () => {
-            console.log(values.city);
+            console.log(values);
             axios.get("/api/hotels/availableHotels")
                 .then(response => {
                     setAvailableHotels(response.data);
@@ -82,18 +70,25 @@ function SearchFirstComponent({ setSearchSuccess, cities }) {
                 });
         },
         initialValues: {
-            numPeople:0,
+            numPeople: 0,
             country: "",
+            fromDate: "",
+            toDate: "",
             city: "",
         },
         initialErrors: {
-            numPeople:0,
+            numPeople: "",
             country: "",
+            fromDate: "",
+            toDate: "",
             city: "",
         },
         validationSchema: searchSchema,
     });
 
+    useEffect(() => {
+        console.log(values, errors);
+    }, [values, errors]);
     return (
         <form onChange={handleChange} onBlur={handleBlur} onSubmit={handleSubmit}>
             <Grid container spacing={3}>
@@ -189,6 +184,44 @@ function SearchFirstComponent({ setSearchSuccess, cities }) {
                     </Button>
                 </Scroll>
         </Grid>
+            <TextFieldWithError name="numPeople" label="Number of people" fullWidth
+                errorMessage={errors.numPeople}
+                error={touched.numPeople && !!errors.numPeople}
+            />
+            <TextFieldWithError name="country" label="Country" fullWidth
+                errorMessage={errors.country}
+                error={touched.country && !!errors.country}
+            />
+            <FormControl required className={classes.formControl} error={touched.city && !!errors.city}>
+                <InputLabel>City</InputLabel>
+                <Select native inputProps={{name: 'city'}}>
+                    <option aria-label="None" value="" />
+                    {cities.map(city => {
+                        return (
+                            <option key={city} value={city}>{city}</option>
+                        );
+                    })}
+                </Select>
+                {touched.city && !!errors.city ?
+                    <FormHelperText error>{errors.city}</FormHelperText> : null }
+            </FormControl>
+            <TextFieldWithError label="From" type="date" name="fromDate"
+                InputLabelProps={{
+                    shrink: true,
+                }} errorMessage={errors.fromDate} error={touched.fromDate && !!errors.fromDate} />
+            <TextFieldWithError label="To" type="date" name={"toDate"}
+                InputLabelProps={{
+                    shrink: true,
+                }} errorMessage={errors.toDate} error={touched.toDate && !!errors.toDate}/>
+            <Button
+                disabled={!isValid}
+                variant="contained"
+                color="primary"
+                type={'submit'}
+                className={classes.button}
+            >
+                Search
+            </Button>
         </form>
     );
 }
