@@ -20,11 +20,15 @@ public class HotelService {
     }
 
     public List<String> getCities() {
-	    return hotelDataAccessService.getNumberOfCities();
+	    return hotelDataAccessService.getCities();
     }
 
     public List<RoomType> getAvailableRooms(AvailableRoomTypesRequest info) {
         return this.hotelDataAccessService.getAvailableRoomTypes(info);
+    }
+
+    public List<Hotel> getAvailableHotels(AvailableRoomTypesRequest info) {
+	    return this.hotelDataAccessService.getAvailableHotels(info);
     }
 
     public Hotel getHotel(int hotelId) {

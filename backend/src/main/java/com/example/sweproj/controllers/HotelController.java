@@ -71,6 +71,24 @@ public class HotelController {
         }
     }
 
+    @GetMapping("/availableHotels")
+    ResponseEntity<String> getAvailableHotels(AvailableRoomTypesRequest info) {
+        Gson gson = new Gson();
+        List<Message> serverErrors = validationUtil.validate(info);
+        if(serverErrors.size() > 0) {
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+        try {
+            List<Hotel> availableHotels = this.hotelService.getAvailableHotels(info);
+            return ResponseEntity.ok().body(gson.toJson(availableHotels));
+        } catch(Exception error) {
+            error.printStackTrace();
+            serverErrors.add(new Message("Error fetching available room types"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+    }
+
+
     @RequestMapping("/{hotelId}")
     @GetMapping
     ResponseEntity<String> getHotel(@PathVariable(value = "hotelId") Integer hotelId) {
