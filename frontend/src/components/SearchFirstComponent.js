@@ -17,6 +17,7 @@ import {searchSchema} from "../utils/validationSchemas";
 import {Link as Scroll} from "react-scroll";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import HotelCard from "./HotelCard";
+import fetchUserAction from "../actions/userContextActions/fetchUserAction";
 
 const useStyles = makeStyles({
     formControl: {
@@ -53,6 +54,7 @@ function SearchFirstComponent({ setSearchSuccess, cities }) {
     const classes = useStyles();
     const [city, setCity] = React.useState('');
     const [open, setOpen] = React.useState(false);
+    const [availableHotels, setAvailableHotels] = useState([]);
     // const [failedSearch, setFailedSearch] = useState(false);
 
     const handleChangeCity = (event) => {
@@ -68,7 +70,17 @@ function SearchFirstComponent({ setSearchSuccess, cities }) {
     };
 
     const {handleBlur, handleChange, values, handleSubmit, errors, touched, isValid} = useFormik({
-        onSubmit: () => setSearchSuccess(true),
+        onSubmit: () => {
+            console.log(values.city);
+            axios.get("/api/hotels/availableHotels")
+                .then(response => {
+                    setAvailableHotels(response.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                    alert("Error fetching roomTypes!");
+                });
+        },
         initialValues: {
             numPeople:0,
             country: "",
