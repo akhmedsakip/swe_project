@@ -5,9 +5,9 @@ import AboutUs from './pages/AboutUs';
 import Hotels from './pages/Hotels';
 import RoomType from "./pages/RoomTypes";
 import Home from './pages/Home';
-import SearchFirst from "./pages/SearchFirst";
+import AvailabilityPage from "./pages/availability/AvailabilityPage";
 import { makeStyles } from '@material-ui/core';
-import UserContextProvider from "./components/UserContextProvider";
+import UserContextProvider from "./context-providers/UserContextProvider";
 import Root from "./components/Root";
 import ProfilePage from "./pages/profile/ProfilePage";
 import PrivateRoute from "./components/PrivateRoute";
@@ -23,7 +23,7 @@ function App() {
           <Route path="/hotels" component={Hotels} />
           <Route path="/about" component={AboutUs} />
           <Route path="/roomTypes" component={RoomType} />
-          <Route path="/searchFirst" component={SearchFirst} />
+          <Route path="/searchFirst" component={AvailabilityPage} />
           <PrivateRoute path="/profile" component={ProfilePage} />
           <Route path="*" render={() => (<Redirect to="/" />)} />
         </Root>

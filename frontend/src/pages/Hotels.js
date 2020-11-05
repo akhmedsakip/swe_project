@@ -24,28 +24,23 @@ function Hotels() {
     }
 
     return (
-        <div>
-            <Grid
-                container
-                direction="row"
-                justify="space-evenly"
-                alignItems="center"
-            >
-                {
-                    hotels.map(hotel => {
-                        return (
-                            <Grid key={hotel.hotelId} >
-                                <HotelCard hotelName={hotel.name} hotelDescription={hotel.description} hotelMainPhoto={hotel.mainHotelPicture} hotelStars={hotel.starCount}/>
-                            </Grid>
-                        );
-                    })
-                }
-            </Grid>
+        <Grid
+            container
+            direction="row"
+            justify="space-evenly"
+            alignItems="center"
+        >
             {
-
+                hotels.map(hotel => {
+                    return (
+                        <Grid key={hotel.hotelId} >
+                            <HotelCard hotelName={hotel.name} hotelDescription={hotel.description} hotelMainPhoto={hotel.mainHotelPicture} hotelStars={hotel.starCount}/>
+                        </Grid>
+                    );
+                })
             }
-        </div>
+        </Grid>
     )
-    }
+}
 
 export default Hotels;
