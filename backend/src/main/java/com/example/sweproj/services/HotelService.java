@@ -16,4 +16,8 @@ public class HotelService {
     public List<Hotel> getHotels() {
     	return hotelDataAccessService.getHotels();
     }
+
+    public List<String> getCities() {
+	    return hotelDataAccessService.getNumberOfCities();
+    }
 }

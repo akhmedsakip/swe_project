@@ -1,6 +1,6 @@
 package com.example.sweproj.services;
 
-import com.example.sweproj.models.ReservationQuery;
+import com.example.sweproj.models.AvailableRoomTypesRequest;
 import com.example.sweproj.models.RoomType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -19,17 +19,17 @@ public class RoomTypeDataAccessService {
     String sql = "SELECT * FROM ROOMTYPE WHERE HotelID = ?";
     return jdbcTemplate.query(sql, (rs, rowNum) -> {
         RoomType roomType = new RoomType();
-        roomType.hotelID = rs.getInt("HotelID");
-        roomType.name = rs.getString("Name");
-        roomType.capacity = rs.getString("Capacity");
-        roomType.photo = rs.getString("MainPhoto");
-        roomType.description = rs.getString("Description");
+        roomType.setHotelID(rs.getInt("HotelID"));
+        roomType.setName(rs.getString("Name"));
+        roomType.setCapacity(rs.getString("Capacity"));
+        roomType.setPhoto(rs.getString("MainPhoto"));
+        roomType.setDescription(rs.getString("Description"));
 
         return roomType;
     }, hotelID);
     }
 
-    List<RoomType> getAvailableRoomTypes(ReservationQuery query) {
+    List<RoomType> getAvailableRoomTypes(AvailableRoomTypesRequest info) {
         String sql = "SELECT ROOMTYPE.Name, ROOMTYPE.HotelID, COUNT(ROOMTYPE.Name) RoomTypesCount\n" +
                 "FROM ROOM\n" +
                 "INNER JOIN HOTEL ON HOTEL.HotelID = ROOM.HotelID\n" +
@@ -47,10 +47,10 @@ public class RoomTypeDataAccessService {
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             RoomType roomType = new RoomType();
-            roomType.hotelID = rs.getInt("HotelID");
-            roomType.name = rs.getString("Name");
-            roomType.freeCount = rs.getInt("RoomTypesCount");
+            roomType.setHotelID(rs.getInt("HotelID"));
+            roomType.setName(rs.getString("Name"));
+            roomType.setFreeCount(rs.getInt("RoomTypesCount"));
             return roomType;
-        }, query.checkInDate, query.checkOutDate, query.checkInDate, query.checkOutDate, query.city, query.numberOfPeople);
+        }, info.getCheckInDate(), info.getCheckOutDate(), info.getCheckInDate(), info.getCheckOutDate(), info.getCity(), info.getNumberOfPeople());
     }
 }

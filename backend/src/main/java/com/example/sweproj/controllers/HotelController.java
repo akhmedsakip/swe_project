@@ -4,6 +4,7 @@ import com.example.sweproj.models.Hotel;
 import com.example.sweproj.services.HotelService;
 import com.example.sweproj.utils.Message;
 import com.google.gson.Gson;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,25 +17,38 @@ import java.util.List;
 @RequestMapping("/api/hotels")
 public class HotelController {
 
-    private final HotelService hotelService;
+    @Autowired
+    private HotelService hotelService;
+
+    @Autowired
+    private Gson gson;
+
 
     HotelController(HotelService hotelService) {
-        this.hotelService = hotelService;
     }
 
     @GetMapping
     ResponseEntity<String> getHotels() {
-        Gson gson = new Gson();
         List<Message> serverErrors = new ArrayList<>();
-        ArrayList<Hotel> hotels;
-
         try {
-            hotels = new ArrayList<>(this.hotelService.getHotels());
+            List<Hotel> hotels = this.hotelService.getHotels();
+            return ResponseEntity.ok().body(gson.toJson(hotels));
         } catch(Exception error) {
             serverErrors.add(new Message("Error fetching hotels"));
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
-        return ResponseEntity.ok().body(gson.toJson(hotels));
+    }
+
+    @GetMapping("/cities")
+    ResponseEntity<String> getCities() {
+        List<Message> serverErrors = new ArrayList<>();
+        try {
+            List<String> cities = this.hotelService.getCities();
+            return ResponseEntity.ok().body(gson.toJson(cities));
+        } catch(Exception error) {
+            serverErrors.add(new Message("Error fetching cities"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
     }
 
 }

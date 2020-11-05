@@ -34,4 +34,9 @@ public class HotelDataAccessService {
             return hotel;
         });
     }
+
+    List<String> getNumberOfCities() {
+        String sql = "SELECT DISTINCT City FROM HOTEL;";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> rs.getString("City"));
+    }
 }

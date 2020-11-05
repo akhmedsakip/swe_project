@@ -6,22 +6,69 @@ import javax.validation.constraints.NotNull;
 
 public class RoomType {
 	
-	public int hotelID;
+	private int hotelID;
 
     @JsonProperty @NotNull(message = "Room type name is empty")
-    public String name;
+    private String name;
 
     @JsonProperty @NotNull(message = "Room capacity is empty")
-    public String capacity;
+    private String capacity;
 
     @JsonProperty
-    public String photo;
+    private String photo;
 
     @JsonProperty
-    public String description;
+    private String description;
 
-    public int freeCount;
+    private int freeCount;
     
     public RoomType() {}
 
+    public int getHotelID() {
+        return hotelID;
+    }
+
+    public void setHotelID(int hotelID) {
+        this.hotelID = hotelID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(String capacity) {
+        this.capacity = capacity;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getFreeCount() {
+        return freeCount;
+    }
+
+    public void setFreeCount(int freeCount) {
+        this.freeCount = freeCount;
+    }
 }

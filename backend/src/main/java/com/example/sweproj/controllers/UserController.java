@@ -83,7 +83,8 @@ public class UserController {
             userService.changePassword(passwordEncoder.encode(newPassword));
         } catch(Exception error) {
             error.printStackTrace();
-            return ResponseEntity.status(500).body(gson.toJson(new Message("Server error")));
+            serverErrors.add(new Message("Server error"));
+            return ResponseEntity.status(500).body(gson.toJson(serverErrors));
         }
         return ResponseEntity.ok(gson.toJson(new Message("Successfully changed password")));
     }
