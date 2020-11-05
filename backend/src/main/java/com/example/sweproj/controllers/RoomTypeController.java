@@ -1,6 +1,7 @@
 package com.example.sweproj.controllers;
 
 import com.example.sweproj.models.AvailableEntitiesRequest;
+import com.example.sweproj.models.AvailableRoomTypesGroup;
 import com.example.sweproj.models.RoomType;
 import com.example.sweproj.services.RoomTypeService;
 import com.example.sweproj.utils.Message;
@@ -60,7 +61,7 @@ public class RoomTypeController {
     @GetMapping("/availableRoomTypes")
     ResponseEntity<String> getAvailableRooms(AvailableEntitiesRequest info) {
         Gson gson = new Gson();
-        List<Message> serverErrors = validationUtil.validate(info);
+        List<Message> serverErrors = validationUtil.validate(info, AvailableRoomTypesGroup.class);
         if(serverErrors.size() > 0) {
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }

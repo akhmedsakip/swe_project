@@ -19,13 +19,15 @@ public class AvailableEntitiesRequest {
     @JsonProperty
     @NotBlank(message = "Checkin date should be non-empty",
             groups = {AvailableHotelsGroup.class, AvailableRoomTypesGroup.class})
-    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Checkin date is not in valid form (should be yyyy-MM-dd)")
+    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Checkin date is not in valid form (should be yyyy-MM-dd)",
+            groups = {AvailableHotelsGroup.class, AvailableRoomTypesGroup.class})
     private String checkInDate;
 
     @JsonProperty
     @NotBlank(message = "Checkout date should be non-empty",
             groups = {AvailableHotelsGroup.class, AvailableRoomTypesGroup.class})
-    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Checkout date is not in valid form (should be yyyy-MM-dd)")
+    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Checkout date is not in valid form (should be yyyy-MM-dd)",
+            groups = {AvailableHotelsGroup.class, AvailableRoomTypesGroup.class})
     private String checkOutDate;
 
     @JsonProperty @NotBlank(message = "City is empty",

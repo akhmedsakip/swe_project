@@ -42,7 +42,7 @@ public class RoomTypeDataAccessService {
     }
 
     List<RoomType> getAvailableRoomTypes(AvailableEntitiesRequest info) {
-        String sql = "SELECT ROOMTYPE.Name, ROOMTYPE.HotelID, COUNT(ROOMTYPE.Name) RoomTypesCount\n" +
+        String sql = "SELECT COUNT(ROOMTYPE.Name) RoomTypesCount, ROOMTYPE.*\n" +
                 "FROM ROOM\n" +
                 "INNER JOIN HOTEL ON HOTEL.HotelID = ROOM.HotelID\n" +
                 "INNER JOIN ROOMTYPE ON ROOMTYPE.HotelID = ROOM.HotelID AND ROOM.RoomTypeName = ROOMTYPE.Name\n" +
@@ -53,9 +53,9 @@ public class RoomTypeDataAccessService {
                 "       (O.CheckInDate BETWEEN ? AND ?\n" +
                 "       OR\n" +
                 "       O.CheckOutDate BETWEEN ? AND ?))\n" +
-                "    AND HOTEL.City = ?\n" +
+                "    AND HOTEL.HotelID = ?\n" +
                 "    AND ROOMTYPE.Capacity >= ?\n" +
-                "GROUP BY ROOMTYPE.Name, ROOMTYPE.HotelID;";
+                "GROUP BY ROOMTYPE.Name, ROOMTYPE.HotelID";
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             RoomType roomType = new RoomType();
@@ -63,6 +63,6 @@ public class RoomTypeDataAccessService {
             roomType.setName(rs.getString("Name"));
             roomType.setFreeCount(rs.getInt("RoomTypesCount"));
             return roomType;
-        }, info.getCheckInDate(), info.getCheckOutDate(), info.getCheckInDate(), info.getCheckOutDate(), info.getCity(), info.getNumberOfPeople());
+        }, info.getCheckInDate(), info.getCheckOutDate(), info.getCheckInDate(), info.getCheckOutDate(), info.getHotelId(), info.getNumberOfPeople());
     }
 }
