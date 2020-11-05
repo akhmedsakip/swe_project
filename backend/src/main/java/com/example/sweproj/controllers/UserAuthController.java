@@ -2,6 +2,7 @@ package com.example.sweproj.controllers;
 
 import com.example.sweproj.models.AuthenticationRequest;
 import com.example.sweproj.models.User;
+import com.example.sweproj.models.UserRegisterGroup;
 import com.example.sweproj.services.UserService;
 import com.example.sweproj.utils.CookieUtil;
 import com.example.sweproj.utils.JwtUtil;
@@ -55,7 +56,7 @@ public class UserAuthController {
 
     @PostMapping("/register")
     ResponseEntity<String> addUser(@RequestBody User user) {
-        List<Message> serverErrors = validationUtil.validate(user);
+        List<Message> serverErrors = validationUtil.validate(user, UserRegisterGroup.class);
         if(serverErrors.size() > 0) {
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }

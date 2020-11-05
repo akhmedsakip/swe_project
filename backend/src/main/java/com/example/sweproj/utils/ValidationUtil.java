@@ -24,4 +24,12 @@ public class ValidationUtil {
         return serverErrors;
     }
 
+    public <T> List<Message> validate(T validationEntity, Class validationGroup) {
+        List<Message> serverErrors = new ArrayList<>();
+        for(ConstraintViolation<T> violation: validator.validate(validationEntity, validationGroup)) {
+            serverErrors.add(new FieldValidationMessage(violation.getPropertyPath().toString(), violation.getMessage()));
+        }
+        return serverErrors;
+    }
+
 }

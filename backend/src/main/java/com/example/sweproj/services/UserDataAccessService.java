@@ -34,6 +34,13 @@ public class UserDataAccessService {
         }, email).get(0);
     }
 
+    int editUser(User newUser) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String sql = "UPDATE USERS SET FirstName = ?, LastName = ?, Email = ?, DateOfBirth = ?, Gender = ? WHERE Email = ?";
+        return jdbcTemplate.update(sql, newUser.getFirstName(), newUser.getLastName(), newUser.getUsername(),
+                newUser.getDateOfBirth(), newUser.getGender(), user.getUsername());
+    }
+
     int changePassword(String newPasswordEncoded) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String sql = "UPDATE Users SET Password = ? WHERE Email = ?";

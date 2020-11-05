@@ -2,6 +2,7 @@ package com.example.sweproj.controllers;
 
 import com.example.sweproj.models.ChangePasswordRequest;
 import com.example.sweproj.models.User;
+import com.example.sweproj.models.UserEditGroup;
 import com.example.sweproj.services.UserService;
 import com.example.sweproj.utils.CookieUtil;
 import com.example.sweproj.utils.Message;
@@ -44,6 +45,20 @@ public class UserController {
     ResponseEntity<String> getUser() {
         Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResponseEntity.ok(gson.toJson(user));
+    }
+
+    @PutMapping
+    ResponseEntity<String> editUser(@RequestBody User newUser) {
+        List<Message> serverErrors = validationUtil.validate(newUser, UserEditGroup.class);
+        if(serverErrors.size() > 0) {
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+        try {
+            userService.editUser(newUser);
+        } catch () {
+
+        }
+
     }
 
     @PutMapping("/changePassword")
