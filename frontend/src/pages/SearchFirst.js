@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import SearchFirstComponent from "../components/SearchFirstComponent";
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Hotels from "./Hotels";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
     marginBottom: {
@@ -51,6 +52,21 @@ const useStyles = makeStyles((theme) => ({
 export default function SearchFirst() {
     const classes = useStyles();
     const [searchSuccess, setSearchSuccess] = useState(false);
+    const [cities, setCities] = useState([]);
+    useEffect(() => {
+        fetchCities();
+    }, []);
+
+    const fetchCities = async () => {
+        axios.get("/api/hotels/cities")
+            .then(response => {
+                setCities(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+                alert("Error fetching cities!");
+            });
+    }
 
     return (
         <React.Fragment>
@@ -59,7 +75,7 @@ export default function SearchFirst() {
                     <Typography component="h1" variant="h4" align="center" className={classes.marginBottom}>
                         Booking
                     </Typography>
-                    <SearchFirstComponent setSearchSuccess={setSearchSuccess}/>
+                    <SearchFirstComponent setSearchSuccess={setSearchSuccess} cities={cities}/>
                 </Paper>
             </div>
             {searchSuccess ? <div id="section-2"><Hotels/></div> : <div className={classes.root1 + " " + classes.bg} title="section-1">

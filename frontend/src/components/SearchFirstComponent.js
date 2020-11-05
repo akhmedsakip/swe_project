@@ -16,6 +16,7 @@ import axios from "axios";
 import {searchSchema} from "../utils/validationSchemas";
 import {Link as Scroll} from "react-scroll";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import HotelCard from "./HotelCard";
 
 const useStyles = makeStyles({
     formControl: {
@@ -48,7 +49,7 @@ const useStyles = makeStyles({
     }
 });
 
-function SearchFirstComponent({ setSearchSuccess }) {
+function SearchFirstComponent({ setSearchSuccess, cities }) {
     const classes = useStyles();
     const [city, setCity] = React.useState('');
     const [open, setOpen] = React.useState(false);
@@ -121,9 +122,11 @@ function SearchFirstComponent({ setSearchSuccess }) {
                         native inputProps={{name: 'city'}}
                     >
                         <option aria-label="None" value="" />
-                        <option value={'Almaty'}>Almaty</option>
-                        <option value={'Astana'}>Astana</option>
-                        <option value={'Aktau'}>Aktau</option>
+                        {cities.map(city => {
+                            return (
+                                <option value={'city'}>{city}</option>
+                            );
+                        })}
                     </Select>
                     {touched.city && !!errors.city ?
                         <FormHelperText error>{errors.city}</FormHelperText> : null }
@@ -175,6 +178,7 @@ function SearchFirstComponent({ setSearchSuccess }) {
 
 SearchFirstComponent.propTypes = {
     setSearchSuccess: PropTypes.func,
+    cities: PropTypes.array.isRequired,
 }
 
 export default SearchFirstComponent;
