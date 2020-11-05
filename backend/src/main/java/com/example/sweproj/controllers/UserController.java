@@ -9,6 +9,7 @@ import com.example.sweproj.utils.Message;
 import com.example.sweproj.utils.ValidationUtil;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,10 +56,15 @@ public class UserController {
         }
         try {
             userService.editUser(newUser);
-        } catch () {
-
+        } catch (DuplicateKeyException ignored) {
+            serverErrors.add(new Message("Email already exists"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        } catch (Exception error) {
+            serverErrors.add(new Message("Server error"));
+            error.printStackTrace();
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
-
+        return ResponseEntity.ok(gson.toJson(new Message("Successfully edited")));
     }
 
     @PutMapping("/changePassword")
