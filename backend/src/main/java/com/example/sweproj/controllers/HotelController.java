@@ -1,15 +1,18 @@
 package com.example.sweproj.controllers;
 
-import com.example.sweproj.models.AvailableRoomTypesRequest;
+import com.example.sweproj.models.AvailableEntitiesRequest;
+import com.example.sweproj.models.AvailableHotelsGroup;
 import com.example.sweproj.models.Hotel;
-import com.example.sweproj.models.RoomType;
 import com.example.sweproj.services.HotelService;
 import com.example.sweproj.utils.Message;
 import com.example.sweproj.utils.ValidationUtil;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,27 +57,10 @@ public class HotelController {
         }
     }
 
-    @GetMapping("/availableRoomTypes")
-    ResponseEntity<String> getAvailableRooms(AvailableRoomTypesRequest info) {
-        Gson gson = new Gson();
-        List<Message> serverErrors = validationUtil.validate(info);
-        if(serverErrors.size() > 0) {
-            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
-        }
-        try {
-            List<RoomType> availableRooms = this.hotelService.getAvailableRooms(info);
-            return ResponseEntity.ok().body(gson.toJson(availableRooms));
-        } catch(Exception error) {
-            error.printStackTrace();
-            serverErrors.add(new Message("Error fetching available room types"));
-            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
-        }
-    }
-
     @GetMapping("/availableHotels")
-    ResponseEntity<String> getAvailableHotels(AvailableRoomTypesRequest info) {
+    ResponseEntity<String> getAvailableHotels(AvailableEntitiesRequest info) {
         Gson gson = new Gson();
-        List<Message> serverErrors = validationUtil.validate(info);
+        List<Message> serverErrors = validationUtil.validate(info, AvailableHotelsGroup.class);
         if(serverErrors.size() > 0) {
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
