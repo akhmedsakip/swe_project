@@ -124,11 +124,8 @@ function SearchFirstComponent({ setSearchSuccess, cities }) {
                         labelId="demo-controlled-open-select-label"
                         id="city"
                         name="city"
-                        open={open}
-                        onClose={handleClose}
-                        onOpen={handleOpen}
-                        value={city}
-                        onChange={handleChangeCity}
+                        // value={city}
+                        // onChange={handleChangeCity}
                         native inputProps={{name: 'city'}}
                     >
                         <option aria-label="None" value="" />
