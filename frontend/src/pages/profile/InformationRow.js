@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import TextFieldWithError from "../../shared/TextFieldWithError";
 import ProfileContext from "../../contexts/profileContext";
 import TextField from "@material-ui/core/TextField";
+import useTheme from "@material-ui/core/styles/useTheme";
+import {useMediaQuery} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -17,21 +19,22 @@ const useStyles = makeStyles((theme) => ({
     column: {
         display: 'flex',
         justifyContent: 'center',
-        flex: 1,
         flexDirection: 'column',
-        fontSize: 12,
+        fontSize: ({isMobileScreen}) => isMobileScreen ? 17 : 12,
         fontFamily: theme.typography.body1.fontFamily,
         fontWeight: theme.typography.fontWeightLight,
     },
     label: {
-        color: 'rgba(0, 0, 0, 0.5)'
+        color: 'rgba(0, 0, 0, 0.5)',
+        flex: 2,
     },
     value: {
+        flex: 4,
         textAlign: 'right'
     },
     input: {
         '& .MuiInputBase-root ': {
-            fontSize: 12,
+            fontSize: ({isMobileScreen}) => isMobileScreen ? 17 : 12,
             fontFamily: theme.typography.body1.fontFamily,
             fontWeight: theme.typography.fontWeightLight,
         },
@@ -45,7 +48,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const InformationRow = ({label, value, name, children}) => {
-    const classes = useStyles();
+    const theme = useTheme();
+    const isMobileScreen = useMediaQuery(theme.breakpoints.down('xs'));
+    const classes = useStyles({isMobileScreen});
     const {editing, handleChange, values, errors} = useContext(ProfileContext);
     return <div className={classes.root} >
         <div className={`${classes.column} ${classes.label}`}>
@@ -60,12 +65,12 @@ const InformationRow = ({label, value, name, children}) => {
                             value={values[name]}
                             onChange={handleChange(name)}
                             name={name}
-                            fullWidth
                             type="text"
                             errorMessage={errors[name]}
                             error={errors[name]}
                             disabled={!editing}
                             InputProps={{ disableUnderline: !editing }}
+                            fullWidth
                         />
                     }
                 </div>

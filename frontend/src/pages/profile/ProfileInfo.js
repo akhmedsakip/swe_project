@@ -13,12 +13,12 @@ const useStyles = makeStyles((theme) => ({
   block: {
     width: ({isMobileScreen}) => isMobileScreen ? '90vw' : '40vw',
     maxWidth: ({isMobileScreen}) => isMobileScreen ? '90vw' : '40vw',
-    justifyContent: 'center',
-    padding: '2%',
-    borderRadius: '1%',
+    padding: '32px 16px',
+    borderRadius: 10,
     backgroundColor: 'white',
     display: 'flex',
     flexDirection: 'column',
+    height: 'auto',
   },
   info: {
     display: 'flex',
@@ -32,10 +32,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center'
   },
   image: {
-    height: '70px',
-    width: '70px',
-    borderRadius: '30%',
-    border: '2px solid #3a86ff'
+    height: ({isMobileScreen}) => isMobileScreen ? 120 : 90,
+    width: ({isMobileScreen}) => isMobileScreen ? 120 : 90,
+    borderRadius: '50%',
   },
   row: {
     display: 'flex',
@@ -44,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-around',
   },
   button: {
-    fontSize: 10,
+    fontSize: ({isMobileScreen}) => isMobileScreen ? 15 : 10,
     width: '40%',
   },
   marginBottom12: {

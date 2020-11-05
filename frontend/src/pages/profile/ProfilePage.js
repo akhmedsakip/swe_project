@@ -6,7 +6,7 @@ const useStyles = makeStyles({
     root: {
         minHeight: '100vh',
         display: 'flex',
-        justifyContent: 'center',
+        flexDirection: 'column',
         alignItems: 'center',
         padding: 16,
         background: `url(${process.env.PUBLIC_URL + '/assets/bg.jpg'})`
