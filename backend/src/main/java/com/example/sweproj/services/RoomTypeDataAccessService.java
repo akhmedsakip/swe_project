@@ -15,18 +15,16 @@ public class RoomTypeDataAccessService {
     }
 
     List<RoomType> getRoomTypes(int hotelID) {
-        String sql = "SELECT * FROM ROOMTYPE WHERE HotelID = " + hotelID;
+    String sql = "SELECT * FROM ROOMTYPE WHERE HotelID = ?";
+    return jdbcTemplate.query(sql, (rs, rowNum) -> {
+        RoomType roomType = new RoomType();
+        roomType.hotelID = rs.getInt("HotelID");
+        roomType.name = rs.getString("Name");
+        roomType.capacity = rs.getString("Capacity");
+        roomType.photo = rs.getString("MainPhoto");
+        roomType.description = rs.getString("Description");
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            RoomType roomType= new RoomType();
-            roomType.hotelID = rs.getString("HotelID");
-            roomType.roomTypeID = rs.getString("RoomTypeID");
-            roomType.name = rs.getString("RoomTypeName");
-            roomType.capacity = rs.getString("RoomCapacity");
-            roomType.photo = rs.getString("Photo");
-            roomType.description = rs.getString("Description");
-
-            return roomType;
-        });
+        return roomType;
+    }, hotelID);
     }
 }

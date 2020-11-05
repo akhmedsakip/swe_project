@@ -25,6 +25,7 @@ public class RoomTypeController {
         Gson gson = new Gson();
         List<Message> serverErrors = new ArrayList<>();
         ArrayList<RoomType> roomTypes;
+        System.out.println("a");
         try {
             roomTypes = new ArrayList<>(this.roomTypeService.getRoomTypes(hotelId));
         } catch(Exception error) {
