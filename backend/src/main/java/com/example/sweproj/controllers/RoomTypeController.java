@@ -1,6 +1,5 @@
 package com.example.sweproj.controllers;
 
-import com.example.sweproj.models.AvailableRoomTypesRequest;
 import com.example.sweproj.models.RoomType;
 import com.example.sweproj.services.RoomTypeService;
 import com.example.sweproj.utils.Message;
@@ -8,7 +7,10 @@ import com.example.sweproj.utils.ValidationUtil;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,22 +43,5 @@ public class RoomTypeController {
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
         return ResponseEntity.ok().body(gson.toJson(roomTypes));
-    }
-
-    @GetMapping("/available")
-    ResponseEntity<String> getAvailableRooms(AvailableRoomTypesRequest info) {
-        Gson gson = new Gson();
-        List<Message> serverErrors = validationUtil.validate(info);
-        if(serverErrors.size() > 0) {
-            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
-        }
-        try {
-            List<RoomType> availableRooms = this.roomTypeService.getAvailableRooms(info);
-            return ResponseEntity.ok().body(gson.toJson(availableRooms));
-        } catch(Exception error) {
-            error.printStackTrace();
-            serverErrors.add(new Message("Error fetching available room types"));
-            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
-        }
     }
 }

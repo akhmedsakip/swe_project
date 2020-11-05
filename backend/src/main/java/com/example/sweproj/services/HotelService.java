@@ -1,6 +1,8 @@
 package com.example.sweproj.services;
 
+import com.example.sweproj.models.AvailableRoomTypesRequest;
 import com.example.sweproj.models.Hotel;
+import com.example.sweproj.models.RoomType;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,5 +21,9 @@ public class HotelService {
 
     public List<String> getCities() {
 	    return hotelDataAccessService.getNumberOfCities();
+    }
+
+    public List<RoomType> getAvailableRooms(AvailableRoomTypesRequest info) {
+        return this.hotelDataAccessService.getAvailableRoomTypes(info);
     }
 }
