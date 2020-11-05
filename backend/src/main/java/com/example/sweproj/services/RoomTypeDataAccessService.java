@@ -15,7 +15,7 @@ public class RoomTypeDataAccessService {
     }
 
     List<RoomType> getRoomTypes(int hotelID) {
-        String sql = "SELECT * FROM RoomTypes WHERE HotelID = " + hotelID;
+        String sql = "SELECT * FROM ROOMTYPE WHERE HotelID = " + hotelID;
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             RoomType roomType= new RoomType();

@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ButtonAppBar() {
+  const {dispatch} = useContext(UserContext);
   const classes = useStyles();
   const {state} = useContext(UserContext);
   const {changedPassword} = state;
@@ -59,7 +60,7 @@ export default function ButtonAppBar() {
   const signOut = () => {
     axios.post("/api/logout")
         .then(() => {
-          localStorage.clear();
+          dispatch({type: "signOut"});
         })
         .catch((err) => {
           alert("Server did not respond");
