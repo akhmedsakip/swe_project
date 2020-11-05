@@ -1,5 +1,5 @@
 import {DialogContent, FormHelperText} from "@material-ui/core";
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {useFormik} from "formik";
 import TextFieldWithError from "../shared/TextFieldWithError";
 import Button from "@material-ui/core/Button";
@@ -19,7 +19,7 @@ const useStyles = makeStyles({
 });
 
 function LoginForm() {
-    const {dispatch} = useContext(UserContext);
+    const {dispatch, state} = useContext(UserContext);
     const { isRegistered, closeAuthDialog } = useContext(AuthenticationContext);
     const [failedLogin, setFailedLogin] = useState(false);
 
@@ -43,13 +43,15 @@ function LoginForm() {
         },
         validationSchema: loginSchema,
     });
-    return (
-        <DialogContent>
+    return (<>
             {
                 failedLogin ? <FormHelperText error>Email or password is incorrect</FormHelperText> : null
             }
             {
                 isRegistered ? <FormHelperText className={classes.success}>Successfully registered</FormHelperText> : null
+            }
+            {
+                state.changedPassword ? <FormHelperText className={classes.success}>Password successfully changed</FormHelperText> : null
             }
             <form onChange={handleChange} onBlur={handleBlur} onSubmit={handleSubmit}>
                 <TextFieldWithError
@@ -76,7 +78,7 @@ function LoginForm() {
                     Login
                 </Button>
             </form>
-        </DialogContent>
+        </>
     );
 }
 

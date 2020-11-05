@@ -3,13 +3,14 @@ import AppBar from '@material-ui/core/AppBar';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import React, { useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import AuthenticationDialog from "./AuthenticationDialog";
 import useTheme from '@material-ui/core/styles/useTheme';
 import DesktopMenu from "./menus/DesktopMenu";
 import MobileMenu from "./menus/MobileMenu";
 import axios from "axios";
+import UserContext from "../contexts/userContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,6 +38,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ButtonAppBar() {
   const classes = useStyles();
+  const {state} = useContext(UserContext);
+  const {changedPassword} = state;
 
   const [open, setOpen] = useState(false);
 
@@ -46,6 +49,12 @@ export default function ButtonAppBar() {
   const openAuthDialog = () => {
     setOpen(true);
   };
+
+  useEffect(() => {
+    if(changedPassword) {
+      setOpen(true);
+    }
+  }, [changedPassword]);
 
   const signOut = () => {
     axios.post("/api/logout")

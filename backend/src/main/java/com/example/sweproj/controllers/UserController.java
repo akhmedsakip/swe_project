@@ -15,11 +15,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
@@ -80,12 +78,12 @@ public class UserController {
         if(!passwordEncoder.matches(oldPassword, user.getPassword())) {
             return ResponseEntity.status(400).body(gson.toJson(new Message("Old password is incorrect")));
         }
-        int updated = userService.changePassword(passwordEncoder.encode(newPassword));
-        if(updated != 1) {
-            return ResponseEntity.status(500).body(gson.toJson(new Message("Database error")));
+        try {
+            userService.changePassword(passwordEncoder.encode(newPassword));
+        } catch(Exception error) {
+            error.printStackTrace();
+            return ResponseEntity.status(500).body(gson.toJson(new Message("Server error")));
         }
-        Optional<Cookie> cookie = cookieUtil.deletedTokenCookie(request.getCookies());
-        cookie.ifPresent(response::addCookie);
         return ResponseEntity.ok(gson.toJson(new Message("Successfully changed password")));
     }
 }

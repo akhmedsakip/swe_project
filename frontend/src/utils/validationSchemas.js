@@ -22,3 +22,9 @@ export const editInfoSchema = yup.object().shape({
     dateOfBirth: yup.date("Date of birth is invalid").required("Date of birth is empty"),
     gender: yup.string().required("Gender is empty"),
 });
+
+export const changePasswordSchema = yup.object().shape({
+    oldPassword: yup.string().required("Password is empty").min(6, "Minimum length of password is 6"),
+    newPassword: yup.string().required("Password is empty").min(6, "Minimum length of password is 6"),
+    newPasswordConfirm: yup.string().required("Please, confirm your password").oneOf([yup.ref('newPassword'), null], "The passwords don't match"),
+});

@@ -70,7 +70,7 @@ function RegistrationForm() {
     const [dataFocused, setDataFocused] = useState(false);
 
     return (
-        <DialogContent>
+        <>
             <form onSubmit={handleSubmit} onBlur={handleBlur} onChange={handleChange}>
                 <TextFieldWithError
                     error={touched.firstName && !!errors.firstName}
@@ -143,7 +143,7 @@ function RegistrationForm() {
                     Register
                 </Button>
             </form>
-        </DialogContent>
+        </>
     );
 }
 

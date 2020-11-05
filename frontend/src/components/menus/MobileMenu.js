@@ -48,6 +48,12 @@ const MobileMenu = ({openAuthDialog, signOut}) => {
                 </Link>
             </MenuItem>
             {
+                state.loggedIn ?
+                    <MenuItem onClick={() => history.push('/profile')}>
+                        Profile
+                    </MenuItem> : null
+            }
+            {
                 !state.loggedIn
                 ? <MenuItem onClick={() => {
                         openAuthDialog();
@@ -55,14 +61,11 @@ const MobileMenu = ({openAuthDialog, signOut}) => {
                     }}>
                         Login
                     </MenuItem>
-                : <>
-                    <MenuItem onClick={() => history.push('/profile')}>
-                        Profile
-                    </MenuItem>
+                :
                     <MenuItem onClick={() => logoutAction(dispatch)}>
                         Sign Out
                     </MenuItem>
-                    </>
+
             }
         </Menu>
     </div>

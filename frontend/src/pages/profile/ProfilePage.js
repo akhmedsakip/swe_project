@@ -1,6 +1,6 @@
 import React from 'react';
 import {makeStyles} from "@material-ui/core/styles";
-import ProfileInfo from "./ProfileInfo";
+import ProfileInfoForm from "./components/ProfileInfoForm";
 
 const useStyles = makeStyles({
     root: {
@@ -16,7 +16,7 @@ const useStyles = makeStyles({
 const ProfilePage = () => {
     const classes = useStyles();
     return <div className={classes.root}>
-        <ProfileInfo />
+        <ProfileInfoForm />
     </div>
 };
 

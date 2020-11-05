@@ -10,6 +10,7 @@ const loginAction = async(dispatch, email, password) => {
         await fetchUserAction(dispatch);
         return true;
     } catch(e) {
+        dispatch({type: 'reset'});
         return false;
     }
 };
