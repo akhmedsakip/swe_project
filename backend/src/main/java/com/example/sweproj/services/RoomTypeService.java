@@ -15,4 +15,9 @@ public class RoomTypeService {
 
     public List<RoomType> getRoomTypes(int id) { return this.roomTypeDataAccessService.getRoomTypes(id); }
 
+
+    public RoomType getRoomType(int hotelID, String roomTypeName) {
+        return this.roomTypeDataAccessService.getRoomType(hotelID, roomTypeName);
+    }
+
 }

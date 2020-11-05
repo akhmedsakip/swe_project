@@ -9,9 +9,7 @@ import com.example.sweproj.utils.ValidationUtil;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,4 +71,19 @@ public class HotelController {
         }
     }
 
+    @RequestMapping("/{hotelId}")
+    @GetMapping
+    ResponseEntity<String> getHotel(@PathVariable(value = "hotelId") Integer hotelId) {
+        Gson gson = new Gson();
+        List<Message> serverErrors = new ArrayList<>();
+        Hotel hotel;
+
+        try {
+            hotel = this.hotelService.getHotel(hotelId);
+        } catch(Exception error) {
+            serverErrors.add(new Message("Error fetching hotel"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+        return ResponseEntity.ok().body(gson.toJson(hotel));
+    }
 }

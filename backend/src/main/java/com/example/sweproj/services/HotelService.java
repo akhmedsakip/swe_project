@@ -26,4 +26,8 @@ public class HotelService {
     public List<RoomType> getAvailableRooms(AvailableRoomTypesRequest info) {
         return this.hotelDataAccessService.getAvailableRoomTypes(info);
     }
+
+    public Hotel getHotel(int hotelId) {
+        return hotelDataAccessService.getHotel(hotelId);
+    }
 }
