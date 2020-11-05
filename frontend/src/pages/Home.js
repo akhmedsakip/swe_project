@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: 'Staatliches serif',
     fontSize: '10vmin',
     background: 'rgba(0, 0, 0, 0.5)',
-    // borderRadius: '20px',
     padding: '5vmin',
   },
   arrowIcon: {
@@ -34,9 +33,15 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/bg1.jpg'})`,
   },
   bottomBar: {
-    background: 'rgba(0, 0, 0, 0.3)',
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'space-around'
+  },
+  hotelInfo: {
+    display: 'flex',
+    justifyContent: 'space-around'
+  },
+  info: {
+    
   }
 }))
 
@@ -64,13 +69,17 @@ function Home() {
         </Collapse>
       </div>
       <div id="section-2" className={classes.root + " " + classes.bg} title="section-1">
-
+        <div className={classes.info}>
+          This is section
+        </div>
       </div>
       <div className={classes.bottomBar}>
-        <h1>
-          Our Contacts;
-          Address
-      </h1>
+        <h3 style={{ fontFamily: 'Staatliches' }}>
+          Amita hotels
+        </h3>
+        <div>
+          best hotels
+        </div>
       </div>
     </div>
   )

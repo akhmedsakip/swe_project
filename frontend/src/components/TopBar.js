@@ -74,7 +74,6 @@ export default function ButtonAppBar() {
 
           {!isMobileScreen ? <DesktopMenu openAuthDialog={openAuthDialog} signOut={signOut} />
             : <MobileMenu openAuthDialog={openAuthDialog} signOut={signOut} />
-
           }
         </Toolbar>
       </AppBar>

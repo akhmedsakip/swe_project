@@ -16,14 +16,14 @@ public class UserDataAccessService {
     }
 
     int insertUser(User user) {
-        String sql = "INSERT INTO Users (FirstName, LastName, Password, Email, DateOfBirth, Age, Gender, RegistrationDate)" +
-                            "VALUES (?, ?, ?, ?, ?, ? ,?, ?)";
+        String sql = "INSERT INTO USERS (FirstName, LastName, Password, Email, DateOfBirth, Gender, RegistrationDate)" +
+                            "VALUES (?, ?, ?, ?, ?, ? ,?)";
         return jdbcTemplate.update(sql, user.getFirstName(), user.getLastName(),
-                user.getPassword(), user.getUsername(), user.getDateOfBirth(), user.getAge(), user.getGender(), LocalDate.now());
+                user.getPassword(), user.getUsername(), user.getDateOfBirth(), user.getGender(), LocalDate.now());
     }
 
     User loadUserByUsername(String email) {
-        String sql = "SELECT * FROM Users WHERE Email = ?";
+        String sql = "SELECT * FROM USERS WHERE Email = ?";
         return jdbcTemplate.query(sql,(rs, rowNum) -> {
             User user = new User(rs.getString("Email"), rs.getString("Password"));
             user.setFirstName(rs.getString("FirstName"));
@@ -43,7 +43,7 @@ public class UserDataAccessService {
 
     int changePassword(String newPasswordEncoded) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String sql = "UPDATE Users SET Password = ? WHERE Email = ?";
+        String sql = "UPDATE USERS SET Password = ? WHERE Email = ?";
         return jdbcTemplate.update(sql, newPasswordEncoded, user.getUsername());
     }
 }

@@ -10,6 +10,7 @@ import com.example.sweproj.utils.Message;
 import com.example.sweproj.utils.ValidationUtil;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -63,8 +64,11 @@ public class UserAuthController {
         try {
             user.encodePassword(passwordEncoder.encode(user.getPassword()));
             userService.addUser(user);
-        } catch(Exception error) {
+        } catch(DuplicateKeyException ignored) {
             serverErrors.add(new Message("Email already exists"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        } catch(Exception error) {
+            serverErrors.add(new Message("Server error"));
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
         return ResponseEntity.ok().body(gson.toJson(new Message("Successfully registered")));

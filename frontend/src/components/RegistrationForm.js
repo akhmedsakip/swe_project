@@ -56,9 +56,9 @@ function RegistrationForm() {
             })
             .catch((err) => {
                 if(err.response.data && err.response.data instanceof Array) {
-                    err.response.data.map((error) => {
-                        if(error.field && error.message) {
-                            setFieldError(error.field, error.message);
+                    err.response.data.forEach((error) => {
+                        if(error.message) {
+                            setFieldError(error.field || "email", error.message);
                         }
                     })
                 } else {
@@ -96,7 +96,6 @@ function RegistrationForm() {
                     margin="dense"
                     name="email"
                     label="Email"
-
                     type="email"
                     fullWidth>
                 </TextFieldWithError>
