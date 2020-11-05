@@ -6,9 +6,11 @@ function reducer(state, action) {
         case 'setUser':
             return {...action.payload, loggedIn: true};
         case 'signOut':
-            return {loggedIn: false};
+            return {loggedIn: false, changedPassword: state.changedPassword};
+        case 'changedPassword':
+            return {loggedIn: false, changedPassword: true};
         default:
-            return state;
+            return {loggedIn: false};
     }
 }
 

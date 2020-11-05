@@ -23,6 +23,10 @@ public class UserService implements UserDetailsService {
         return userDataAccessService.loadUserByUsername(email);
     }
 
+    public int editUser(User newUser) {
+        return userDataAccessService.editUser(newUser);
+    }
+
     public int changePassword(String newPasswordEncoded) {
         return userDataAccessService.changePassword(newPasswordEncoded);
     }

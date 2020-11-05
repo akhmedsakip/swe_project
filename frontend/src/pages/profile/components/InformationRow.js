@@ -1,8 +1,8 @@
 import React, {useContext} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import PropTypes from "prop-types";
-import TextFieldWithError from "../../shared/TextFieldWithError";
-import ProfileContext from "../../contexts/profileContext";
+import TextFieldWithError from "../../../shared/TextFieldWithError";
+import ProfileContext from "../../../contexts/profileContext";
 import TextField from "@material-ui/core/TextField";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {useMediaQuery} from "@material-ui/core";
@@ -47,27 +47,26 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const InformationRow = ({label, value, name, children}) => {
+const InformationRow = ({label, name, children}) => {
     const theme = useTheme();
     const isMobileScreen = useMediaQuery(theme.breakpoints.down('xs'));
     const classes = useStyles({isMobileScreen});
-    const {editing, handleChange, values, errors} = useContext(ProfileContext);
+    const {editing, formik} = useContext(ProfileContext);
+    const {handleChange, values, errors} = formik;
     return <div className={classes.root} >
         <div className={`${classes.column} ${classes.label}`}>
             {label}
         </div>
         <div className={`${classes.column} ${classes.value}`}>
             {
-                <div>
+                <div className={classes.input}>
                     {children ? children :
                         <TextField
-                            className={classes.input}
                             value={values[name]}
                             onChange={handleChange(name)}
                             name={name}
                             type="text"
-                            errorMessage={errors[name]}
-                            error={errors[name]}
+                            error={!!errors[name]}
                             disabled={!editing}
                             InputProps={{ disableUnderline: !editing }}
                             fullWidth
@@ -82,7 +81,6 @@ const InformationRow = ({label, value, name, children}) => {
 
 InformationRow.propTypes = {
     label: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
 };
 

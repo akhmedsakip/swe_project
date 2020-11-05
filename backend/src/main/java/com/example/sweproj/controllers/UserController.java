@@ -2,22 +2,22 @@ package com.example.sweproj.controllers;
 
 import com.example.sweproj.models.ChangePasswordRequest;
 import com.example.sweproj.models.User;
+import com.example.sweproj.models.UserEditGroup;
 import com.example.sweproj.services.UserService;
 import com.example.sweproj.utils.CookieUtil;
 import com.example.sweproj.utils.Message;
 import com.example.sweproj.utils.ValidationUtil;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
@@ -46,6 +46,25 @@ public class UserController {
         return ResponseEntity.ok(gson.toJson(user));
     }
 
+    @PutMapping
+    ResponseEntity<String> editUser(@RequestBody User newUser) {
+        List<Message> serverErrors = validationUtil.validate(newUser, UserEditGroup.class);
+        if(serverErrors.size() > 0) {
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+        try {
+            userService.editUser(newUser);
+        } catch (DuplicateKeyException ignored) {
+            serverErrors.add(new Message("Email already exists"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        } catch (Exception error) {
+            serverErrors.add(new Message("Server error"));
+            error.printStackTrace();
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+        return ResponseEntity.ok(gson.toJson(new Message("Successfully edited")));
+    }
+
     @PutMapping("/changePassword")
     ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest, HttpServletRequest request, HttpServletResponse response) {
         List<Message> serverErrors = validationUtil.validate(changePasswordRequest);
@@ -57,14 +76,15 @@ public class UserController {
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(!passwordEncoder.matches(oldPassword, user.getPassword())) {
-            return ResponseEntity.status(400).body(gson.toJson(new Message("Old password is incorrect")));
+            serverErrors.add(new Message("Old password is incorrect"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
-        int updated = userService.changePassword(passwordEncoder.encode(newPassword));
-        if(updated != 1) {
-            return ResponseEntity.status(500).body(gson.toJson(new Message("Database error")));
+        try {
+            userService.changePassword(passwordEncoder.encode(newPassword));
+        } catch(Exception error) {
+            error.printStackTrace();
+            return ResponseEntity.status(500).body(gson.toJson(new Message("Server error")));
         }
-        Optional<Cookie> cookie = cookieUtil.deletedTokenCookie(request.getCookies());
-        cookie.ifPresent(response::addCookie);
         return ResponseEntity.ok(gson.toJson(new Message("Successfully changed password")));
     }
 }
