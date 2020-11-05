@@ -16,17 +16,29 @@ public class RoomTypeDataAccessService {
     }
 
     List<RoomType> getRoomTypes(int hotelID) {
-    String sql = "SELECT * FROM ROOMTYPE WHERE HotelID = ?";
-    return jdbcTemplate.query(sql, (rs, rowNum) -> {
-        RoomType roomType = new RoomType();
-        roomType.hotelID = rs.getInt("HotelID");
-        roomType.name = rs.getString("Name");
-        roomType.capacity = rs.getString("Capacity");
-        roomType.photo = rs.getString("MainPhoto");
-        roomType.description = rs.getString("Description");
+        String sql = "SELECT * FROM ROOMTYPE WHERE HotelID = ?";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            RoomType roomType = new RoomType();
+            roomType.hotelID = rs.getInt("HotelID");
+            roomType.name = rs.getString("Name");
+            roomType.capacity = rs.getString("Capacity");
+            roomType.photo = rs.getString("MainPhoto");
+            roomType.description = rs.getString("Description");
+            return roomType;
+        }, hotelID);
+    }
 
-        return roomType;
-    }, hotelID);
+    RoomType getRoomType(int hotelID, String roomTypeName) {
+        String sql = "SELECT * FROM ROOMTYPE WHERE HotelID = ? AND Name = ?";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            RoomType roomType = new RoomType();
+            roomType.hotelID = rs.getInt("HotelID");
+            roomType.name = rs.getString("Name");
+            roomType.capacity = rs.getString("Capacity");
+            roomType.photo = rs.getString("MainPhoto");
+            roomType.description = rs.getString("Description");
+            return roomType;
+        }, hotelID, roomTypeName).get(0);
     }
 
     List<RoomType> getAvailableRoomTypes(ReservationQuery query) {

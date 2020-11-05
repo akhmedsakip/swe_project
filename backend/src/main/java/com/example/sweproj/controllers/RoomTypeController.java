@@ -33,7 +33,6 @@ public class RoomTypeController {
         Gson gson = new Gson();
         List<Message> serverErrors = new ArrayList<>();
         ArrayList<RoomType> roomTypes;
-        System.out.println("a");
         try {
             roomTypes = new ArrayList<>(this.roomTypeService.getRoomTypes(hotelId));
         } catch(Exception error) {
@@ -41,6 +40,21 @@ public class RoomTypeController {
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
         return ResponseEntity.ok().body(gson.toJson(roomTypes));
+    }
+
+    @RequestMapping("/{roomTypeName}")
+    @GetMapping
+    ResponseEntity<String> getRoomType(@RequestParam(value = "hotelId") Integer hotelId, @PathVariable(value = "roomTypeName") String roomTypeName) {
+        Gson gson = new Gson();
+        List<Message> serverErrors = new ArrayList<>();
+        RoomType roomType;
+        try {
+            roomType = this.roomTypeService.getRoomType(hotelId, roomTypeName);
+        } catch(Exception error) {
+            serverErrors.add(new Message("There are no room-types"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+        return ResponseEntity.ok().body(gson.toJson(roomType));
     }
 
     @GetMapping("/available")

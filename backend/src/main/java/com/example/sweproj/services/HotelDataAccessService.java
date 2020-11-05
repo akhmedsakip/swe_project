@@ -34,4 +34,25 @@ public class HotelDataAccessService {
             return hotel;
         });
     }
+
+    Hotel getHotel(int hotelID) {
+        String sql = "SELECT * FROM HOTEL WHERE HotelID = ?";
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Hotel hotel = new Hotel();
+            hotel.hotelId = rs.getString("HotelID");
+            hotel.name = rs.getString("Name");
+            hotel.description = rs.getString("Description");
+            hotel.numberOfFloors = rs.getString("Floors#");
+            hotel.numberOfRooms = rs.getString("Rooms#");
+            hotel.numberOfFreeRooms = rs.getString("FreeRooms#");
+            hotel.country = rs.getString("CountryCode");
+            hotel.city = rs.getString("City");
+            hotel.street = rs.getString("Street");
+            hotel.zipCode = rs.getString("ZIPCode");
+            hotel.starCount = rs.getInt("StarCount");
+            hotel.mainHotelPicture = rs.getString("MainHotelPicture");
+            return hotel;
+        }, hotelID).get(0);
+    }
 }
