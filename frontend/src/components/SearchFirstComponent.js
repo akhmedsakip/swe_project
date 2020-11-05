@@ -50,24 +50,13 @@ const useStyles = makeStyles({
     }
 });
 
+/**
+ * @return {boolean}
+ */
 function SearchFirstComponent({ setSearchSuccess, cities }) {
     const classes = useStyles();
-    const [city, setCity] = React.useState('');
-    const [open, setOpen] = React.useState(false);
     const [availableHotels, setAvailableHotels] = useState([]);
     // const [failedSearch, setFailedSearch] = useState(false);
-
-    const handleChangeCity = (event) => {
-        setCity(event.target.value);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const handleOpen = () => {
-        setOpen(true);
-    };
 
     const {handleBlur, handleChange, values, handleSubmit, errors, touched, isValid} = useFormik({
         onSubmit: () => {
@@ -82,12 +71,12 @@ function SearchFirstComponent({ setSearchSuccess, cities }) {
                 });
         },
         initialValues: {
-            numPeople:0,
+            numPeople: 0,
             country: "",
             city: "",
         },
         initialErrors: {
-            numPeople:0,
+            numPeople: "",
             country: "",
             city: "",
         },
@@ -96,94 +85,44 @@ function SearchFirstComponent({ setSearchSuccess, cities }) {
 
     return (
         <form onChange={handleChange} onBlur={handleBlur} onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
-            <Grid item xs={12}>
-                <TextFieldWithError
-                    required
-                    id="numPeople"
-                    label="Number of people"
-                    fullWidth
-                    autoComplete="shipping postal-code"
-                    errorMessage={errors.numPeople}
-                    error={touched.numPeople && !!errors.numPeople}
-                />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <TextFieldWithError
-                    required
-                    id="country"
-                    name="country"
-                    label="Country"
-                    fullWidth
-                    autoComplete="shipping country"
-                    errorMessage={errors.country}
-                    error={touched.country && !!errors.country}
-                />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <FormControl required className={classes.formControl} error={touched.city && !!errors.city}>
-                    <InputLabel id="demo-controlled-open-select-label">City</InputLabel>
-                    <Select
-                        labelId="demo-controlled-open-select-label"
-                        id="city"
-                        open={open}
-                        onClose={handleClose}
-                        onOpen={handleOpen}
-                        value={city}
-                        onChange={handleChangeCity}
-                        native inputProps={{name: 'city'}}
-                    >
-                        <option aria-label="None" value="" />
-                        {cities.map(city => {
-                            return (
-                                <option value={'city'}>{city}</option>
-                            );
-                        })}
-                    </Select>
-                    {touched.city && !!errors.city ?
-                        <FormHelperText error>{errors.city}</FormHelperText> : null }
-                </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <TextFieldWithError
-                    required
-                    id="fromDate"
-                    label="From"
-                    type="date"
-                    // className={classes.textField}
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    errorMessage={errors.fromDate}
-                    error={touched.fromDate && !!errors.fromDate}
-                />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <TextFieldWithError
-                    required
-                    id="toDate"
-                    label="To"
-                    type="date"
-                    // className={classes.textField}
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    errorMessage={errors.toDate}
-                    error={touched.toDate && !!errors.toDate}
-                />
-            </Grid>
-                <Scroll to="section-2" smooth={true}>
-                    <Button
-                        disabled={!isValid}
-                        variant="contained"
-                        color="primary"
-                        type={'submit'}
-                        className={classes.button}
-                    >
-                        {'Search'}
-                    </Button>
-                </Scroll>
-        </Grid>
+            <TextFieldWithError label="Number of people" fullWidth
+                errorMessage={errors.numPeople}
+                error={touched.numPeople && !!errors.numPeople}
+            />
+            <TextFieldWithError name="country" label="Country" fullWidth
+                errorMessage={errors.country}
+                error={touched.country && !!errors.country}
+            />
+            <FormControl required className={classes.formControl} error={touched.city && !!errors.city}>
+                <InputLabel>City</InputLabel>
+                <Select id="city" native inputProps={{name: 'city'}}>
+                    <option aria-label="None" value="" />
+                    {cities.map(city => {
+                        return (
+                            <option key={city} value={city}>{city}</option>
+                        );
+                    })}
+                </Select>
+                {touched.city && !!errors.city ?
+                    <FormHelperText error>{errors.city}</FormHelperText> : null }
+            </FormControl>
+            <TextFieldWithError label="From" type="date"
+                InputLabelProps={{
+                    shrink: true,
+                }} errorMessage={errors.fromDate} error={touched.fromDate && !!errors.fromDate} />
+            <TextFieldWithError label="To" type="date"
+                InputLabelProps={{
+                    shrink: true,
+                }} errorMessage={errors.toDate} error={touched.toDate && !!errors.toDate}/>
+            <Button
+                disabled={!isValid}
+                variant="contained"
+                color="primary"
+                type={'submit'}
+                className={classes.button}
+            >
+                Search
+            </Button>
         </form>
     );
 }

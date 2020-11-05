@@ -55,18 +55,17 @@ export default function SearchFirst() {
     const [cities, setCities] = useState([]);
     useEffect(() => {
         fetchCities();
-    }, []);
+    }, [setCities]);
 
     const fetchCities = async () => {
-        axios.get("/api/hotels/cities")
-            .then(response => {
-                setCities(response.data);
-            })
-            .catch(error => {
-                console.log(error);
-                alert("Error fetching cities!");
-            });
-    }
+        try {
+            const response = await axios.get("/api/hotels/cities")
+            setCities(response.data)
+        } catch(error) {
+            console.log(error);
+            alert("Error fetching cities!");
+        }
+    };
 
     return (
         <React.Fragment>
@@ -78,8 +77,10 @@ export default function SearchFirst() {
                     <SearchFirstComponent setSearchSuccess={setSearchSuccess} cities={cities}/>
                 </Paper>
             </div>
-            {searchSuccess ? <div id="section-2"><Hotels/></div> : <div className={classes.root1 + " " + classes.bg} title="section-1">
-
+            {searchSuccess ?
+                <div id="section-2">
+                    <Hotels/>
+                </div> : <div className={classes.root1 + " " + classes.bg} title="section-1">
             </div>}
         </React.Fragment>
     );
