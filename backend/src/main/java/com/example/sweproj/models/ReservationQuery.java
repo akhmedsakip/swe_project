@@ -2,9 +2,12 @@ package com.example.sweproj.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+
+@Valid
 public class ReservationQuery {
     private final transient String dateRegEx = "\\d{4}-\\d{2}-\\d{2}";
 
