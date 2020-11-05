@@ -101,8 +101,8 @@ INSERT INTO ROOMTYPE (HotelID,
                       BasePricePerDay,
                       ActualPricePerDay,
                       Capacity,
-                      Description,
-                      MainPhoto)
+                      MainPhoto,
+                      Description)
                         VALUES (
                                 1,
                                 'Standard',
@@ -120,8 +120,8 @@ INSERT INTO ROOMTYPE (HotelID,
                       BasePricePerDay,
                       ActualPricePerDay,
                       Capacity,
-                      Description,
-                      MainPhoto)
+                      MainPhoto,
+                      Description)
                         VALUES (
                                 1,
                                 'Luxe',
@@ -139,8 +139,8 @@ INSERT INTO ROOMTYPE (HotelID,
                       BasePricePerDay,
                       ActualPricePerDay,
                       Capacity,
-                      Description,
-                      MainPhoto)
+                      MainPhoto,
+                      Description)
                         VALUES (
                                 2,
                                 'Standard',
@@ -158,8 +158,8 @@ INSERT INTO ROOMTYPE (HotelID,
                       BasePricePerDay,
                       ActualPricePerDay,
                       Capacity,
-                      Description,
-                      MainPhoto)
+                      MainPhoto,
+                      Description)
                         VALUES (
                                 2,
                                 'Luxe',
@@ -177,8 +177,8 @@ INSERT INTO ROOMTYPE (HotelID,
                       BasePricePerDay,
                       ActualPricePerDay,
                       Capacity,
-                      Description,
-                      MainPhoto)
+                      MainPhoto,
+                      Description)
                         VALUES (
                                 3,
                                 'Standard',
@@ -196,8 +196,8 @@ INSERT INTO ROOMTYPE (HotelID,
                       BasePricePerDay,
                       ActualPricePerDay,
                       Capacity,
-                      Description,
-                      MainPhoto)
+                      MainPhoto,
+                      Description)
                         VALUES (
                                 3,
                                 'Luxe',
@@ -215,8 +215,8 @@ INSERT INTO ROOMTYPE (HotelID,
                       BasePricePerDay,
                       ActualPricePerDay,
                       Capacity,
-                      Description,
-                      MainPhoto)
+                      MainPhoto,
+                      Description)
                         VALUES (
                                 4,
                                 'Standard',
@@ -234,8 +234,8 @@ INSERT INTO ROOMTYPE (HotelID,
                       BasePricePerDay,
                       ActualPricePerDay,
                       Capacity,
-                      Description,
-                      MainPhoto)
+                      MainPhoto,
+                      Description)
                         VALUES (
                                 4,
                                 'Luxe',
