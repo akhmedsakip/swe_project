@@ -3,13 +3,14 @@ import AppBar from '@material-ui/core/AppBar';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import AuthenticationDialog from "./AuthenticationDialog";
 import useTheme from '@material-ui/core/styles/useTheme';
 import DesktopMenu from "./menus/DesktopMenu";
 import MobileMenu from "./menus/MobileMenu";
 import axios from "axios";
+import UserContext from "../contexts/userContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ButtonAppBar() {
+  const {dispatch} = useContext(UserContext);
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
@@ -50,7 +52,7 @@ export default function ButtonAppBar() {
   const signOut = () => {
     axios.post("/api/logout")
         .then(() => {
-          localStorage.clear();
+          dispatch({type: "signOut"});
         })
         .catch((err) => {
           alert("Server did not respond");

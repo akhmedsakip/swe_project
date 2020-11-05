@@ -15,21 +15,21 @@ public class HotelDataAccessService {
     }
 
     List<Hotel> getHotels() {
-        String sql = "SELECT * FROM Hotels";
+        String sql = "SELECT * FROM Hotel";
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Hotel hotel = new Hotel();
             hotel.hotelId = rs.getString("HotelID");
             hotel.name = rs.getString("Name");
             hotel.description = rs.getString("Description");
-            hotel.numberOfFloors = rs.getString("NumberOfFloors");
-            hotel.numberOfRooms = rs.getString("NumberOfRooms");
-            hotel.numberOfFreeRooms = rs.getString("NumberOfFreeRooms");
-            hotel.country = rs.getString("Country");
+            hotel.numberOfFloors = rs.getString("Floors#");
+            hotel.numberOfRooms = rs.getString("Rooms#");
+            hotel.numberOfFreeRooms = rs.getString("FreeRooms#");
+            hotel.country = rs.getString("CountryCode");
             hotel.city = rs.getString("City");
             hotel.street = rs.getString("Street");
             hotel.zipCode = rs.getString("ZIPCode");
-            hotel.starCount = rs.getInt("StarsCount");
+            hotel.starCount = rs.getInt("StarCount");
             hotel.mainHotelPicture = rs.getString("MainHotelPicture");
             return hotel;
         });
