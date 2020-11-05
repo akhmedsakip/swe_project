@@ -1,12 +1,11 @@
 package com.example.sweproj.controllers;
 
-import com.example.sweproj.models.ReservationQuery;
-import com.example.sweproj.models.Room;
-import com.example.sweproj.models.RoomType;
-import com.example.sweproj.models.User;
+import com.example.sweproj.models.*;
 import com.example.sweproj.services.ReservationQueryService;
 import com.example.sweproj.utils.Message;
+import com.example.sweproj.utils.ValidationUtil;
 import com.google.gson.Gson;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +15,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/reservation/query")
 public class ReservationQueryController {
+    @Autowired
+    private ValidationUtil validationUtil;
 
     private final ReservationQueryService reservationQueryService;
 
@@ -26,8 +27,11 @@ public class ReservationQueryController {
     @GetMapping
     ResponseEntity<String> getAvailableRooms(@RequestBody ReservationQuery reservationQuery) {
         Gson gson = new Gson();
-        List<Message> serverErrors = new ArrayList<>();
-        ArrayList<Room> availableRooms;
+        List<Message> serverErrors = validationUtil.validate(reservationQuery);
+        if(serverErrors.size() > 0) {
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+        ArrayList<RoomType> availableRooms;
         try {
             availableRooms = new ArrayList<>(this.reservationQueryService.getAvailableRooms(reservationQuery));
         } catch(Exception error) {

@@ -6,8 +6,7 @@ import javax.validation.constraints.NotNull;
 
 public class RoomType {
 	
-	public String hotelID;
-	public String roomTypeID;
+	public int hotelID;
 
     @JsonProperty @NotNull(message = "Room type name is empty")
     public String name;
@@ -20,6 +19,8 @@ public class RoomType {
 
     @JsonProperty
     public String description;
+
+    public int freeCount;
     
     public RoomType() {}
 

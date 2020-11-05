@@ -1,7 +1,7 @@
 package com.example.sweproj.services;
 
 import com.example.sweproj.models.ReservationQuery;
-import com.example.sweproj.models.Room;
+import com.example.sweproj.models.RoomType;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public class ReservationQueryService {
         this.reservationQueryDataAccessService = reservationQueryDataAccessService;
     }
 
-    public List<Room> getAvailableRooms(ReservationQuery query) {
-        return reservationQueryDataAccessService.getAvailableRooms(query);
+    public List<RoomType> getAvailableRooms(ReservationQuery query) {
+        return reservationQueryDataAccessService.getAvailableRoomTypes(query);
     }
 }
