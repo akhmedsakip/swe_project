@@ -5,6 +5,8 @@ import com.example.sweproj.models.Hotel;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -15,25 +17,27 @@ public class HotelDataAccessService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    private Hotel mapFromDB(ResultSet rs) throws SQLException {
+        Hotel hotel = new Hotel();
+        hotel.hotelId = rs.getString("HotelID");
+        hotel.name = rs.getString("Name");
+        hotel.description = rs.getString("Description");
+        hotel.numberOfFloors = rs.getString("Floors#");
+        hotel.numberOfRooms = rs.getString("Rooms#");
+        hotel.numberOfFreeRooms = rs.getString("FreeRooms#");
+        hotel.country = rs.getString("CountryCode");
+        hotel.city = rs.getString("City");
+        hotel.street = rs.getString("Street");
+        hotel.zipCode = rs.getString("ZIPCode");
+        hotel.starCount = rs.getInt("StarCount");
+        hotel.mainHotelPicture = rs.getString("MainHotelPicture");
+        return hotel;
+    }
+
     List<Hotel> getHotels() {
         String sql = "SELECT * FROM HOTEL";
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Hotel hotel = new Hotel();
-            hotel.hotelId = rs.getString("HotelID");
-            hotel.name = rs.getString("Name");
-            hotel.description = rs.getString("Description");
-            hotel.numberOfFloors = rs.getString("Floors#");
-            hotel.numberOfRooms = rs.getString("Rooms#");
-            hotel.numberOfFreeRooms = rs.getString("FreeRooms#");
-            hotel.country = rs.getString("CountryCode");
-            hotel.city = rs.getString("City");
-            hotel.street = rs.getString("Street");
-            hotel.zipCode = rs.getString("ZIPCode");
-            hotel.starCount = rs.getInt("StarCount");
-            hotel.mainHotelPicture = rs.getString("MainHotelPicture");
-            return hotel;
-        });
+        return jdbcTemplate.query(sql, (rs, rowNum) -> mapFromDB(rs));
     }
 
     List<String> getCities() {
@@ -57,42 +61,12 @@ public class HotelDataAccessService {
                 "    AND ROOMTYPE.Capacity >= ?\n" +
                 "GROUP BY HOTEL.HotelID;";
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Hotel hotel = new Hotel();
-            hotel.hotelId = rs.getString("HotelID");
-            hotel.name = rs.getString("Name");
-            hotel.description = rs.getString("Description");
-            hotel.numberOfFloors = rs.getString("Floors#");
-            hotel.numberOfRooms = rs.getString("Rooms#");
-            hotel.numberOfFreeRooms = rs.getString("FreeRooms#");
-            hotel.country = rs.getString("CountryCode");
-            hotel.city = rs.getString("City");
-            hotel.street = rs.getString("Street");
-            hotel.zipCode = rs.getString("ZIPCode");
-            hotel.starCount = rs.getInt("StarCount");
-            hotel.mainHotelPicture = rs.getString("MainHotelPicture");
-            return hotel;
-        }, info.getCheckInDate(), info.getCheckOutDate(), info.getCheckInDate(), info.getCheckOutDate(), info.getCity(), info.getNumberOfPeople());
+        return jdbcTemplate.query(sql, (rs, rowNum) -> mapFromDB(rs), info.getCheckInDate(), info.getCheckOutDate(), info.getCheckInDate(), info.getCheckOutDate(), info.getCity(), info.getNumberOfPeople());
     }
 
     Hotel getHotel(int hotelID) {
         String sql = "SELECT * FROM HOTEL WHERE HotelID = ?";
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Hotel hotel = new Hotel();
-            hotel.hotelId = rs.getString("HotelID");
-            hotel.name = rs.getString("Name");
-            hotel.description = rs.getString("Description");
-            hotel.numberOfFloors = rs.getString("Floors#");
-            hotel.numberOfRooms = rs.getString("Rooms#");
-            hotel.numberOfFreeRooms = rs.getString("FreeRooms#");
-            hotel.country = rs.getString("CountryCode");
-            hotel.city = rs.getString("City");
-            hotel.street = rs.getString("Street");
-            hotel.zipCode = rs.getString("ZIPCode");
-            hotel.starCount = rs.getInt("StarCount");
-            hotel.mainHotelPicture = rs.getString("MainHotelPicture");
-            return hotel;
-        }, hotelID).get(0);
+        return jdbcTemplate.query(sql, (rs, rowNum) -> mapFromDB(rs), hotelID).get(0);
     }
 }
