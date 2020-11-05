@@ -1,5 +1,6 @@
 package com.example.sweproj.controllers;
 
+import com.example.sweproj.models.AvailableEntitiesRequest;
 import com.example.sweproj.models.RoomType;
 import com.example.sweproj.services.RoomTypeService;
 import com.example.sweproj.utils.Message;
@@ -54,5 +55,22 @@ public class RoomTypeController {
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
         return ResponseEntity.ok().body(gson.toJson(roomType));
+    }
+
+    @GetMapping("/availableRoomTypes")
+    ResponseEntity<String> getAvailableRooms(AvailableEntitiesRequest info) {
+        Gson gson = new Gson();
+        List<Message> serverErrors = validationUtil.validate(info);
+        if(serverErrors.size() > 0) {
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+        try {
+            List<RoomType> availableRooms = this.roomTypeService.getAvailableRoomTypes(info);
+            return ResponseEntity.ok().body(gson.toJson(availableRooms));
+        } catch(Exception error) {
+            error.printStackTrace();
+            serverErrors.add(new Message("Error fetching available room types"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
     }
 }

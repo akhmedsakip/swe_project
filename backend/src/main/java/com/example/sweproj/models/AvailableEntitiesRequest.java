@@ -10,24 +10,35 @@ import javax.validation.constraints.Pattern;
 
 
 @Valid
-public class AvailableRoomTypesRequest {
+public class AvailableEntitiesRequest {
     @JsonProperty
-    @NotBlank(message = "Checkin date should be non-empty")
+    @NotNull(message = "Hotel ID is not specified", groups = {AvailableRoomTypesGroup.class})
+    @Min(value = 1, message = "Hotel ID is less than 1", groups = {AvailableRoomTypesGroup.class})
+    private int hotelId;
+
+    @JsonProperty
+    @NotBlank(message = "Checkin date should be non-empty",
+            groups = {AvailableHotelsGroup.class, AvailableRoomTypesGroup.class})
     @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Checkin date is not in valid form (should be yyyy-MM-dd)")
     private String checkInDate;
 
     @JsonProperty
-    @NotBlank(message = "Checkout date should be non-empty")
+    @NotBlank(message = "Checkout date should be non-empty",
+            groups = {AvailableHotelsGroup.class, AvailableRoomTypesGroup.class})
     @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Checkout date is not in valid form (should be yyyy-MM-dd)")
     private String checkOutDate;
 
-    @JsonProperty @NotBlank(message = "City is empty")
+    @JsonProperty @NotBlank(message = "City is empty",
+            groups = {AvailableHotelsGroup.class})
     private String city;
 
-    @JsonProperty @NotNull(message = "Number of people is empty") @Min(value = 1, message = "Number of people should be at least 1")
+    @JsonProperty @NotNull(message = "Number of people is empty",
+            groups = {AvailableHotelsGroup.class, AvailableRoomTypesGroup.class})
+    @Min(value = 1, message = "Number of people should be at least 1",
+            groups = {AvailableHotelsGroup.class, AvailableRoomTypesGroup.class})
     private int numberOfPeople;
 
-    public AvailableRoomTypesRequest() {
+    public AvailableEntitiesRequest() {
 
     }
 
@@ -61,5 +72,13 @@ public class AvailableRoomTypesRequest {
 
     public void setNumberOfPeople(int numberOfPeople) {
         this.numberOfPeople = numberOfPeople;
+    }
+
+    public int getHotelId() {
+        return hotelId;
+    }
+
+    public void setHotelId(int hotelId) {
+        this.hotelId = hotelId;
     }
 }

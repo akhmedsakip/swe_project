@@ -16,7 +16,7 @@ function App() {
       <BrowserRouter>
         <Root>
           <ButtonAppBar />
-          <Route path="/" component={Home} exact />
+          <Route path="/" component={Home}/>
           <Route path="/hotels" component={Hotels} />
           <Route path="/about" component={AboutUs} />
           <PrivateRoute path="/profile" component={ProfilePage} />
