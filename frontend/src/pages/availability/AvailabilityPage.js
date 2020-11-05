@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
-import SearchFirstComponent from "../components/SearchFirstComponent";
+import AvailiabilityForm from "./components/AvailiabilityForm";
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Hotels from "./Hotels";
+import Hotels from "../Hotels";
 import axios from "axios";
+import AvailabilityContextProvider from "../../context-providers/AvailabilityContextProvider";
+import AvailableHotels from "./components/AvailableHotels";
 
 const useStyles = makeStyles((theme) => ({
     marginBottom: {
@@ -49,39 +51,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function SearchFirst() {
+export default function AvailabilityPage() {
     const classes = useStyles();
-    const [searchSuccess, setSearchSuccess] = useState(false);
-    const [cities, setCities] = useState([]);
-    useEffect(() => {
-        fetchCities();
-    }, [setCities]);
-
-    const fetchCities = async () => {
-        try {
-            const response = await axios.get("/api/hotels/cities")
-            setCities(response.data)
-        } catch(error) {
-            console.log(error);
-            alert("Error fetching cities!");
-        }
-    };
-
     return (
-        <React.Fragment>
+        <AvailabilityContextProvider>
             <div className={classes.layout}>
                 <Paper className={classes.paper}>
                     <Typography component="h1" variant="h4" align="center" className={classes.marginBottom}>
                         Booking
                     </Typography>
-                    <SearchFirstComponent setSearchSuccess={setSearchSuccess} cities={cities}/>
+                    <AvailiabilityForm />
                 </Paper>
             </div>
-            {searchSuccess ?
-                <div id="section-2">
-                    <Hotels/>
-                </div> : <div className={classes.root1 + " " + classes.bg} title="section-1">
-            </div>}
-        </React.Fragment>
+            <AvailableHotels />
+        </AvailabilityContextProvider>
+
     );
 }
