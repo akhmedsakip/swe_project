@@ -28,21 +28,21 @@ public class GuestController {
 
     GuestController() {}
 
-    @PostMapping
-    ResponseEntity<String> addGuest(@RequestBody Guest newGuest) {
-        List<Message> serverErrors = validationUtil.validate(newGuest);
-        if(serverErrors.size() > 0) {
-            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
-        }
-        try {
-            guestService.addGuest(newGuest);
-        } catch(DuplicateKeyException ignored) {
-            serverErrors.add(new Message("Person with this phone number already exists"));
-            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
-        } catch(Exception error) {
-            serverErrors.add(new Message("Server error"));
-            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
-        }
-        return ResponseEntity.ok().body(gson.toJson(new Message("Successfully added")));
-    }
+//    @PostMapping
+//    ResponseEntity<String> addGuest(@RequestBody Guest newGuest) {
+//        List<Message> serverErrors = validationUtil.validate(newGuest);
+//        if(serverErrors.size() > 0) {
+//            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+//        }
+//        try {
+//            guestService.addGuest(newGuest);
+//        } catch(DuplicateKeyException ignored) {
+//            serverErrors.add(new Message("Person with this phone number already exists"));
+//            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+//        } catch(Exception error) {
+//            serverErrors.add(new Message("Server error"));
+//            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+//        }
+//        return ResponseEntity.ok().body(gson.toJson(new Message("Successfully added")));
+//    }
 }

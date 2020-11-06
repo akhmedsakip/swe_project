@@ -1,6 +1,6 @@
 package com.example.sweproj.services;
 
-import com.example.sweproj.models.AvailableEntitiesRequest;
+import com.example.sweproj.models.ReservationRequest;
 import com.example.sweproj.models.RoomType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -37,7 +37,7 @@ public class RoomTypeDataAccessService {
         return jdbcTemplate.query(sql, (rs, rowNum) -> mapFromDB(rs), hotelID, roomTypeName).get(0);
     }
 
-    List<RoomType> getAvailableRoomTypes(AvailableEntitiesRequest info) {
+    List<RoomType> getAvailableRoomTypes(ReservationRequest info) {
         String sql = "SELECT COUNT(ROOMTYPE.Name) RoomTypesCount, ROOMTYPE.* \n" +
                 "FROM ROOM\n" +
                 "INNER JOIN HOTEL ON HOTEL.HotelID = ROOM.HotelID\n" +

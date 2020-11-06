@@ -1,6 +1,6 @@
 package com.example.sweproj.services;
 
-import com.example.sweproj.models.AvailableEntitiesRequest;
+import com.example.sweproj.models.ReservationRequest;
 import com.example.sweproj.models.Hotel;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -45,7 +45,7 @@ public class HotelDataAccessService {
         return jdbcTemplate.query(sql, (rs, rowNum) -> rs.getString("City"));
     }
 
-    List<Hotel> getAvailableHotels(AvailableEntitiesRequest info) {
+    List<Hotel> getAvailableHotels(ReservationRequest info) {
         String sql = "SELECT HOTEL.*\n" +
                 "FROM ROOM\n" +
                 "INNER JOIN HOTEL ON HOTEL.HotelID = ROOM.HotelID\n" +

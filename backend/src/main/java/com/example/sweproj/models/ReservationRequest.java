@@ -10,24 +10,28 @@ import javax.validation.constraints.Pattern;
 
 
 @Valid
-public class AvailableEntitiesRequest {
+public class ReservationRequest {
     @JsonProperty
-    @NotNull(message = "Hotel ID is not specified", groups = {AvailableRoomTypesGroup.class})
-    @Min(value = 1, message = "Hotel ID is less than 1", groups = {AvailableRoomTypesGroup.class})
+    @NotNull(message = "Hotel ID is not specified", groups = {AvailableRoomTypesGroup.class, ReservationDetailsGroup.class})
+    @Min(value = 1, message = "Hotel ID is less than 1", groups = {AvailableRoomTypesGroup.class, ReservationDetailsGroup.class})
     private int hotelId;
 
     @JsonProperty
+    @NotNull(message = "RoomType is not specified", groups= {ReservationDetailsGroup.class})
+    private String roomTypeName;
+
+    @JsonProperty
     @NotBlank(message = "Checkin date should be non-empty",
-            groups = {AvailableHotelsGroup.class, AvailableRoomTypesGroup.class})
+            groups = {AvailableHotelsGroup.class, AvailableRoomTypesGroup.class, ReservationDetailsGroup.class})
     @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Checkin date is not in valid form (should be yyyy-MM-dd)",
-            groups = {AvailableHotelsGroup.class, AvailableRoomTypesGroup.class})
+            groups = {AvailableHotelsGroup.class, AvailableRoomTypesGroup.class, ReservationDetailsGroup.class})
     private String checkInDate;
 
     @JsonProperty
     @NotBlank(message = "Checkout date should be non-empty",
-            groups = {AvailableHotelsGroup.class, AvailableRoomTypesGroup.class})
+            groups = {AvailableHotelsGroup.class, AvailableRoomTypesGroup.class, ReservationDetailsGroup.class})
     @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Checkout date is not in valid form (should be yyyy-MM-dd)",
-            groups = {AvailableHotelsGroup.class, AvailableRoomTypesGroup.class})
+            groups = {AvailableHotelsGroup.class, AvailableRoomTypesGroup.class, ReservationDetailsGroup.class})
     private String checkOutDate;
 
     @JsonProperty @NotBlank(message = "City is empty",
@@ -40,7 +44,7 @@ public class AvailableEntitiesRequest {
             groups = {AvailableHotelsGroup.class, AvailableRoomTypesGroup.class})
     private int numberOfPeople;
 
-    public AvailableEntitiesRequest() {
+    public ReservationRequest() {
 
     }
 
@@ -82,5 +86,13 @@ public class AvailableEntitiesRequest {
 
     public void setHotelId(int hotelId) {
         this.hotelId = hotelId;
+    }
+
+    public String getRoomTypeName() {
+        return roomTypeName;
+    }
+
+    public void setRoomTypeName(String roomTypeName) {
+        this.roomTypeName = roomTypeName;
     }
 }

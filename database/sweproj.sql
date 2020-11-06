@@ -36,16 +36,16 @@ DROP TABLE IF EXISTS `sweproj`.`PERSON` ;
 CREATE TABLE IF NOT EXISTS `sweproj`.`PERSON` (
   `PersonID` INT NOT NULL AUTO_INCREMENT,
   `Gender` VARCHAR(10) NOT NULL,
-  `IdentificationID` VARCHAR(45) NOT NULL,
-  `DateOfBirth` DATE NOT NULL,
+  `IdentificationID` VARCHAR(45) NULL,
+  `DateOfBirth` DATE NULL,
   `FirstName` VARCHAR(30) NOT NULL,
   `LastName` VARCHAR(30) NOT NULL,
-  `CountryCode` VARCHAR(2) NOT NULL,
-  `City` VARCHAR(30) NOT NULL,
-  `Street` VARCHAR(45) NOT NULL,
-  `ZIPCode` VARCHAR(20) NOT NULL,
+  `CountryCode` VARCHAR(2) NULL,
+  `City` VARCHAR(30) NULL,
+  `Street` VARCHAR(45) NULL,
+  `ZIPCode` VARCHAR(20) NULL,
   `PhoneNumber` VARCHAR(45) NOT NULL,
-  `IdentificationTypeID` INT NOT NULL,
+  `IdentificationTypeID` INT NULL,
   PRIMARY KEY (`PersonID`),
   INDEX `fk_PERSON_IDENTIFICATIONTYPE1_idx` (`IdentificationTypeID` ASC) VISIBLE,
   UNIQUE INDEX `PhoneNumber_UNIQUE` (`PhoneNumber` ASC) VISIBLE,
@@ -293,12 +293,12 @@ DROP TABLE IF EXISTS `sweproj`.`GUEST` ;
 CREATE TABLE IF NOT EXISTS `sweproj`.`GUEST` (
   `GuestID` INT NOT NULL,
   `SpecialCategoryHotelID` INT NULL,
-  `SpecialCategory` VARCHAR(45) NULL,
-  INDEX `fk_GUEST_SPECIALCATEGORY1_idx` (`SpecialCategoryHotelID` ASC, `SpecialCategory` ASC) VISIBLE,
+  INDEX `fk_GUEST_SPECIALCATEGORY1_idx` (`SpecialCategoryHotelID` ASC) VISIBLE,
   PRIMARY KEY (`GuestID`),
+  INDEX `fk_GUEST_PERSON1_idx` (`GuestID` ASC) VISIBLE,
   CONSTRAINT `fk_GUEST_SPECIALCATEGORY1`
-    FOREIGN KEY (`SpecialCategoryHotelID` , `SpecialCategory`)
-    REFERENCES `sweproj`.`SPECIALCATEGORY` (`HotelID` , `Name`)
+    FOREIGN KEY (`SpecialCategoryHotelID`)
+    REFERENCES `sweproj`.`SPECIALCATEGORY` (`HotelID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_GUEST_PERSON1`
@@ -559,24 +559,19 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`ORDERDETAILS` (
   `IsPayer` TINYINT NOT NULL,
   `OrderID` INT NOT NULL,
   `OrderHotelID` INT NOT NULL,
-  `GuestID` INT NOT NULL,
   `RoomTypeHotelID` INT NOT NULL,
   `RoomType` VARCHAR(45) NOT NULL,
   `RoomHotelID` INT NOT NULL,
   `RoomNumber` VARCHAR(10) NOT NULL,
-  PRIMARY KEY (`OrderID`, `OrderHotelID`, `GuestID`, `RoomTypeHotelID`, `RoomType`, `RoomHotelID`, `RoomNumber`),
+  `GuestID` INT NOT NULL,
+  PRIMARY KEY (`OrderID`, `OrderHotelID`, `RoomTypeHotelID`, `RoomType`, `RoomHotelID`, `RoomNumber`, `GuestID`),
   INDEX `fk_ORDERDETAILS_ORDER1_idx` (`OrderID` ASC, `OrderHotelID` ASC) VISIBLE,
-  INDEX `fk_ORDERDETAILS_GUEST1_idx` (`GuestID` ASC) VISIBLE,
   INDEX `fk_ORDERDETAILS_ROOMTYPE1_idx` (`RoomTypeHotelID` ASC, `RoomType` ASC) VISIBLE,
   INDEX `fk_ORDERDETAILS_ROOM1_idx` (`RoomHotelID` ASC, `RoomNumber` ASC) VISIBLE,
+  INDEX `fk_ORDERDETAILS_GUEST1_idx` (`GuestID` ASC) VISIBLE,
   CONSTRAINT `fk_ORDERDETAILS_ORDER1`
     FOREIGN KEY (`OrderID` , `OrderHotelID`)
     REFERENCES `sweproj`.`ORDER` (`OrderID` , `HotelID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_ORDERDETAILS_GUEST1`
-    FOREIGN KEY (`GuestID`)
-    REFERENCES `sweproj`.`GUEST` (`GuestID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_ORDERDETAILS_ROOMTYPE1`
@@ -587,6 +582,11 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`ORDERDETAILS` (
   CONSTRAINT `fk_ORDERDETAILS_ROOM1`
     FOREIGN KEY (`RoomHotelID` , `RoomNumber`)
     REFERENCES `sweproj`.`ROOM` (`HotelID` , `RoomNumber`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ORDERDETAILS_GUEST1`
+    FOREIGN KEY (`GuestID`)
+    REFERENCES `sweproj`.`GUEST` (`GuestID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -649,14 +649,14 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`SERVICE_made for_GUEST` (
   `ServiceID` INT NOT NULL,
   `GuestID` INT NOT NULL,
   PRIMARY KEY (`HotelID`, `OrderID`, `ServiceID`, `GuestID`),
-  INDEX `fk_SERVICE_has_GUEST_GUEST1_idx` (`GuestID` ASC) VISIBLE,
   INDEX `fk_SERVICE_has_GUEST_SERVICE1_idx` (`HotelID` ASC, `OrderID` ASC, `ServiceID` ASC) VISIBLE,
+  INDEX `fk_SERVICE_made for_GUEST_GUEST1_idx` (`GuestID` ASC) VISIBLE,
   CONSTRAINT `fk_SERVICE_has_GUEST_SERVICE1`
     FOREIGN KEY (`HotelID` , `OrderID` , `ServiceID`)
     REFERENCES `sweproj`.`SERVICE` (`HotelID` , `OrderID` , `ServiceID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_SERVICE_has_GUEST_GUEST1`
+  CONSTRAINT `fk_SERVICE_made for_GUEST_GUEST1`
     FOREIGN KEY (`GuestID`)
     REFERENCES `sweproj`.`GUEST` (`GuestID`)
     ON DELETE NO ACTION

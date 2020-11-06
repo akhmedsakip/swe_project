@@ -32,23 +32,25 @@ public class GuestDataAccessService {
         return guest;
     }
 
-    int insertGuest(Guest newGuest) {
-        String sql = "INSERT INTO PERSON (Gender, IdentificationID, DateOfBirth, FirstName, LastName, CountryCode, City, Street, ZIPCode, PhoneNumber, IdentificationTypeID)\n" +
-                "VALUES (\n" +
-                "        ?,\n" +
-                "        ?,\n" +
-                "        ?,\n" +
-                "        ?,\n" +
-                "        ?,\n" +
-                "        ?,\n" +
-                "        ?,\n" +
-                "        ?,\n" +
-                "        ?,\n" +
-                "        ?,\n" +
-                "        ?\n" +
-                "       );";
-        return jdbcTemplate.update(sql, newGuest.getGender(), newGuest.getIdentificationID(), newGuest.getDateOfBirth(),
-                newGuest.getFirstName(), newGuest.getLastName(), newGuest.getCountryCode(), newGuest.getCity(), newGuest.getStreet(),
-                newGuest.getZipCode(), newGuest.getPhoneNumber(), newGuest.getIdentificationTypeID());
-    }
+//    int insertGuest(Guest newGuest) {
+//        String sql = "INSERT INTO PERSON (Gender, IdentificationID, DateOfBirth, FirstName, LastName, CountryCode, City, Street, ZIPCode, PhoneNumber, IdentificationTypeID)\n" +
+//                "VALUES (\n" +
+//                "        ?,\n" +
+//                "        ?,\n" +
+//                "        ?,\n" +
+//                "        ?,\n" +
+//                "        ?,\n" +
+//                "        ?,\n" +
+//                "        ?,\n" +
+//                "        ?,\n" +
+//                "        ?,\n" +
+//                "        ?,\n" +
+//                "        ?\n" +
+//                "       );" +
+//                "INSERT INTO GUEST (GuestID)\n" +
+//                "VALUE (?);";
+//        return jdbcTemplate.update(sql, newGuest.getGender(), newGuest.getIdentificationID(), newGuest.getDateOfBirth(),
+//                newGuest.getFirstName(), newGuest.getLastName(), newGuest.getCountryCode(), newGuest.getCity(), newGuest.getStreet(),
+//                newGuest.getZipCode(), newGuest.getPhoneNumber(), newGuest.getIdentificationTypeID());
+//    }
 }

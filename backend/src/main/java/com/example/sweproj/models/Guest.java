@@ -27,11 +27,11 @@ public class Guest {
     @JsonProperty @NotBlank(message = "PhoneNumber is empty")
     private String phoneNumber;
 
-    @JsonProperty @NotBlank(message = "IdentificationID is empty")
+    @JsonProperty
     private String identificationID;
 
-    @JsonProperty @NotNull(message = "IdentificationID is empty")
-    @Min(value = 1, message = "IdentificationTypeID should be at least 1")
+    @JsonProperty
+//    @Min(value = 1, message = "IdentificationTypeID should be at least 1")
     private int identificationTypeID;
 
     @JsonProperty
@@ -42,16 +42,16 @@ public class Guest {
     @NotBlank(message = "Gender is empty")
     private String gender;
 
-    @JsonProperty @NotBlank(message = "CountryCode is empty")
+    @JsonProperty
     private String countryCode;
 
-    @JsonProperty @NotBlank(message = "City is empty")
+    @JsonProperty
     private String city;
 
-    @JsonProperty @NotBlank(message = "Street is empty")
+    @JsonProperty
     private String street;
 
-    @JsonProperty @NotBlank(message = "ZIPCode is empty")
+    @JsonProperty
     private String zipCode;
 
     public String getGender() {

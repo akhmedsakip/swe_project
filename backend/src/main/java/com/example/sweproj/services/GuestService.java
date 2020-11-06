@@ -11,7 +11,7 @@ public class GuestService {
 
     GuestService() { }
 
-    public int addGuest(Guest newGuest) {
-        return guestDataAccessService.insertGuest(newGuest);
-    }
+//    public int addGuest(Guest newGuest) {
+//        return guestDataAccessService.insertGuest(newGuest);
+//    }
 }
