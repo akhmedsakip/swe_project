@@ -41,11 +41,11 @@ const useStyles = makeStyles({
 });
 
 
-function RoomTypeCard({ roomTypeName, roomTypeDescription, roomTypeMainPhoto, roomTypeCapacity }) {
+function RoomTypeCard({ roomTypeName, roomTypeDescription, roomTypeMainPhoto, roomTypeCapacity, onClick }) {
     const classes = useStyles();
 
     return (
-        <Card className={classes.root}>
+        <Card className={classes.root} onClick={onClick}>
             <CardActionArea>
                 <CardMedia
                     component="img"
@@ -67,8 +67,8 @@ function RoomTypeCard({ roomTypeName, roomTypeDescription, roomTypeMainPhoto, ro
                 </CardContent>
             </CardActionArea>
             <CardActions>
-                <Button size="small" color="primary">
-                    Order
+                <Button size="small" color="primary" onClick={onClick}>
+                    Reserve
                 </Button>
             </CardActions>
         </Card>

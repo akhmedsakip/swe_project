@@ -5,6 +5,7 @@ import RoomTypeCard from "../../../components/RoomTypeCard";
 import {makeStyles} from "@material-ui/core/styles";
 import BackButton from "../../../components/BackButton";
 import {useHistory} from 'react-router-dom';
+import ReservationDialog from "../reservations/ReservationDialog";
 
 
 const useStyles = makeStyles({
@@ -18,7 +19,7 @@ const useStyles = makeStyles({
 });
 
 const AvailableRoomTypes = () => {
-    const {state} = useContext(AvailabilityContext);
+    const {state, dispatch} = useContext(AvailabilityContext);
     const classes = useStyles();
     const history = useHistory();
     return (
@@ -32,7 +33,8 @@ const AvailableRoomTypes = () => {
                     return (
                         <Grid key={roomType.hotelId} >
                             <RoomTypeCard roomTypeName={roomType.name} roomTypeDescription={roomType.description}
-                                          roomTypeCapacity={roomType.capacity} roomTypeMainPhoto={roomType.photo} />
+                                          roomTypeCapacity={roomType.capacity} roomTypeMainPhoto={roomType.photo}
+                                          onClick={() => dispatch({type: 'selectRoomType', payload:roomType})}/>
                         </Grid>
                     );
                 })}

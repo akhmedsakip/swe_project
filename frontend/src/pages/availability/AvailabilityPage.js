@@ -12,6 +12,7 @@ import AvailabilityContext from "../../contexts/availabilityContext";
 import {Grid} from "@material-ui/core";
 import {BrowserRouter, Route, Switch, useLocation} from "react-router-dom";
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import ReservationDialog from "./reservations/ReservationDialog";
 
 const useStyles = makeStyles((theme) => ({
     marginBottom10: {
@@ -79,7 +80,7 @@ function AvailabilityContent() {
                     </CSSTransition>
                 </TransitionGroup>
             </Paper>
-
+            <ReservationDialog />
         </div>
     );
 }
