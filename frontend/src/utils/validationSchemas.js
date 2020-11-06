@@ -19,8 +19,8 @@ export const searchSchema = yup.object().shape({
     numberOfPeople: yup.number().required("Number of people is empty"),
     checkInDate: yup.date("From date is invalid").required("From date is empty"),
     checkOutDate: yup.date("To date is invalid").when(
-        'fromDate',
-        (fromDate, schema) => (fromDate && schema.min(fromDate)),
+        'checkInDate',
+        (checkInDate, schema) => (checkInDate && schema.min(checkInDate)),
     ).required("To date is empty"),
     city: yup.string().required("City is empty"),
 });
