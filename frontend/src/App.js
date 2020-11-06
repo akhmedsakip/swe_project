@@ -1,6 +1,6 @@
 import React from "react";
 import ButtonAppBar from './components/TopBar';
-import { BrowserRouter, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import AboutUs from './pages/AboutUs';
 import Hotels from './pages/Hotels';
 import RoomType from "./pages/RoomTypes";
@@ -19,13 +19,15 @@ function App() {
       <BrowserRouter>
         <Root>
           <ButtonAppBar />
-          <Route path="/" component={Home} exact/>
-          <Route path="/hotels" component={Hotels} />
-          <Route path="/about" component={AboutUs} />
-          <Route path="/roomTypes" component={RoomType} />
-          <Route path="/searchFirst" component={AvailabilityPage} />
-          <PrivateRoute path="/profile" component={ProfilePage} />
-          <Route path="*" render={() => (<Redirect to="/" />)} />
+          <Switch>
+            <Route path="/" component={Home} exact/>
+            <Route path="/hotels" component={Hotels} />
+            <Route path="/about" component={AboutUs} />
+            <Route path="/roomTypes" component={RoomType} />
+            <Route path="/availability" component={AvailabilityPage} />
+            <PrivateRoute path="/profile" component={ProfilePage} />
+            <Route path="*" render={() => (<Redirect to="/" />)} />
+          </Switch>
         </Root>
       </BrowserRouter>
     </UserContextProvider>

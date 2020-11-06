@@ -5,6 +5,7 @@ const fetchAvailableRoomTypes = async (dispatch, values) => {
         const response = await axios.get("/api/roomTypes/availableRoomTypes", {params: values});
         dispatch({type: 'setRoomTypes', payload: response.data});
     } catch(error) {
+        console.log(error);
         return error.response.data;
     }
 };

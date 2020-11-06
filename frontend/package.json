@@ -20,7 +20,8 @@
     "react-scripts": "4.0.0",
     "react-scroll": "^1.8.1",
     "web-vitals": "^0.2.4",
-    "yup": "^0.29.3"
+    "yup": "^0.29.3",
+    "react-transition-group": "latest"
   },
   "scripts": {
     "start": "react-scripts start",

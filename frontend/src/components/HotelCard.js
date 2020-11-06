@@ -45,10 +45,10 @@ const useStyles = makeStyles({
   }
 });
 
-function HotelCard({ hotelName, hotelDescription, hotelMainPhoto, hotelStars, hotelId, onClick }) {
+function HotelCard({ hotelName, hotelDescription, hotelMainPhoto, hotelStars, onClick }) {
   const classes = useStyles();
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} onClick={onClick}>
       <CardActionArea>
         <CardMedia
           component="img"
@@ -83,7 +83,6 @@ HotelCard.propTypes = {
   hotelDescription: PropTypes.string.isRequired,
   hotelMainPhoto: PropTypes.string.isRequired,
   hotelStars: PropTypes.number.isRequired,
-  hotelId: PropTypes.number.isRequired,
 }
 
 export default HotelCard;
