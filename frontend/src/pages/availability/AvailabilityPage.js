@@ -67,18 +67,10 @@ function AvailabilityContent() {
                 <Typography variant="h5" className={classes.marginBottom10}>
                     Search Results
                 </Typography>
-                <TransitionGroup>
-                    <CSSTransition
-                        key={location.key}
-                        classNames="page"
-                        unmountOnExit
-                        timeout={1000}>
-                        <Switch>
-                            <Route path={'/availability/hotels'} component={AvailableHotels} />
-                            <Route path={'/availability/roomTypes'} component={AvailableRoomTypes} />
-                        </Switch>
-                    </CSSTransition>
-                </TransitionGroup>
+                    <Switch>
+                        <Route path={'/availability/hotels'} component={AvailableHotels} />
+                        <Route path={'/availability/roomTypes'} component={AvailableRoomTypes} />
+                    </Switch>
             </Paper>
             <ReservationDialog />
         </div>
