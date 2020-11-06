@@ -7,6 +7,8 @@ function reducer(state, action) {
             return {...state, hotels: action.payload};
         case 'setRoomTypes':
             return {...state, roomTypes: action.payload};
+        case 'setParams':
+            return {...state, params: action.payload};
         default:
             return {};
     }

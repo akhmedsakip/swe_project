@@ -6,7 +6,7 @@ import RoomTypeCard from "../../../components/RoomTypeCard";
 const AvailableRoomTypes = () => {
     const {state} = useContext(AvailabilityContext);
     useEffect(() => {
-        console.log(state.roomTypes)
+        console.log(state.params)
     }, [state]);
     return (
         <Grid

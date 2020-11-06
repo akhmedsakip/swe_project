@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -10,6 +10,9 @@ import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
 import Rating from '@material-ui/lab/Rating';
+import fetchAvailableHotels from "../actions/availabilityContextActions/fetchAvailableHotels";
+import AvailabilityContext from "../contexts/availabilityContext";
+import fetchAvailableRoomTypes from "../actions/availabilityContextActions/fetchAvailableRoomTypes";
 
 const useStyles = makeStyles({
   root: {
@@ -42,9 +45,8 @@ const useStyles = makeStyles({
   }
 });
 
-function HotelCard({ hotelName, hotelDescription, hotelMainPhoto, hotelStars }) {
+function HotelCard({ hotelName, hotelDescription, hotelMainPhoto, hotelStars, hotelId, onClick }) {
   const classes = useStyles();
-
   return (
     <Card className={classes.root}>
       <CardActionArea>
@@ -66,11 +68,11 @@ function HotelCard({ hotelName, hotelDescription, hotelMainPhoto, hotelStars }) 
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Link to="/roomTypes" className={classes.link}>
-          <Button size="small" color="primary">
+        {/*<Link to="/roomTypes" className={classes.link}>*/}
+          <Button size="small" color="primary" onClick={onClick}>
             Rooms
           </Button>
-        </Link>
+        {/*</Link>*/}
       </CardActions>
     </Card>
   );
@@ -81,6 +83,7 @@ HotelCard.propTypes = {
   hotelDescription: PropTypes.string.isRequired,
   hotelMainPhoto: PropTypes.string.isRequired,
   hotelStars: PropTypes.number.isRequired,
+  hotelId: PropTypes.number.isRequired,
 }
 
 export default HotelCard;

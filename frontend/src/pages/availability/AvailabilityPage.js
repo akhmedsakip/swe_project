@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import Typography from '@material-ui/core/Typography';
-import AvailiabilityForm from "./components/AvailiabilityForm";
+import AvailabilityForm from "./components/AvailiabilityForm";
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Hotels from "../Hotels";
 import axios from "axios";
 import AvailabilityContextProvider from "../../context-providers/AvailabilityContextProvider";
 import AvailableHotels from "./components/AvailableHotels";
+import AvailableRoomTypes from "./components/AvailableRoomTypes";
+import AvailabilityContext from "../../contexts/availabilityContext";
 
 const useStyles = makeStyles((theme) => ({
     marginBottom: {
@@ -50,21 +52,26 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+export default function AvailabilityPage(){
+    return <AvailabilityContextProvider>
+        <AvailabilityContent/>
+    </AvailabilityContextProvider>
+}
 
-export default function AvailabilityPage() {
+function AvailabilityContent() {
     const classes = useStyles();
+    const {state} = useContext(AvailabilityContext);
     return (
-        <AvailabilityContextProvider>
+        <div>
             <div className={classes.layout}>
                 <Paper className={classes.paper}>
                     <Typography component="h1" variant="h4" align="center" className={classes.marginBottom}>
                         Booking
                     </Typography>
-                    <AvailiabilityForm />
+                    <AvailabilityForm />
                 </Paper>
             </div>
-            <AvailableHotels />
-        </AvailabilityContextProvider>
-
+            {state.roomTypes ? <AvailableRoomTypes /> :  <AvailableHotels />}
+        </div>
     );
 }
