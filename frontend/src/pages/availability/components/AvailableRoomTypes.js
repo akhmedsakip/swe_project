@@ -34,6 +34,7 @@ const AvailableRoomTypes = () => {
                         <Grid key={roomType.hotelId} >
                             <RoomTypeCard roomTypeName={roomType.name} roomTypeDescription={roomType.description}
                                           roomTypeCapacity={roomType.capacity} roomTypeMainPhoto={roomType.photo}
+                                          key={roomType.name}
                                           onClick={() => dispatch({type: 'selectRoomType', payload:roomType})}/>
                         </Grid>
                     );
