@@ -15,6 +15,15 @@ export const loginSchema = yup.object().shape({
     password: yup.string().required("Password is empty").min(6, "Minimum length of password is 6")
 });
 
+export const searchSchema = yup.object().shape({
+    numberOfPeople: yup.number().required("Number of people is empty"),
+    checkInDate: yup.date("From date is invalid").required("From date is empty"),
+    checkOutDate: yup.date("To date is invalid").when(
+        'fromDate',
+        (fromDate, schema) => (fromDate && schema.min(fromDate)),
+    ).required("To date is empty"),
+    city: yup.string().required("City is empty"),
+});
 export const editInfoSchema = yup.object().shape({
     firstName: yup.string().required("First name is empty"),
     lastName: yup.string().required("Second name is empty"),

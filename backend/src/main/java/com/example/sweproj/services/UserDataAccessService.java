@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public class UserDataAccessService {
@@ -24,14 +25,19 @@ public class UserDataAccessService {
 
     User loadUserByUsername(String email) {
         String sql = "SELECT * FROM USERS WHERE Email = ?";
-        return jdbcTemplate.query(sql,(rs, rowNum) -> {
+        List<User> users = jdbcTemplate.query(sql,(rs, rowNum) -> {
             User user = new User(rs.getString("Email"), rs.getString("Password"));
             user.setFirstName(rs.getString("FirstName"));
             user.setLastName(rs.getString("LastName"));
             user.setGender(rs.getString("Gender"));
             user.setDateOfBirth(rs.getString("DateOfBirth"));
             return user;
-        }, email).get(0);
+        }, email);
+
+        if(users.size() == 0) {
+            return null;
+        }
+        return users.get(0);
     }
 
     int editUser(User newUser) {
