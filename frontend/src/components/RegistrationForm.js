@@ -123,13 +123,14 @@ function RegistrationForm() {
                     margin="dense"
                     name="dateOfBirth"
                     label="Date Of Birth"
-                    type={!values.dateOfBirth && !dataFocused ? "text" : "date"}
-                    onFocus={() => setDataFocused(true)}
-                    onBlur={() => setDataFocused(false)}
+                    type="date"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
                     fullWidth>
                 </TextFieldWithError>
                 <FormControl fullWidth error={touched.gender && !!errors.gender}>
-                <InputLabel focused={false} shrink={!!values.gender}>Gender</InputLabel>
+                    <InputLabel focused={false} shrink={!!values.gender}>Gender</InputLabel>
                     <Select native inputProps={{name: 'gender'}}>
                         <option aria-label="None" value="" />
                         <option value="male">Male</option>

@@ -9,47 +9,40 @@ import AvailabilityContextProvider from "../../context-providers/AvailabilityCon
 import AvailableHotels from "./components/AvailableHotels";
 import AvailableRoomTypes from "./components/AvailableRoomTypes";
 import AvailabilityContext from "../../contexts/availabilityContext";
+import {Grid} from "@material-ui/core";
+import {BrowserRouter, Route, Switch, useLocation} from "react-router-dom";
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import ReservationDialog from "./reservations/ReservationDialog";
 
 const useStyles = makeStyles((theme) => ({
-    marginBottom: {
-        marginBottom: '10px',
+    marginBottom10: {
+        marginBottom: 10,
     },
-    layout: {
-        width: 'auto',
-        marginLeft: theme.spacing(2),
-        marginRight: theme.spacing(2),
-        [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-            width: 600,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-        },
+    marginBottom32: {
+        marginBottom: 32,
     },
-    paper: {
-        marginTop: theme.spacing(3),
-        marginBottom: theme.spacing(3),
-        padding: theme.spacing(2),
-        [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-            marginTop: theme.spacing(6),
-            marginBottom: theme.spacing(6),
-            padding: theme.spacing(3),
-        },
+    formContainer: {
+        width: '80vw',
+        padding: 16,
     },
     button: {
         marginTop: theme.spacing(3),
         marginLeft: theme.spacing(1),
     },
-    root1: {
+    root: {
         display: 'flex',
-        justifyContent: 'center',
+        flexDirection: 'column',
         alignItems: 'center',
-        height: '100vh',
-        textAlign: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover'
+        backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/bg.jpg'})`,
+        padding: 16,
+        minHeight: '100vh',
     },
     bg: {
-        backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/bg.jpg'})`,
     },
+    resultContainer: {
+        width: '80vw',
+        padding: 16,
+    }
 }));
 
 export default function AvailabilityPage(){
@@ -61,17 +54,25 @@ export default function AvailabilityPage(){
 function AvailabilityContent() {
     const classes = useStyles();
     const {state} = useContext(AvailabilityContext);
+    const location = useLocation();
     return (
-        <div>
-            <div className={classes.layout}>
-                <Paper className={classes.paper}>
-                    <Typography component="h1" variant="h4" align="center" className={classes.marginBottom}>
-                        Booking
-                    </Typography>
-                    <AvailabilityForm />
-                </Paper>
-            </div>
-            {state.roomTypes ? <AvailableRoomTypes /> :  <AvailableHotels />}
+        <div className={classes.root}>
+            <Paper className={`${classes.formContainer} ${classes.marginBottom32}`}>
+                <Typography variant="h5" className={classes.marginBottom10}>
+                    Booking a room
+                </Typography>
+                <AvailabilityForm />
+            </Paper>
+            <Paper className={classes.resultContainer}>
+                <Typography variant="h5" className={classes.marginBottom10}>
+                    Search Results
+                </Typography>
+                    <Switch>
+                        <Route path={'/availability/hotels'} component={AvailableHotels} />
+                        <Route path={'/availability/roomTypes'} component={AvailableRoomTypes} />
+                    </Switch>
+            </Paper>
+            <ReservationDialog />
         </div>
     );
 }

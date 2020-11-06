@@ -9,6 +9,10 @@ function reducer(state, action) {
             return {...state, roomTypes: action.payload};
         case 'setParams':
             return {...state, params: action.payload};
+        case 'selectRoomType':
+            return {...state, roomType: action.payload};
+        case 'deselectRoomType':
+            return {...state, roomType: undefined};
         default:
             return {};
     }

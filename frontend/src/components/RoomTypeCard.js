@@ -33,21 +33,19 @@ const useStyles = makeStyles({
     },
 
     capacity: {
-        marginTop: "1rem"
+        color: "#FF6655",
+    },
+    marginBottom16: {
+        marginBottom: 16,
     }
 });
 
-const RedTextTypography = withStyles({
-    root: {
-        color: "#FF6655"
-    }
-})(Typography);
 
-function RoomTypeCard({ roomTypeName, roomTypeDescription, roomTypeMainPhoto, roomTypeCapacity }) {
+function RoomTypeCard({ roomTypeName, roomTypeDescription, roomTypeMainPhoto, roomTypeCapacity, onClick }) {
     const classes = useStyles();
 
     return (
-        <Card className={classes.root}>
+        <Card className={classes.root} onClick={onClick}>
             <CardActionArea>
                 <CardMedia
                     component="img"
@@ -60,17 +58,17 @@ function RoomTypeCard({ roomTypeName, roomTypeDescription, roomTypeMainPhoto, ro
                     <Typography gutterBottom variant="h5" component="h2">
                         {roomTypeName}
                     </Typography>
-                    <Typography className={classes.description} variant="body2" color="textSecondary" component="p">
+                    <Typography className={`${classes.description} ${classes.marginBottom16}`} variant="body2" component="p">
                         {roomTypeDescription}
                     </Typography>
-                    <RedTextTypography variant="body2" component="p" color="red" className={classes.capacity}>
+                    <Typography variant="body2" component="p" className={classes.capacity}>
                         Capacity: {roomTypeCapacity}
-                    </RedTextTypography>
+                    </Typography>
                 </CardContent>
             </CardActionArea>
             <CardActions>
-                <Button size="small" color="primary">
-                    Order
+                <Button size="small" color="primary" onClick={onClick}>
+                    Reserve
                 </Button>
             </CardActions>
         </Card>

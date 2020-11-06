@@ -1,12 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 import React, {useContext, useEffect, useState} from 'react';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import TextFieldWithError from "../../../shared/TextFieldWithError";
@@ -14,17 +8,12 @@ import Button from "@material-ui/core/Button";
 import {useFormik} from "formik";
 import axios from "axios";
 import {searchSchema} from "../../../utils/validationSchemas";
-import {Link as Scroll} from "react-scroll";
 import FormHelperText from "@material-ui/core/FormHelperText";
-import HotelCard from "../../../components/HotelCard";
-import fetchUserAction from "../../../actions/userContextActions/fetchUserAction";
 import AvailabilityContext from "../../../contexts/availabilityContext";
 import fetchAvailableHotels from "../../../actions/availabilityContextActions/fetchAvailableHotels";
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles({
-    formControl: {
-        minWidth: 170,
-    },
     root: {
         display: 'flex',
         flexDirection: 'column',
@@ -58,28 +47,23 @@ const useStyles = makeStyles({
     },
     marginBottom12: {
         marginBottom: 12,
-    }
+    },
+    marginRight16: {
+        marginRight: 16,
+    },
 });
 
-/**
- * @return {boolean}
- */
+
 function AvailiabilityForm() {
     const classes = useStyles();
     const [cities, setCities] = useState([]);
     const {state, dispatch} = useContext(AvailabilityContext);
+    const history = useHistory();
 
     useEffect(() => {
-        async function fetchCities() {
-            try {
-                const response = await axios.get("/api/hotels/cities");
-                setCities(response.data);
-            } catch(error) {
-                console.log(error);
-                alert("Error fetching cities!");
-            }
-        }
-        fetchCities().then(() => console.log("fetched"));
+        axios.get("/api/hotels/cities")
+            .then(response => setCities(response.data))
+            .catch(error => console.log(error));
     }, [setCities]);
 
 
@@ -90,6 +74,8 @@ function AvailiabilityForm() {
                 errors.forEach((error) => {
                     setFieldError(error.field || "numberOfPeople", error.message);
                 })
+            } else {
+                history.push('/availability/hotels');
             }
         },
         initialValues: {
@@ -107,105 +93,14 @@ function AvailiabilityForm() {
         validationSchema: searchSchema,
     });
     return (
-        // <form onChange={handleChange} onBlur={handleBlur} onSubmit={handleSubmit}>
-        //     <Grid container spacing={3}>
-        //     <Grid item xs={12}>
-        //         <TextFieldWithError
-        //             required
-        //             id="numPeople"
-        //             name="numPeople"
-        //             label="Number of people"
-        //             fullWidth
-        //             autoComplete="shipping postal-code"
-        //             errorMessage={errors.numPeople}
-        //             error={touched.numPeople && !!errors.numPeople}
-        //         />
-        //     </Grid>
-        //     <Grid item xs={12} sm={6}>
-        //         <TextFieldWithError
-        //             required
-        //             id="country"
-        //             name="country"
-        //             name="country"
-        //             label="Country"
-        //             fullWidth
-        //             autoComplete="shipping country"
-        //             errorMessage={errors.country}
-        //             error={touched.country && !!errors.country}
-        //         />
-        //     </Grid>
-        //     <Grid item xs={12} sm={6}>
-        //         <FormControl required className={classes.formControl} error={touched.city && !!errors.city}>
-        //             <InputLabel id="demo-controlled-open-select-label">City</InputLabel>
-        //             <Select
-        //                 labelId="demo-controlled-open-select-label"
-        //                 id="city"
-        //                 name="city"
-        //                 // value={city}
-        //                 // onChange={handleChangeCity}
-        //                 native inputProps={{name: 'city'}}
-        //             >
-        //                 <option aria-label="None" value="" />
-        //                 {cities.map(city => {
-        //                     return (
-        //                         <option value={'city'}>{city}</option>
-        //                     );
-        //                 })}
-        //             </Select>
-        //             {touched.city && !!errors.city ?
-        //                 <FormHelperText error>{errors.city}</FormHelperText> : null }
-        //         </FormControl>
-        //     </Grid>
-        //     <Grid item xs={12} sm={6}>
-        //         <TextFieldWithError
-        //             required
-        //             id="fromDate"
-        //             name="fromDate"
-        //             label="From"
-        //             type="date"
-        //             // className={classes.textField}
-        //             InputLabelProps={{
-        //                 shrink: true,
-        //             }}
-        //             errorMessage={errors.fromDate}
-        //             error={touched.fromDate && !!errors.fromDate}
-        //         />
-        //     </Grid>
-        //     <Grid item xs={12} sm={6}>
-        //         <TextFieldWithError
-        //             required
-        //             id="toDate"
-        //             name="toDate"
-        //             label="To"
-        //             type="date"
-        //             // className={classes.textField}
-        //             InputLabelProps={{
-        //                 shrink: true,
-        //             }}
-        //             errorMessage={errors.toDate}
-        //             error={touched.toDate && !!errors.toDate}
-        //         />
-        //     </Grid>
-        //         <Scroll to="section-2" smooth={true}>
-        //             <Button
-        //                 disabled={!isValid}
-        //                 variant="contained"
-        //                 color="primary"
-        //                 type={'submit'}
-        //                 className={classes.button}
-        //             >
-        //                 {'Search'}
-        //             </Button>
-        //         </Scroll>
-        // </Grid>
         <form onChange={handleChange} onBlur={handleBlur} onSubmit={handleSubmit} className={classes.root}>
-            <TextFieldWithError name="numberOfPeople" label="Number of people" fullWidth
-                                errorMessage={errors.numPeople}
-                                error={touched.numPeople && !!errors.numPeople}
-                                className={classes.marginBottom12}
-            />
             <div className={`${classes.row} ${classes.marginBottom12}`}>
-                <FormControl required className={classes.formControl} error={touched.city && !!errors.city}>
+                <TextFieldWithError name="numberOfPeople" label="Number of people"
+                                    errorMessage={errors.numPeople} fullWidth
+                                    error={touched.numPeople && !!errors.numPeople}
+                                    className={classes.marginRight16}
+                />
+                <FormControl fullWidth className={classes.marginRight16} error={touched.city && !!errors.city}>
                     <InputLabel>City</InputLabel>
                     <Select native inputProps={{name: 'city'}}>
                         <option aria-label="None" value="" />
@@ -218,23 +113,20 @@ function AvailiabilityForm() {
                     {touched.city && !!errors.city ?
                         <FormHelperText error>{errors.city}</FormHelperText> : null }
                 </FormControl>
-                <TextFieldWithError label="From" type="date" name="checkInDate"
+            </div>
+            <div className={`${classes.row} ${classes.marginBottom12}`}>
+                <TextFieldWithError label="From" type="date" name="checkInDate" fullWidth
+                                    className={classes.marginRight16}
                                     InputLabelProps={{
                                         shrink: true,
                                     }} errorMessage={errors.fromDate} error={touched.fromDate && !!errors.fromDate} />
-                <TextFieldWithError label="To" type="date" name={"checkOutDate"}
+                <TextFieldWithError label="To" type="date" name={"checkOutDate"} fullWidth
+                                    className={classes.marginRight16}
                                     InputLabelProps={{
                                         shrink: true,
                                     }} errorMessage={errors.toDate} error={touched.toDate && !!errors.toDate}/>
             </div>
-
-            <Button
-                disabled={!isValid}
-                variant="contained"
-                color="primary"
-                type={'submit'}
-                className={classes.button}
-            >
+            <Button disabled={!isValid} variant="contained" color="primary" type={'submit'} className={classes.button}>
                 Search
             </Button>
         </form>

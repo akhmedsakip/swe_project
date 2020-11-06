@@ -34,7 +34,7 @@ const DesktopMenu = ({openAuthDialog}) => {
         <Link to="/about" className={classes.link}>
             <Button color="inherit">About Us</Button>
         </Link>
-        <Link to="/searchFirst" className={classes.link}>
+        <Link to="/availability" className={classes.link}>
             <Button color="inherit">Search</Button>
         </Link>
         {

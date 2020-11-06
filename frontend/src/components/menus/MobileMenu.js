@@ -47,6 +47,11 @@ const MobileMenu = ({openAuthDialog, signOut}) => {
                     About Us
                 </Link>
             </MenuItem>
+            <MenuItem onClick={() => setOpen(false)}>
+                <Link to="/availability" className={classes.link}>
+                    Search
+                </Link>
+            </MenuItem>
             {
                 state.loggedIn ?
                     <MenuItem onClick={() => history.push('/profile')}>
