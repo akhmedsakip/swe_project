@@ -1,14 +1,21 @@
-import React, {useState} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import TextField from "@material-ui/core/TextField";
+import {makeStyles} from "@material-ui/core/styles";
 
+const useStyles = makeStyles({
+    marginBottom8: {
+        marginBottom: 8
+    }
+});
 
 function TextFieldWithError({errorMessage, ...other}) {
-    return (<React.Fragment>
+    const classes = useStyles();
+    return (<>
         <TextField {...other}/>
-        {other.error ? <FormHelperText error>{errorMessage}</FormHelperText> : null}
-    </React.Fragment>)
+        {other.error ? <FormHelperText className={classes.marginBottom8} error>{errorMessage}</FormHelperText> : null}
+    </>)
 }
 
 TextFieldWithError.propTypes = {

@@ -1,14 +1,16 @@
-import { Avatar, IconButton, Menu, MenuItem, useMediaQuery } from '@material-ui/core';
+import { useMediaQuery } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import React, {useContext, useEffect, useState} from 'react';
+import { Link } from 'react-router-dom';
 import AuthenticationDialog from "./AuthenticationDialog";
 import useTheme from '@material-ui/core/styles/useTheme';
-import MenuIcon from '@material-ui/icons/Menu';
+import DesktopMenu from "./menus/DesktopMenu";
+import MobileMenu from "./menus/MobileMenu";
+import axios from "axios";
+import UserContext from "../contexts/userContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,32 +31,41 @@ const useStyles = makeStyles((theme) => ({
     color: 'black',
     textDecoration: 'none',
   },
-  loginButton: {
-    color: 'black',
-    textDecoration: 'none',
-    fontWeight: 'bold',
-  },
   menuIcon: {
     color: 'black'
   }
 }));
 
 export default function ButtonAppBar() {
+  const {dispatch} = useContext(UserContext);
   const classes = useStyles();
-  const history = useHistory();
+  const {state} = useContext(UserContext);
+  const {changedPassword} = state;
 
   const [open, setOpen] = useState(false);
-  const [anchorEl, setAcnhorEl] = useState(false);
 
   const theme = useTheme();
   const isMobileScreen = useMediaQuery(theme.breakpoints.down('xs'));
 
-  const handleClickOpen = () => {
+  const openAuthDialog = () => {
     setOpen(true);
   };
 
-  const handleMenuClick = () => {
-    setAcnhorEl(!anchorEl);
+  useEffect(() => {
+    if(changedPassword) {
+      setOpen(true);
+    }
+  }, [changedPassword]);
+
+  const signOut = () => {
+    axios.post("/api/logout")
+        .then(() => {
+          dispatch({type: "signOut"});
+        })
+        .catch((err) => {
+          alert("Server did not respond");
+          console.log(err);
+        })
   }
 
   return (
@@ -71,65 +82,8 @@ export default function ButtonAppBar() {
           <div className={classes.title}>
           </div>
 
-          {!isMobileScreen ?
-            <div>
-              <Link to="/" className={classes.link} exact>
-                <Button color="inherit">Home</Button>
-              </Link>
-              <Link to="/hotels" className={classes.link}>
-                <Button color="inherit">Hotels</Button>
-              </Link>
-              <Link to="/about" className={classes.link}>
-                <Button color="inherit">About Us</Button>
-              </Link>
-              <Button color="inherit" className={classes.loginButton} onClick={handleClickOpen}>Login</Button>
-              <Button onClick={() => history.push('/profile')}>
-                <Avatar alt="Profile" src='https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png' />
-              </Button>
-            </div>
-
-            : <div>
-              <IconButton edge="start" onClick={handleMenuClick} className={classes.menuButton} color="inherit" aria-label="menu">
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                getContentAnchorEl={null}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right"
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right"
-                }}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleMenuClick}
-              >
-                <MenuItem onClick={handleMenuClick}>
-                  <Link to="/" className={classes.link}>
-                    Home
-                  </Link>
-                </MenuItem>
-                <MenuItem onClick={handleMenuClick}>
-                  <Link to="/hotels" className={classes.link}>
-                    Hotels
-                  </Link>
-                </MenuItem>
-                <MenuItem onClick={handleMenuClick}>
-                  <Link to="/about" className={classes.link}>
-                    About Us
-                  </Link>
-                </MenuItem>
-                <MenuItem onClick={handleClickOpen}>
-                  Login
-                </MenuItem>
-              </Menu>
-
-            </div>
-
+          {!isMobileScreen ? <DesktopMenu openAuthDialog={openAuthDialog} signOut={signOut} />
+            : <MobileMenu openAuthDialog={openAuthDialog} signOut={signOut} />
           }
         </Toolbar>
       </AppBar>

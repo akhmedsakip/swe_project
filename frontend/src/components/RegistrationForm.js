@@ -1,15 +1,16 @@
-import {DialogContent, DialogContentText, TextField} from "@material-ui/core";
-import React, {useState, useEffect} from "react";
+import {DialogContent} from "@material-ui/core";
+import React, {useState, useContext} from "react";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
-
 import {useFormik} from "formik";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import TextFieldWithError from "../shared/TextFieldWithError";
 import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
 import {registrationSchema} from "../utils/validationSchemas";
+import axios from "axios";
+import AuthenticationContext from "../contexts/authenticationContext";
 
 const useStyles = makeStyles({
     marginTop16: {
@@ -18,36 +19,62 @@ const useStyles = makeStyles({
 });
 
 function RegistrationForm() {
-    const classes =useStyles();
-    const {handleSubmit, handleBlur, handleChange, values, touched, errors, isValid } = useFormik({
+    const { setIsRegistration, setIsRegistered } = useContext(AuthenticationContext);
+    const classes = useStyles();
+    const {handleSubmit, handleBlur, handleChange, values, touched, errors, isValid, setFieldError} = useFormik({
         initialValues: {
-          firstName: "",
-          lastName: "",
-          email: "",
-          password: "",
-          dateOfBirth: "",
-          gender: "",
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            passwordConfirm: "",
+            dateOfBirth: "",
+            gender: "",
         },
         initialErrors: {
             firstName: "",
             lastName: "",
             email: "",
             password: "",
+            passwordConfirm: "",
             dateOfBirth: "",
             gender: "",
         },
         validationSchema: registrationSchema,
-        onSubmit: () => console.log("hello"),
+        onSubmit: () => {
+            axios.post("/api/register", {
+                firstName: values.firstName,
+                lastName: values.lastName,
+                email: values.email,
+                password: values.password,
+                dateOfBirth: values.dateOfBirth,
+                gender: values.gender
+            })
+            .then(() => {
+                setIsRegistration(false);
+                setIsRegistered(true);
+            })
+            .catch((err) => {
+                if(err.response.data && err.response.data instanceof Array) {
+                    err.response.data.forEach((error) => {
+                        if(error.message) {
+                            setFieldError(error.field || "email", error.message);
+                        }
+                    })
+                } else {
+                    setFieldError("email", "Server error");
+                }
+            })
+        },
     });
     const [dataFocused, setDataFocused] = useState(false);
 
-
     return (
-        <DialogContent>
+        <>
             <form onSubmit={handleSubmit} onBlur={handleBlur} onChange={handleChange}>
                 <TextFieldWithError
-                    errorMessage={touched.firstName && errors.firstName}
                     error={touched.firstName && !!errors.firstName}
+                    errorMessage={errors.firstName}
                     margin="dense"
                     name="firstName"
                     label="First Name"
@@ -82,6 +109,15 @@ function RegistrationForm() {
                     fullWidth>
                 </TextFieldWithError>
                 <TextFieldWithError
+                    error={touched.passwordConfirm && !!errors.passwordConfirm}
+                    errorMessage={errors.passwordConfirm}
+                    margin="dense"
+                    name="passwordConfirm"
+                    label="Password Confirmation"
+                    type="password"
+                    fullWidth>
+                </TextFieldWithError>
+                <TextFieldWithError
                     error={touched.dateOfBirth && !!errors.dateOfBirth}
                     errorMessage={errors.dateOfBirth}
                     margin="dense"
@@ -107,7 +143,7 @@ function RegistrationForm() {
                     Register
                 </Button>
             </form>
-        </DialogContent>
+        </>
     );
 }
 

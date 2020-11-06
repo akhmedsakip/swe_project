@@ -1,27 +1,33 @@
 package com.example.sweproj.services;
 
 import com.example.sweproj.models.User;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
-    private final UserDataAccessService userDataAccessService;
-    private final PasswordEncoder encoder;
+public class UserService implements UserDetailsService {
+    @Autowired
+    private UserDataAccessService userDataAccessService;
 
-    UserService(UserDataAccessService userDataAccessService) {
-        this.userDataAccessService = userDataAccessService;
-        this.encoder = new BCryptPasswordEncoder();
-    }
+    UserService() { }
 
     public int addUser(User user) {
-        user.encodePassword(this.encoder.encode(user.password));
         return userDataAccessService.insertUser(user);
     }
 
-    public boolean isPasswordCorrect(User user) {
-        String password = userDataAccessService.selectPasswordByEmail(user);
-        return this.encoder.matches(user.password, password);
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userDataAccessService.loadUserByUsername(email);
+    }
+
+    public int editUser(User newUser) {
+        return userDataAccessService.editUser(newUser);
+    }
+
+    public int changePassword(String newPasswordEncoded) {
+        return userDataAccessService.changePassword(newPasswordEncoded);
     }
 }

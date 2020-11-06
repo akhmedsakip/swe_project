@@ -1,4 +1,4 @@
-import { Collapse, IconButton, makeStyles } from '@material-ui/core';
+import { Collapse, IconButton, makeStyles, Typography } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Link as Scroll } from 'react-scroll';
@@ -40,9 +40,20 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-around'
   },
+  section2: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: '100vh',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover'
+  },
   info: {
-    
-  }
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    textAlign: 'center',
+    color: 'white',
+    width: '80%',
+  },
 }))
 
 function Home() {
@@ -52,7 +63,10 @@ function Home() {
 
   useEffect(() => {
     setChecked(true);
-  }, [])
+  }, []);
+
+  const loremIpsum1 = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).";
+  const loremIpsum2 = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
 
   return (
     <div>
@@ -68,18 +82,23 @@ function Home() {
           </Scroll>
         </Collapse>
       </div>
-      <div id="section-2" className={classes.root + " " + classes.bg} title="section-1">
+      <div id="section-2" className={classes.section2 + " " + classes.bg} title="section-1">
         <div className={classes.info}>
-          This is section
+          <Typography style={{fontSize: '3.5vmin'}}>
+            {loremIpsum1 + loremIpsum2}
+          </Typography>
         </div>
       </div>
       <div className={classes.bottomBar}>
         <h3 style={{ fontFamily: 'Staatliches' }}>
           Amita hotels
         </h3>
-        <div>
-          best hotels
-        </div>
+        <h3 style={{ fontFamily: 'Staatliches' }}>
+          +7 777 654 32 10
+        </h3>
+        <h3 style={{ fontFamily: 'Staatliches' }}>
+          Almaty, Kazakhstan
+        </h3>
       </div>
     </div>
   )

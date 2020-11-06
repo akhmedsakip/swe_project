@@ -1,21 +1,38 @@
-import {DialogContent} from "@material-ui/core";
-import React from "react";
+import {DialogContent, FormHelperText} from "@material-ui/core";
+import React, {useContext, useEffect, useState} from "react";
 import {useFormik} from "formik";
 import TextFieldWithError from "../shared/TextFieldWithError";
 import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
 import {loginSchema} from "../utils/validationSchemas";
+import AuthenticationContext from "../contexts/authenticationContext";
+import loginAction from "../actions/userContextActions/loginAction";
+import UserContext from "../contexts/userContext";
 
 const useStyles = makeStyles({
     marginTop16: {
         marginTop: 16,
+    },
+    success: {
+        color: "green"
     }
 });
 
 function LoginForm() {
+    const {dispatch, state} = useContext(UserContext);
+    const { isRegistered, closeAuthDialog } = useContext(AuthenticationContext);
+    const [failedLogin, setFailedLogin] = useState(false);
+
     const classes = useStyles();
-    const {handleBlur, handleChange, handleSubmit, errors, touched, isValid} = useFormik({
-        onSubmit: () => console.log("helloworld"),
+    const {handleBlur, handleChange, values, handleSubmit, errors, touched, isValid} = useFormik({
+        onSubmit: async () => {
+            const loggedIn = await loginAction(dispatch, values.email, values.password);
+            if(loggedIn) {
+                closeAuthDialog();
+            } else {
+                setFailedLogin(true);
+            }
+        },
         initialValues: {
             email: "",
             password: "",
@@ -26,8 +43,16 @@ function LoginForm() {
         },
         validationSchema: loginSchema,
     });
-    return (
-        <DialogContent>
+    return (<>
+            {
+                failedLogin ? <FormHelperText error>Email or password is incorrect</FormHelperText> : null
+            }
+            {
+                isRegistered ? <FormHelperText className={classes.success}>Successfully registered</FormHelperText> : null
+            }
+            {
+                state.changedPassword ? <FormHelperText className={classes.success}>Password successfully changed</FormHelperText> : null
+            }
             <form onChange={handleChange} onBlur={handleBlur} onSubmit={handleSubmit}>
                 <TextFieldWithError
                     margin="dense"
@@ -43,6 +68,7 @@ function LoginForm() {
                     id="password"
                     label="Password"
                     type="password"
+                    autoComplete="on"
                     fullWidth
                     error={touched.password && !!errors.password}
                     errorMessage={errors.email}
@@ -52,8 +78,9 @@ function LoginForm() {
                     Login
                 </Button>
             </form>
-        </DialogContent>
+        </>
     );
 }
+
 
 export default LoginForm;
