@@ -58,7 +58,7 @@ function AvailabilityContent() {
         <div className={classes.root}>
             <Paper className={`${classes.formContainer} ${classes.marginBottom32}`}>
                 <Typography variant="h5" className={classes.marginBottom10}>
-                    Booking
+                    Booking a room
                 </Typography>
                 <AvailabilityForm />
             </Paper>
