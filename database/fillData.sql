@@ -257,3 +257,28 @@ VALUE ('Card');
 INSERT INTO PAYMENTMETHOD (Name)
 VALUE ('Cash');
 
+INSERT INTO SEASON (Name, StartDate, EndDate)
+VALUES (
+        'New Year',
+        '2000-01-01',
+        '2000-01-07'
+       );
+
+INSERT INTO SEASON (Name, StartDate, EndDate)
+VALUES (
+        'New Year',
+        '2000-01-01',
+        '2000-01-07'
+       );
+
+INSERT INTO SEASON (Name, StartDate, EndDate)
+VALUES (
+        'Nauryz',
+        '2000-03-21',
+        '2000-03-23'
+       );
+
+INSERT INTO SEASON (Name)
+VALUES (
+        'Default'
+       );

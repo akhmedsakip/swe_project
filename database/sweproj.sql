@@ -131,10 +131,10 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `sweproj`.`SEASON` ;
 
 CREATE TABLE IF NOT EXISTS `sweproj`.`SEASON` (
-  `SeasonID` INT NOT NULL,
+  `SeasonID` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(45) NOT NULL,
-  `StartDate` DATE NOT NULL,
-  `EndDate` DATE NOT NULL,
+  `StartDate` DATE NULL,
+  `EndDate` DATE NULL,
   PRIMARY KEY (`SeasonID`))
 ENGINE = InnoDB;
 
