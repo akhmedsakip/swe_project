@@ -44,6 +44,7 @@ public class RoomTypeDataAccessService {
                 "INNER JOIN room_type ON room_type.HotelID = room.HotelID AND room.RoomTypeName = room_type.Name\n" +
                 "LEFT JOIN order_details OD on room.HotelID = OD.RoomHotelID and room.RoomNumber = OD.RoomNumber\n" +
                 "LEFT JOIN `order` O ON hotel.HotelID = O.HotelID and OD.OrderID = O.OrderID\n" +
+
                 "WHERE (O.OrderID IS NULL\n" +
                 "    OR NOT\n" +
                 "       (O.CheckInDate BETWEEN ? AND ?\n" +
