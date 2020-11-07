@@ -1,5 +1,6 @@
 package com.example.sweproj.controllers;
 
+import com.example.sweproj.models.ReservationDetailsGroup;
 import com.example.sweproj.models.ReservationRequest;
 import com.example.sweproj.models.AvailableRoomTypesGroup;
 import com.example.sweproj.models.RoomType;
@@ -71,6 +72,23 @@ public class RoomTypeController {
         } catch(Exception error) {
             error.printStackTrace();
             serverErrors.add(new Message("Error fetching available room types"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+    }
+
+    @GetMapping("/calculatePrice")
+    ResponseEntity<String> getTotalPrice(ReservationRequest info) {
+        Gson gson = new Gson();
+        List<Message> serverErrors = validationUtil.validate(info, ReservationDetailsGroup.class);
+        if(serverErrors.size() > 0) {
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+        try {
+            int totalPrice = this.roomTypeService.getTotalPrice(info);
+            return ResponseEntity.ok().body(gson.toJson(totalPrice));
+        } catch(Exception error) {
+            error.printStackTrace();
+            serverErrors.add(new Message("Error calculating room price"));
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
     }
