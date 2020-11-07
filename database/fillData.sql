@@ -90,7 +90,7 @@ VALUES ('Rixos Borovoe',
         'https://pix10.agoda.net/hotelImages/401/401257/401257_15072611530033033820.jpg?s=1024x768',
         4);
 
-INSERT INTO roomtype (hotelid,
+INSERT INTO room_type (hotelid,
                       name,
                       size,
                       basepriceperday,
@@ -105,7 +105,7 @@ VALUES (1,
         'https://cf.bstatic.com/images/hotel/max1024x768/426/42696338.jpg',
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
 
-INSERT INTO roomtype (hotelid,
+INSERT INTO room_type (hotelid,
                       name,
                       size,
                       basepriceperday,
@@ -120,7 +120,7 @@ VALUES (1,
         'https://cf.bstatic.com/images/hotel/max1024x768/426/42696356.jpg',
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
 
-INSERT INTO roomtype (hotelid,
+INSERT INTO room_type (hotelid,
                       name,
                       size,
                       basepriceperday,
@@ -135,7 +135,7 @@ VALUES (2,
         'https://cf.bstatic.com/images/hotel/max1024x768/426/42696338.jpg',
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
 
-INSERT INTO roomtype (hotelid,
+INSERT INTO room_type (hotelid,
                       name,
                       size,
                       basepriceperday,
@@ -150,7 +150,7 @@ VALUES (2,
         'https://cf.bstatic.com/images/hotel/max1024x768/426/42696356.jpg',
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
 
-INSERT INTO roomtype (hotelid,
+INSERT INTO room_type (hotelid,
                       name,
                       size,
                       basepriceperday,
@@ -165,7 +165,7 @@ VALUES (3,
         'https://cf.bstatic.com/images/hotel/max1024x768/426/42696338.jpg',
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
 
-INSERT INTO roomtype (hotelid,
+INSERT INTO room_type (hotelid,
                       name,
                       size,
                       basepriceperday,
@@ -180,7 +180,7 @@ VALUES (3,
         'https://cf.bstatic.com/images/hotel/max1024x768/426/42696356.jpg',
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
 
-INSERT INTO roomtype (hotelid,
+INSERT INTO room_type (hotelid,
                       name,
                       size,
                       basepriceperday,
@@ -195,7 +195,7 @@ VALUES (4,
         'https://cf.bstatic.com/images/hotel/max1024x768/426/42696338.jpg',
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
 
-INSERT INTO roomtype (hotelid,
+INSERT INTO room_type (hotelid,
                       name,
                       size,
                       basepriceperday,
@@ -211,41 +211,41 @@ VALUES (4,
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
 
 
-INSERT INTO orderstatus (name)
+INSERT INTO order_status (name)
     VALUE ('Reserved');
 
-INSERT INTO paymentmethod (name)
+INSERT INTO payment_method (name)
     VALUE ('Card');
 
-INSERT INTO paymentmethod (name)
+INSERT INTO payment_method (name)
     VALUE ('Cash');
 
-INSERT INTO dayofweek(day) VALUE ('Sunday');
-INSERT INTO dayofweek(day) VALUE ('Monday');
-INSERT INTO dayofweek(day) VALUE ('Tuesday');
-INSERT INTO dayofweek(day) VALUE ('Wednesday');
-INSERT INTO dayofweek(day) VALUE ('Thursday');
-INSERT INTO dayofweek(day) VALUE ('Friday');
-INSERT INTO dayofweek(day) VALUE ('Saturday');
+INSERT INTO day_of_week(day) VALUE ('Sunday');
+INSERT INTO day_of_week(day) VALUE ('Monday');
+INSERT INTO day_of_week(day) VALUE ('Tuesday');
+INSERT INTO day_of_week(day) VALUE ('Wednesday');
+INSERT INTO day_of_week(day) VALUE ('Thursday');
+INSERT INTO day_of_week(day) VALUE ('Friday');
+INSERT INTO day_of_week(day) VALUE ('Saturday');
 
 INSERT INTO season (name, startdate, enddate)
 VALUES ('New Year',
         '2021-01-01',
         '2021-01-07');
 
-INSERT INTO season_has_dayofweek (seasonid, dayofweek, coefficient)
+INSERT INTO season_has_day_of_week (seasonid, dayofweek, coefficient)
 VALUES (1, 'Sunday', 1.1);
-INSERT INTO season_has_dayofweek (seasonid, dayofweek, coefficient)
+INSERT INTO season_has_day_of_week (seasonid, day, coefficient)
 VALUES (1, 'Monday', 1.12);
-INSERT INTO season_has_dayofweek (seasonid, dayofweek, coefficient)
+INSERT INTO season_has_day_of_week (seasonid, day, coefficient)
 VALUES (1, 'Tuesday', 1.13);
-INSERT INTO season_has_dayofweek (seasonid, dayofweek, coefficient)
+INSERT INTO season_has_day_of_week (seasonid, day_of_week, coefficient)
 VALUES (1, 'Wednesday', 1.14);
-INSERT INTO season_has_dayofweek (seasonid, dayofweek, coefficient)
+INSERT INTO season_has_day_of_week (seasonid, day_of_week, coefficient)
 VALUES (1, 'Thursday', 1.08);
-INSERT INTO season_has_dayofweek (seasonid, dayofweek, coefficient)
+INSERT INTO season_has_day_of_week (seasonid, day_of_week, coefficient)
 VALUES (1, 'Friday', 1.15);
-INSERT INTO season_has_dayofweek (seasonid, dayofweek, coefficient)
+INSERT INTO season_has_day_of_week (seasonid, day_of_week, coefficient)
 VALUES (1, 'Saturday', 1.16);
 
 INSERT INTO season (name, startdate, enddate)
@@ -253,50 +253,50 @@ VALUES ('Summer',
         '2021-06-01',
         '2021-08-31');
 
-INSERT INTO season_has_dayofweek (seasonid, dayofweek, coefficient)
+INSERT INTO season_has_day_of_week (seasonid, day_of_week, coefficient)
 VALUES (2, 'Sunday', 1.01);
-INSERT INTO season_has_dayofweek (seasonid, dayofweek, coefficient)
+INSERT INTO season_has_day_of_week (seasonid, day_of_week, coefficient)
 VALUES (2, 'Monday', 1.02);
-INSERT INTO season_has_dayofweek (seasonid, dayofweek, coefficient)
+INSERT INTO season_has_day_of_week (seasonid, day_of_week, coefficient)
 VALUES (2, 'Tuesday', 1.03);
-INSERT INTO season_has_dayofweek (seasonid, dayofweek, coefficient)
+INSERT INTO season_has_day_of_week (seasonid, day_of_week, coefficient)
 VALUES (2, 'Wednesday', 1.04);
-INSERT INTO season_has_dayofweek (seasonid, dayofweek, coefficient)
+INSERT INTO season_has_day_of_week (seasonid, day_of_week, coefficient)
 VALUES (2, 'Thursday', 1.08);
-INSERT INTO season_has_dayofweek (seasonid, dayofweek, coefficient)
+INSERT INTO season_has_day_of_week (seasonid, day_of_week, coefficient)
 VALUES (2, 'Friday', 1.1);
-INSERT INTO season_has_dayofweek (seasonid, dayofweek, coefficient)
+INSERT INTO season_has_day_of_week (seasonid, day_of_week, coefficient)
 VALUES (2, 'Saturday', 1.11);
 
-INSERT INTO `hotel_works during_season` (hotelid, seasonid)
+INSERT INTO `hotel_works_during_season` (hotelid, seasonid)
 VALUES (1,
         1);
 
-INSERT INTO `hotel_works during_season` (hotelid, seasonid)
+INSERT INTO `hotel_works_during_season` (hotelid, seasonid)
 VALUES (1,
         2);
 
-INSERT INTO `hotel_works during_season` (hotelid, seasonid)
+INSERT INTO `hotel_works_during_season` (hotelid, seasonid)
 VALUES (2,
         1);
 
-INSERT INTO `hotel_works during_season` (hotelid, seasonid)
+INSERT INTO `hotel_works_during_season` (hotelid, seasonid)
 VALUES (2,
         2);
 
-INSERT INTO `hotel_works during_season` (hotelid, seasonid)
+INSERT INTO `hotel_works_during_season` (hotelid, seasonid)
 VALUES (3,
         1);
 
-INSERT INTO `hotel_works during_season` (hotelid, seasonid)
+INSERT INTO `hotel_works_during_season` (hotelid, seasonid)
 VALUES (3,
         2);
 
-INSERT INTO `hotel_works during_season` (hotelid, seasonid)
+INSERT INTO `hotel_works_during_season` (hotelid, seasonid)
 VALUES (4,
         1);
 
-INSERT INTO `hotel_works during_season` (hotelid, seasonid)
+INSERT INTO `hotel_works_during_season` (hotelid, seasonid)
 VALUES (4,
         2);
 
