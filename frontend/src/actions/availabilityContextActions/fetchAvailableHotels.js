@@ -1,13 +1,13 @@
 import axios from "axios";
+import {AVAILABILITY_SET_HOTELS, AVAILABILITY_SET_PARAMS} from "../../store/availability/availabilityActionTypes";
 
 const fetchAvailableHotels = async (dispatch, values) => {
     try {
-        console.log(values);
         const response = await axios.get("/api/hotels/availableHotels", {params: values});
-        dispatch({type: 'setParams', payload: values});
-        dispatch({type: 'setHotels', payload: response.data});
+        dispatch({type: AVAILABILITY_SET_PARAMS, payload: values});
+        dispatch({type: AVAILABILITY_SET_HOTELS, payload: response.data});
     } catch(error) {
-        return error.response.data;
+        throw error;
     }
 };
 

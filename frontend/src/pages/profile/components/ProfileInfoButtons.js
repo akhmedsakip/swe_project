@@ -4,24 +4,6 @@ import EditIcon from "@material-ui/icons/Edit";
 import {makeStyles} from "@material-ui/core/styles";
 import ProfileContext from "../../../contexts/ProfileContext";
 
-const useStyles = makeStyles({
-    row: {
-        display: 'flex',
-        flexDirection: 'row',
-        width: '100%',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-    },
-    button: {
-        fontSize: ({isMobileScreen}) => isMobileScreen ? 15 : 10,
-        width: ({isMobileScreen}) => isMobileScreen ? '70%' : '40%',
-        minWidth: 100,
-    },
-    marginBottom12: {
-        marginBottom: 12,
-    }
-});
-
 const ProfileInfoButtons = () => {
     const classes = useStyles();
     const {editing, setEditing, formik, setChangePassword} = useContext(ProfileContext);
@@ -62,3 +44,21 @@ const ProfileInfoButtons = () => {
 
 export default ProfileInfoButtons;
 
+
+const useStyles = makeStyles({
+    row: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+    },
+    button: {
+        fontSize: ({isMobileScreen}) => isMobileScreen ? 15 : 10,
+        width: ({isMobileScreen}) => isMobileScreen ? '70%' : '40%',
+        minWidth: 100,
+    },
+    marginBottom12: {
+        marginBottom: 12,
+    }
+});

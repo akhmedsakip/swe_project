@@ -12,7 +12,7 @@ function userReducer(state, action) {
         case USER_SIGN_OUT:
             return {userInfo: null, loggedIn: false};
         default:
-            return initialUserState;
+            return state;
     }
 }
 

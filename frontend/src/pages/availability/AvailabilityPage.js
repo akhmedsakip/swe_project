@@ -44,14 +44,7 @@ const useStyles = makeStyles((theme) => ({
         padding: 16,
     }
 }));
-
-export default function AvailabilityPage(){
-    return <AvailabilityContextProvider>
-        <AvailabilityContent/>
-    </AvailabilityContextProvider>
-}
-
-function AvailabilityContent() {
+export default function AvailabilityPage() {
     const classes = useStyles();
 
     return (

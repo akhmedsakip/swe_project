@@ -28,11 +28,11 @@ const ChangePasswordForm = ({closeDialog}) => {
             newPasswordConfirm: '',
         },
         onSubmit: async () => {
-            const errors = await changePasswordAction(values, dispatch);
-            if(errors && errors.length) {
-                errors.forEach((error) => setFieldError(error.field || "oldPassword", error.message))
-            } else {
-                closeDialog();
+            try {
+                await changePasswordAction(values, dispatch);
+            } catch(error) {
+                const serverErrors = error.response.data;
+                serverErrors?.forEach((error) => setFieldError(error.field || "oldPassword", error.message))
             }
         },
         validationSchema: changePasswordSchema,

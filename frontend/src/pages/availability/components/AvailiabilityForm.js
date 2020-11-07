@@ -12,6 +12,8 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import AvailabilityContext from "../../../contexts/availabilityContext";
 import fetchAvailableHotels from "../../../actions/availabilityContextActions/fetchAvailableHotels";
 import { useHistory } from 'react-router-dom';
+import fetchCitiesAction from "../../../actions/availabilityContextActions/fetchCitiesAction";
+import AppContext from "../../../store/AppContext";
 
 const useStyles = makeStyles({
     root: {
@@ -56,27 +58,27 @@ const useStyles = makeStyles({
 
 function AvailiabilityForm() {
     const classes = useStyles();
-    const [cities, setCities] = useState([]);
-    const {state, dispatch} = useContext(AvailabilityContext);
+    const {state, dispatch} = useContext(AppContext);
+    const {cities} = state.availability;
     const history = useHistory();
 
     useEffect(() => {
-        axios.get("/api/hotels/cities")
-            .then(response => setCities(response.data))
-            .catch(error => console.log(error));
-    }, [setCities]);
+        fetchCitiesAction(dispatch).catch((error) => alert(error));
+    }, []);
 
 
     const {handleBlur, handleChange, values, handleSubmit, errors, touched, isValid, setFieldError} = useFormik({
         onSubmit: async () => {
-            const errors = await fetchAvailableHotels(dispatch, values);
-            if(errors && errors.length) {
-                errors.forEach((error) => {
+            try {
+                await fetchAvailableHotels(dispatch, values);
+                history.push('/availability/hotels');
+            } catch(error) {
+                const serverErrors = error.response.data;
+                serverErrors.forEach((error) => {
                     setFieldError(error.field || "numberOfPeople", error.message);
                 })
-            } else {
-                history.push('/availability/hotels');
             }
+
         },
         initialValues: {
             numberOfPeople: 0,

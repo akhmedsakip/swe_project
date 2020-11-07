@@ -7,10 +7,10 @@ const fetchUserAction = async (dispatch) => {
         if(data['email']) {
             return dispatch({type: USER_LOG_IN, payload: data});
         }
-    } catch (e) {
-        console.log(e);
+    } catch (error) {
+        dispatch({type: USER_SIGN_OUT});
+        throw error;
     }
-    dispatch({type: USER_SIGN_OUT});
 };
 
 export default fetchUserAction;

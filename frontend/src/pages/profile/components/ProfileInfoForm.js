@@ -22,21 +22,30 @@ function ProfileInfoForm() {
   const theme = useTheme();
   const isMobileScreen = useMediaQuery(theme.breakpoints.down('xs'));
   const classes = useStyles({isMobileScreen});
+
+  async function onSubmit() {
+    try {
+      await editProfileAction(values, dispatch);
+      setSuccess(true);
+      setEditing(false);
+    } catch(error) {
+      const serverErrors = error.response.message;
+      setSuccess(false);
+      if(serverErrors.length) {
+        setErrorMessage(serverErrors[0].message);
+      } else {
+        setErrorMessage('Server error')
+      }
+    }
+
+  }
+
   const formik = useFormik({
     initialValues: userInfo,
     initialErrors: Object.fromEntries(Object.entries(userInfo).map(([key]) => [key, ""])),
     validationSchema: editInfoSchema,
     enableReinitialize: true,
-    onSubmit: async () => {
-      const errors = await editProfileAction(values, dispatch);
-      if(errors && errors.length) {
-        setSuccess(false);
-        setErrorMessage(errors[0].message);
-      } else {
-        setSuccess(true);
-        setEditing(false);
-      }
-    }
+    onSubmit
   });
   const {handleSubmit, values} = formik;
   const imageURL = "https://miro.medium.com/max/2048/0*0fClPmIScV5pTLoE.jpg";

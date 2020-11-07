@@ -1,6 +1,6 @@
 package com.example.sweproj.controllers;
 
-import com.example.sweproj.models.AvailableEntitiesRequest;
+import com.example.sweproj.models.ReservationRequest;
 import com.example.sweproj.models.AvailableHotelsGroup;
 import com.example.sweproj.models.Hotel;
 import com.example.sweproj.services.HotelService;
@@ -58,7 +58,7 @@ public class HotelController {
     }
 
     @GetMapping("/availableHotels")
-    ResponseEntity<String> getAvailableHotels(AvailableEntitiesRequest info) {
+    ResponseEntity<String> getAvailableHotels(ReservationRequest info) {
         Gson gson = new Gson();
         List<Message> serverErrors = validationUtil.validate(info, AvailableHotelsGroup.class);
         if(serverErrors.size() > 0) {

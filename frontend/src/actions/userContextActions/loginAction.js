@@ -11,9 +11,8 @@ const loginAction = async(dispatch, email, password) => {
         });
         dispatch({type: AUTH_CLOSE_DIALOG});
         await fetchUserAction(dispatch);
-    } catch(e) {
-        dispatch({type: USER_SIGN_OUT});
-        return e.response.data;
+    } catch(error) {
+        throw error;
     }
 };
 

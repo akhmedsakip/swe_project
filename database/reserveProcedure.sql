@@ -13,7 +13,6 @@ BEGIN
         ROLLBACK;
     END;
 
-    SET _personId = 0;
     SET _roomNumber = NULL;
 
     START TRANSACTION;
@@ -21,7 +20,7 @@ BEGIN
         INNER JOIN person ON person.PersonID = GuestID
         WHERE person.PhoneNumber = _phoneNumber LIMIT 1;
 
-    IF _personId < 1 THEN
+    IF _personId IS NULL THEN
         INSERT INTO person (Gender, FirstName, LastName, PhoneNumber) VALUES (
         _gender,
         _firstName,

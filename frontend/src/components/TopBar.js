@@ -5,7 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import AuthenticationDialog from "./AuthenticationDialog";
+import AuthenticationDialog from "../pages/auth/AuthenticationDialog";
 import useTheme from '@material-ui/core/styles/useTheme';
 import DesktopMenu from "./menus/DesktopMenu";
 import MobileMenu from "./menus/MobileMenu";

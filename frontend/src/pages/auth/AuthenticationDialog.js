@@ -5,13 +5,13 @@ import LoginForm from "./LoginForm";
 import RegistrationForm from "./RegistrationForm";
 import {makeStyles} from "@material-ui/core/styles";
 import DialogContent from "@material-ui/core/DialogContent";
-import AppContext from "../store/AppContext";
+import AppContext from "../../store/AppContext";
 import {
     AUTH_CLOSE_DIALOG,
     AUTH_OPEN_DIALOG,
     AUTH_SET_LOGIN,
     AUTH_SET_REGISTRATION
-} from "../store/auth/authActionTypes";
+} from "../../store/auth/authActionTypes";
 
 const useStyles = makeStyles({
     root: {

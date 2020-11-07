@@ -18,7 +18,7 @@ function authReducer(state, action) {
         case AUTH_OPEN_DIALOG:
             return {...state, isOpened: true};
         case AUTH_CLOSE_DIALOG:
-            return {...state, isOpened: false, isRegistration: false};
+            return {...state, isOpened: false, isRegistration: false, loginMessage: ""};
         case AUTH_SET_REGISTRATION:
             return {...state, isRegistration: true};
         case AUTH_SET_LOGIN:
@@ -26,7 +26,7 @@ function authReducer(state, action) {
         case AUTH_SET_LOGIN_MESSAGE:
             return {...state, loginMessage: action.payload};
         default:
-            return initialAuthState;
+            return state;
     }
 }
 

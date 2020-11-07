@@ -1,4 +1,4 @@
-import React, {useRef, useState, useContext} from "react";
+import React, {useRef, useState, useContext, useEffect} from "react";
 import {IconButton, Menu, MenuItem} from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import {Link, useHistory} from "react-router-dom";
@@ -20,6 +20,8 @@ const MobileMenu = () => {
     const [open, setOpen] = useState(false);
     const {state, dispatch} = useContext(AppContext);
     const history = useHistory();
+    const {loggedIn} = state.user;
+
 
     return (
     <div>
@@ -53,13 +55,13 @@ const MobileMenu = () => {
                 </Link>
             </MenuItem>
             {
-                state.loggedIn ?
+                loggedIn ?
                     <MenuItem onClick={() => history.push('/profile')}>
                         Profile
                     </MenuItem> : null
             }
             {
-                !state.loggedIn
+                !loggedIn
                 ? <MenuItem onClick={() => {
                         dispatch({type: AUTH_OPEN_DIALOG});
                         setOpen(false)

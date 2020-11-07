@@ -6,6 +6,7 @@ import fetchAvailableRoomTypes from "../../../actions/availabilityContextActions
 import {makeStyles} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import {useHistory} from "react-router-dom";
+import AppContext from "../../../store/AppContext";
 
 const useStyles = makeStyles({
     root: {
@@ -18,28 +19,27 @@ const useStyles = makeStyles({
 });
 
 const AvailableHotels = () => {
-    const {state, dispatch} = useContext(AvailabilityContext);
+    const {state, dispatch} = useContext(AppContext);
+    const {hotels, params} = state.availability;
     const classes = useStyles();
     const history = useHistory();
     return (
         <div className={classes.root}>
-            {state.hotels && state.hotels.length === 0 ? <Typography>
+            {hotels?.length === 0 ? <Typography>
                 No results found
             </Typography> : null}
             <Grid container direction="row"
                   justify="space-evenly" alignItems="center">
-                {state.hotels?.map(hotel => {
-                    return (
+                {hotels?.map(hotel =>
                         <Grid key={hotel.hotelId} >
                             <HotelCard hotelName={hotel.name} hotelDescription={hotel.description}
                                        hotelMainPhoto={hotel.mainHotelPicture} hotelStars={hotel.starCount}
                                        onClick={() => {
-                                           fetchAvailableRoomTypes(dispatch, {...state.params, hotelId:hotel.hotelId})
+                                           fetchAvailableRoomTypes(dispatch, {...params, hotelId:hotel.hotelId})
                                                .then(() => history.push('/availability/roomTypes'))
                                        }}/>
                         </Grid>
-                    );
-                })}
+                    )}
             </Grid>
         </div>
     )
