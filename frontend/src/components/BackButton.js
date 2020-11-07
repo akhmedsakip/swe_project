@@ -15,7 +15,7 @@ const useStyles = makeStyles({
         color: '#808080',
         fontSize: 14,
     }
-})
+});
 
 const BackButton = ({onClick}) => {
     const classes = useStyles();

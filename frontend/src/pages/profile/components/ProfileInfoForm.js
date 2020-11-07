@@ -1,47 +1,40 @@
 import {Avatar, Button, makeStyles, useMediaQuery} from '@material-ui/core';
 import React, {useContext, useEffect, useState} from 'react';
-import EditIcon from '@material-ui/icons/Edit';
-
-import InformationRow from "./InformationRow";
-import UserContext from "../../../contexts/userContext";
 import useTheme from "@material-ui/core/styles/useTheme";
-import ProfileContext from "../../../contexts/profileContext";
+import ProfileContext from "../../../contexts/ProfileContext";
 import {useFormik} from "formik";
 import {editInfoSchema} from "../../../utils/validationSchemas";
-import TextField from "@material-ui/core/TextField";
-import moment from 'moment';
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
 import editProfileAction from "../../../actions/userContextActions/editProfileAction";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import ChangePasswordDialog from "./ChangePasswordDialog";
 import ProfileInfoInputs from "./ProfileInfoInputs";
 import ProfileInfoButtons from "./ProfileInfoButtons";
+import AppContext from "../../../store/AppContext";
 
 function ProfileInfoForm() {
   const [editing, setEditing] = useState(false);
-  const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [success, setSuccess] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
-  const {state} = useContext(UserContext);
+  const {state, dispatch} = useContext(AppContext);
+  const {userInfo} = state.user;
+
   const theme = useTheme();
   const isMobileScreen = useMediaQuery(theme.breakpoints.down('xs'));
   const classes = useStyles({isMobileScreen});
-  const {dispatch} = useContext(UserContext);
   const formik = useFormik({
-    initialValues: state,
-    initialErrors: Object.fromEntries(Object.entries(state).map(([key]) => [key, ""])),
+    initialValues: userInfo,
+    initialErrors: Object.fromEntries(Object.entries(userInfo).map(([key]) => [key, ""])),
     validationSchema: editInfoSchema,
     enableReinitialize: true,
     onSubmit: async () => {
       const errors = await editProfileAction(values, dispatch);
       if(errors && errors.length) {
         setSuccess(false);
-        setError(errors[0].message);
+        setErrorMessage(errors[0].message);
       } else {
         setSuccess(true);
         setEditing(false);
-        setError("");
       }
     }
   });
@@ -60,7 +53,7 @@ function ProfileInfoForm() {
                 Successfully edited
               </FormHelperText> :
               <FormHelperText error>
-                {error}
+                {errorMessage}
               </FormHelperText>
             }
           </div>

@@ -1,13 +1,18 @@
 import {USER_LOG_IN, USER_SIGN_OUT} from "./userActionsTypes";
 
+export const initialUserState = {
+    loggedIn: false,
+    userInfo: null,
+};
+
 function userReducer(state, action) {
     switch (action.type) {
         case USER_LOG_IN:
-            return {...action.payload, loggedIn: true};
+            return {...state, userInfo: action.payload, loggedIn: true};
         case USER_SIGN_OUT:
-            return {loggedIn: false};
+            return {userInfo: null, loggedIn: false};
         default:
-            return {loggedIn: false};
+            return initialUserState;
     }
 }
 

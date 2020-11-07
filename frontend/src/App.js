@@ -11,11 +11,12 @@ import UserContextProvider from "./context-providers/UserContextProvider";
 import Root from "./components/Root";
 import ProfilePage from "./pages/profile/ProfilePage";
 import PrivateRoute from "./components/PrivateRoute";
+import StoreProvider from "./store/store";
 
 
 function App() {
   return (
-    <UserContextProvider>
+    <StoreProvider>
       <BrowserRouter>
         <Root>
           <ButtonAppBar />
@@ -30,7 +31,7 @@ function App() {
           </Switch>
         </Root>
       </BrowserRouter>
-    </UserContextProvider>
+    </StoreProvider>
 
   );
 }

@@ -3,9 +3,9 @@ import {IconButton, Menu, MenuItem} from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import {Link, useHistory} from "react-router-dom";
 import {makeStyles} from "@material-ui/core/styles";
-import PropTypes from 'prop-types';
-import UserContext from "../../contexts/userContext";
 import logoutAction from "../../actions/userContextActions/logoutAction";
+import AppContext from "../../store/AppContext";
+import {AUTH_OPEN_DIALOG} from "../../store/auth/authActionTypes";
 
 const useStyles = makeStyles({
     link: {
@@ -14,11 +14,11 @@ const useStyles = makeStyles({
     },
 });
 
-const MobileMenu = ({openAuthDialog, signOut}) => {
+const MobileMenu = () => {
     const classes = useStyles();
     const anchorEl = useRef(null);
     const [open, setOpen] = useState(false);
-    const {state, dispatch} = useContext(UserContext);
+    const {state, dispatch} = useContext(AppContext);
     const history = useHistory();
 
     return (
@@ -61,7 +61,7 @@ const MobileMenu = ({openAuthDialog, signOut}) => {
             {
                 !state.loggedIn
                 ? <MenuItem onClick={() => {
-                        openAuthDialog();
+                        dispatch({type: AUTH_OPEN_DIALOG});
                         setOpen(false)
                     }}>
                         Login
@@ -77,9 +77,6 @@ const MobileMenu = ({openAuthDialog, signOut}) => {
     )
 };
 
-MobileMenu.propTypes = {
-    openAuthDialog: PropTypes.func.isRequired,
-    signOut: PropTypes.func.isRequired
-};
+MobileMenu.propTypes = {};
 
 export default MobileMenu;

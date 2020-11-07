@@ -5,9 +5,8 @@ import TextFieldWithError from "../shared/TextFieldWithError";
 import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
 import {loginSchema} from "../utils/validationSchemas";
-import AuthenticationContext from "../contexts/authenticationContext";
 import loginAction from "../actions/userContextActions/loginAction";
-import UserContext from "../contexts/userContext";
+import AppContext from "../store/AppContext";
 
 const useStyles = makeStyles({
     marginTop16: {
@@ -19,17 +18,15 @@ const useStyles = makeStyles({
 });
 
 function LoginForm() {
-    const {dispatch, state} = useContext(UserContext);
-    const { isRegistered, closeAuthDialog } = useContext(AuthenticationContext);
+    const {dispatch, state} = useContext(AppContext);
     const [failedLogin, setFailedLogin] = useState(false);
+    const {loginMessage} = state.auth;
 
     const classes = useStyles();
     const {handleBlur, handleChange, values, handleSubmit, errors, touched, isValid} = useFormik({
         onSubmit: async () => {
-            const loggedIn = await loginAction(dispatch, values.email, values.password);
-            if(loggedIn) {
-                closeAuthDialog();
-            } else {
+            const error = await loginAction(dispatch, values.email, values.password);
+            if(error) {
                 setFailedLogin(true);
             }
         },
@@ -48,10 +45,7 @@ function LoginForm() {
                 failedLogin ? <FormHelperText error>Email or password is incorrect</FormHelperText> : null
             }
             {
-                isRegistered ? <FormHelperText className={classes.success}>Successfully registered</FormHelperText> : null
-            }
-            {
-                state.changedPassword ? <FormHelperText className={classes.success}>Password successfully changed</FormHelperText> : null
+                loginMessage ? <FormHelperText className={classes.success}>{loginMessage}</FormHelperText> : null
             }
             <form onChange={handleChange} onBlur={handleBlur} onSubmit={handleSubmit}>
                 <TextFieldWithError

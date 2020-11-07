@@ -4,9 +4,9 @@ import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
 import {useFormik} from "formik";
 import {changePasswordSchema} from "../../../utils/validationSchemas";
-import UserContext from "../../../contexts/userContext";
 import changePasswordAction from "../../../actions/userContextActions/changePasswordAction";
 import PropTypes from 'prop-types'
+import AppContext from "../../../store/AppContext";
 
 const useStyles = makeStyles({
     marginTop10: {
@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 });
 
 const ChangePasswordForm = ({closeDialog}) => {
-    const {dispatch} = useContext(UserContext);
+    const {dispatch} = useContext(AppContext);
     const {handleChange, handleBlur, handleSubmit, errors, touched, isValid, values, setFieldError} = useFormik({
         initialValues: {
             oldPassword: '',

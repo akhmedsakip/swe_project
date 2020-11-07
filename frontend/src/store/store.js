@@ -1,10 +1,12 @@
 import React from 'react';
-import StoreContext from "./StoreContext";
+import AppContext from "./AppContext";
 import {useReducer} from "react";
-import userReducer from "./user/userReducer";
+import userReducer, {initialUserState} from "./user/userReducer";
+import authReducer, {initialAuthState} from "./auth/authReducer";
 
 const initialState = {
-    user: {logged_in: false}
+    user: initialUserState,
+    auth: initialAuthState,
 };
 
 const combineReducers = (slices) => (state, action) =>
@@ -16,15 +18,16 @@ const combineReducers = (slices) => (state, action) =>
         state
     );
 
-const reducers = combineReducers({
+const reducer = combineReducers({
     user: userReducer,
+    auth: authReducer,
 });
 
 const StoreProvider = ({children}) => {
-    const [state, dispatch] = useReducer(combineReducers(), initialState, undefined);
-    return <StoreContext.Provider value={{state, dispatch}}>
+    const [state, dispatch] = useReducer(reducer, initialState, undefined);
+    return <AppContext.Provider value={{state, dispatch}}>
         {children}
-    </StoreContext.Provider>
+    </AppContext.Provider>
 };
 
 export default StoreProvider;

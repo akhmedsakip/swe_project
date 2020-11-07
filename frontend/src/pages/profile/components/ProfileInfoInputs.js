@@ -4,7 +4,7 @@ import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 import {makeStyles} from "@material-ui/core/styles";
 import moment from 'moment';
-import ProfileContext from "../../../contexts/profileContext";
+import ProfileContext from "../../../contexts/ProfileContext";
 
 const useStyles = makeStyles({
     info: {
@@ -23,9 +23,7 @@ const ProfileInfoInputs = () => {
     const classes = useStyles();
     const {formik, editing} = useContext(ProfileContext);
     const {values, handleChange, errors} = formik;
-    useEffect(() => {
-        console.log(values);
-    }, [values])
+
     return <div className={`${classes.info} ${classes.marginBottom12}`}>
         <InformationRow label={'Email'} name={'email'}>
             {values.email}

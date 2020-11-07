@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {Button} from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import {makeStyles} from "@material-ui/core/styles";
-import ProfileContext from "../../../contexts/profileContext";
+import ProfileContext from "../../../contexts/ProfileContext";
 
 const useStyles = makeStyles({
     row: {

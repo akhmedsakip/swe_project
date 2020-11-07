@@ -120,7 +120,7 @@ function AvailiabilityForm() {
                                     InputLabelProps={{
                                         shrink: true,
                                     }} errorMessage={errors.fromDate} error={touched.fromDate && !!errors.fromDate} />
-                <TextFieldWithError label="To" type="date" name={"checkOutDate"} fullWidth
+                <TextFieldWithError label="To" type="date" name="checkOutDate" fullWidth
                                     className={classes.marginRight16}
                                     InputLabelProps={{
                                         shrink: true,

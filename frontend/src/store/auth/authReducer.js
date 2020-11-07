@@ -18,7 +18,7 @@ function authReducer(state, action) {
         case AUTH_OPEN_DIALOG:
             return {...state, isOpened: true};
         case AUTH_CLOSE_DIALOG:
-            return {...state, isOpened: false};
+            return {...state, isOpened: false, isRegistration: false};
         case AUTH_SET_REGISTRATION:
             return {...state, isRegistration: true};
         case AUTH_SET_LOGIN:
@@ -29,3 +29,5 @@ function authReducer(state, action) {
             return initialAuthState;
     }
 }
+
+export default authReducer;

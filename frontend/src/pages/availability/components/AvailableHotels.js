@@ -34,7 +34,6 @@ const AvailableHotels = () => {
                             <HotelCard hotelName={hotel.name} hotelDescription={hotel.description}
                                        hotelMainPhoto={hotel.mainHotelPicture} hotelStars={hotel.starCount}
                                        onClick={() => {
-                                           console.log("hi")
                                            fetchAvailableRoomTypes(dispatch, {...state.params, hotelId:hotel.hotelId})
                                                .then(() => history.push('/availability/roomTypes'))
                                        }}/>

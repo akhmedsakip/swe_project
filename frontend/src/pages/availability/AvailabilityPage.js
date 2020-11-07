@@ -53,8 +53,7 @@ export default function AvailabilityPage(){
 
 function AvailabilityContent() {
     const classes = useStyles();
-    const {state} = useContext(AvailabilityContext);
-    const location = useLocation();
+
     return (
         <div className={classes.root}>
             <Paper className={`${classes.formContainer} ${classes.marginBottom32}`}>

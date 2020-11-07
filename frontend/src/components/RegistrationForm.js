@@ -11,6 +11,8 @@ import {makeStyles} from "@material-ui/core/styles";
 import {registrationSchema} from "../utils/validationSchemas";
 import axios from "axios";
 import AuthenticationContext from "../contexts/authenticationContext";
+import AppContext from "../store/AppContext";
+import {AUTH_SET_LOGIN_MESSAGE, AUTH_SET_REGISTRATION} from "../store/auth/authActionTypes";
 
 const useStyles = makeStyles({
     marginTop16: {
@@ -19,8 +21,8 @@ const useStyles = makeStyles({
 });
 
 function RegistrationForm() {
-    const { setIsRegistration, setIsRegistered } = useContext(AuthenticationContext);
     const classes = useStyles();
+    const {dispatch} = useContext(AppContext);
     const {handleSubmit, handleBlur, handleChange, values, touched, errors, isValid, setFieldError} = useFormik({
         initialValues: {
             firstName: "",
@@ -51,8 +53,8 @@ function RegistrationForm() {
                 gender: values.gender
             })
             .then(() => {
-                setIsRegistration(false);
-                setIsRegistered(true);
+                dispatch({type: AUTH_SET_LOGIN_MESSAGE, payload: 'Successfully registered'});
+                dispatch({type: AUTH_SET_REGISTRATION});
             })
             .catch((err) => {
                 if(err.response.data && err.response.data instanceof Array) {

@@ -1,5 +1,7 @@
 import axios from 'axios';
 import fetchUserAction from "./fetchUserAction";
+import {USER_SIGN_OUT} from "../../store/user/userActionsTypes";
+import {AUTH_CLOSE_DIALOG} from "../../store/auth/authActionTypes";
 
 const loginAction = async(dispatch, email, password) => {
     try {
@@ -7,11 +9,11 @@ const loginAction = async(dispatch, email, password) => {
             email: email,
             password: password
         });
+        dispatch({type: AUTH_CLOSE_DIALOG});
         await fetchUserAction(dispatch);
-        return true;
     } catch(e) {
-        dispatch({type: 'reset'});
-        return false;
+        dispatch({type: USER_SIGN_OUT});
+        return e.response.data;
     }
 };
 

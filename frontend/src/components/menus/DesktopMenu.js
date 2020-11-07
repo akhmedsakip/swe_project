@@ -3,10 +3,10 @@ import {Link, useHistory} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import PropTypes from 'prop-types';
-import UserContext from "../../contexts/userContext";
 import logoutAction from "../../actions/userContextActions/logoutAction";
 import Avatar from "@material-ui/core/Avatar";
+import AppContext from "../../store/AppContext";
+import {AUTH_OPEN_DIALOG} from "../../store/auth/authActionTypes";
 
 const useStyles = makeStyles({
     link: {
@@ -20,10 +20,12 @@ const useStyles = makeStyles({
     }
 });
 
-const DesktopMenu = ({openAuthDialog}) => {
-    const {state, dispatch} = useContext(UserContext);
+const DesktopMenu = () => {
+    const {state, dispatch} = useContext(AppContext);
     const classes = useStyles();
     const history = useHistory();
+    const { loggedIn } = state.user;
+    console.log(state, "state");
     return <div>
         <Link to="/" className={classes.link}>
             <Button color="inherit">Home</Button>
@@ -38,8 +40,8 @@ const DesktopMenu = ({openAuthDialog}) => {
             <Button color="inherit">Search</Button>
         </Link>
         {
-            (!state.loggedIn
-                ? <Button color="inherit" className={classes.loginButton} onClick={openAuthDialog}>
+            (!loggedIn
+                ? <Button color="inherit" className={classes.loginButton} onClick={() => dispatch({type: AUTH_OPEN_DIALOG})}>
                     Login
                 </Button>
                 : <Button color="inherit" className={classes.link} onClick={() => logoutAction(dispatch)}>
@@ -48,16 +50,13 @@ const DesktopMenu = ({openAuthDialog}) => {
             )
         }
         {
-            state.loggedIn ? <Button onClick={() => history.push('/profile')}>
+            loggedIn ? <Button onClick={() => history.push('/profile')}>
                 <Avatar alt="Profile" src='https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png' />
             </Button> : null
         }
     </div>
 };
 
-DesktopMenu.propTypes = {
-    openAuthDialog: PropTypes.func.isRequired,
-    signOut: PropTypes.func.isRequired
-};
+DesktopMenu.propTypes = {};
 
 export default DesktopMenu;
