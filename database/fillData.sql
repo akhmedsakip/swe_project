@@ -241,6 +241,14 @@ VALUE ('Card');
 INSERT INTO PAYMENTMETHOD (Name)
 VALUE ('Cash');
 
+INSERT INTO DAYOFWEEK(Day) VALUE ('Sunday');
+INSERT INTO DAYOFWEEK(Day) VALUE ('Monday');
+INSERT INTO DAYOFWEEK(Day) VALUE ('Tuesday');
+INSERT INTO DAYOFWEEK(Day) VALUE ('Wednesday');
+INSERT INTO DAYOFWEEK(Day) VALUE ('Thursday');
+INSERT INTO DAYOFWEEK(Day) VALUE ('Friday');
+INSERT INTO DAYOFWEEK(Day) VALUE ('Saturday');
+
 INSERT INTO SEASON (NAME, STARTDATE, ENDDATE)
 VALUES (
         'New Year',
@@ -248,12 +256,28 @@ VALUES (
         '2021-01-07'
        );
 
+INSERT INTO SEASON_HAS_DAYOFWEEK (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Sunday', 1.1);
+INSERT INTO SEASON_HAS_DAYOFWEEK (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Monday', 1.12);
+INSERT INTO SEASON_HAS_DAYOFWEEK (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Tuesday', 1.13);
+INSERT INTO SEASON_HAS_DAYOFWEEK (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Wednesday', 1.14);
+INSERT INTO SEASON_HAS_DAYOFWEEK (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Thursday', 1.08);
+INSERT INTO SEASON_HAS_DAYOFWEEK (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Friday', 1.15);
+INSERT INTO SEASON_HAS_DAYOFWEEK (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Saturday', 1.16);
+
 INSERT INTO SEASON (NAME, STARTDATE, ENDDATE)
 VALUES (
-        'Nauryz',
-        '2021-03-21',
-        '2021-03-23'
+        'Summer',
+        '2021-06-01',
+        '2021-08-31'
        );
+
+INSERT INTO SEASON_HAS_DAYOFWEEK (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Sunday', 1.01);
+INSERT INTO SEASON_HAS_DAYOFWEEK (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Monday', 1.02);
+INSERT INTO SEASON_HAS_DAYOFWEEK (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Tuesday', 1.03);
+INSERT INTO SEASON_HAS_DAYOFWEEK (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Wednesday', 1.04);
+INSERT INTO SEASON_HAS_DAYOFWEEK (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Thursday', 1.08);
+INSERT INTO SEASON_HAS_DAYOFWEEK (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Friday', 1.1);
+INSERT INTO SEASON_HAS_DAYOFWEEK (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Saturday', 1.11);
 
 INSERT INTO `HOTEL_WORKS DURING_SEASON` (HotelID, SeasonID)
 VALUES (
