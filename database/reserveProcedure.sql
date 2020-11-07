@@ -17,7 +17,7 @@ BEGIN
     SET _roomNumber = NULL;
 
     START TRANSACTION;
-    SELECT PersonID INTO _personId FROM GUEST
+    SELECT PersonID INTO _personId FROM guest
         INNER JOIN person ON person.PersonID = GuestID
         WHERE person.PhoneNumber = _phoneNumber LIMIT 1;
 
@@ -29,7 +29,7 @@ BEGIN
         _phoneNumber
        );
         SELECT LAST_INSERT_ID() INTO _personId;
-        INSERT INTO GUEST (GuestID) VALUE (_personId);
+        INSERT INTO guest (GuestID) VALUE (_personId);
     END IF;
 
     INSERT INTO `order` (HotelID, OrderPrice, OrderDateTime, CheckInDate, CheckOutDate, OrderStatus, PaymentMethod) VALUES (
@@ -44,16 +44,16 @@ BEGIN
 
     SELECT room.RoomNumber INTO _roomNumber
     FROM room
-    INNER JOIN HOTEL ON HOTEL.HotelID = room.HotelID
+    INNER JOIN hotel ON hotel.HotelID = room.HotelID
     INNER JOIN room_type ON room_type.HotelID = room.HotelID AND room.RoomTypeName = room_type.Name
     LEFT JOIN order_details OD on room.HotelID = OD.RoomHotelID and room.RoomNumber = OD.RoomNumber
-    LEFT JOIN `order` O ON HOTEL.HotelID = O.HotelID and OD.OrderID = O.OrderID
+    LEFT JOIN `order` O ON hotel.HotelID = O.HotelID and OD.OrderID = O.OrderID
     WHERE (O.OrderID IS NULL
         OR NOT
            (O.CheckInDate BETWEEN _checkInDate AND _checkOutDate
            OR
            O.CheckOutDate BETWEEN _checkInDate AND _checkOutDate))
-        AND HOTEL.HotelID = _hotelId
+        AND hotel.HotelID = _hotelId
         AND room_type.Name >= _roomTypeName LIMIT 1;
 
     INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID, RoomNumber, GuestID) VALUES (
