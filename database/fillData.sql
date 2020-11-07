@@ -99,7 +99,6 @@ INSERT INTO ROOMTYPE (HotelID,
                       Name,
                       Size,
                       BasePricePerDay,
-                      ActualPricePerDay,
                       Capacity,
                       MainPhoto,
                       Description)
@@ -108,7 +107,6 @@ INSERT INTO ROOMTYPE (HotelID,
 	                            'Standard',
 	                            20,
 	                            25,
-	                            5000,
 	                            2,
 	                            'https://cf.bstatic.com/images/hotel/max1024x768/426/42696338.jpg',
 	                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
@@ -118,7 +116,6 @@ INSERT INTO ROOMTYPE (HotelID,
                       Name,
                       Size,
                       BasePricePerDay,
-                      ActualPricePerDay,
                       Capacity,
                       MainPhoto,
                       Description)
@@ -127,7 +124,6 @@ INSERT INTO ROOMTYPE (HotelID,
                                 'Luxe',
                                 40,
                                 100,
-                                120,
                                 3,
                                 'https://cf.bstatic.com/images/hotel/max1024x768/426/42696356.jpg',
                                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
@@ -137,7 +133,6 @@ INSERT INTO ROOMTYPE (HotelID,
                       Name,
                       Size,
                       BasePricePerDay,
-                      ActualPricePerDay,
                       Capacity,
                       MainPhoto,
                       Description)
@@ -146,7 +141,6 @@ INSERT INTO ROOMTYPE (HotelID,
                                 'Standard',
                                 20,
                                 25,
-                                5000,
                                 2,
                                 'https://cf.bstatic.com/images/hotel/max1024x768/426/42696338.jpg',
                                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
@@ -156,7 +150,6 @@ INSERT INTO ROOMTYPE (HotelID,
                       Name,
                       Size,
                       BasePricePerDay,
-                      ActualPricePerDay,
                       Capacity,
                       MainPhoto,
                       Description)
@@ -165,7 +158,6 @@ INSERT INTO ROOMTYPE (HotelID,
                                 'Luxe',
                                 40,
                                 100,
-                                120,
                                 3,
                                 'https://cf.bstatic.com/images/hotel/max1024x768/426/42696356.jpg',
                                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
@@ -175,7 +167,6 @@ INSERT INTO ROOMTYPE (HotelID,
                       Name,
                       Size,
                       BasePricePerDay,
-                      ActualPricePerDay,
                       Capacity,
                       MainPhoto,
                       Description)
@@ -184,7 +175,6 @@ INSERT INTO ROOMTYPE (HotelID,
                                 'Standard',
                                 20,
                                 25,
-                                5000,
                                 2,
                                 'https://cf.bstatic.com/images/hotel/max1024x768/426/42696338.jpg',
                                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
@@ -194,7 +184,6 @@ INSERT INTO ROOMTYPE (HotelID,
                       Name,
                       Size,
                       BasePricePerDay,
-                      ActualPricePerDay,
                       Capacity,
                       MainPhoto,
                       Description)
@@ -203,7 +192,6 @@ INSERT INTO ROOMTYPE (HotelID,
                                 'Luxe',
                                 40,
                                 100,
-                                120,
                                 3,
                                 'https://cf.bstatic.com/images/hotel/max1024x768/426/42696356.jpg',
                                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
@@ -213,7 +201,6 @@ INSERT INTO ROOMTYPE (HotelID,
                       Name,
                       Size,
                       BasePricePerDay,
-                      ActualPricePerDay,
                       Capacity,
                       MainPhoto,
                       Description)
@@ -222,7 +209,6 @@ INSERT INTO ROOMTYPE (HotelID,
                                 'Standard',
                                 20,
                                 25,
-                                5000,
                                 2,
                                 'https://cf.bstatic.com/images/hotel/max1024x768/426/42696338.jpg',
                                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
@@ -232,7 +218,6 @@ INSERT INTO ROOMTYPE (HotelID,
                       Name,
                       Size,
                       BasePricePerDay,
-                      ActualPricePerDay,
                       Capacity,
                       MainPhoto,
                       Description)
@@ -241,7 +226,6 @@ INSERT INTO ROOMTYPE (HotelID,
                                 'Luxe',
                                 40,
                                 100,
-                                120,
                                 3,
                                 'https://cf.bstatic.com/images/hotel/max1024x768/426/42696356.jpg',
                                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
@@ -257,28 +241,101 @@ VALUE ('Card');
 INSERT INTO PAYMENTMETHOD (Name)
 VALUE ('Cash');
 
-INSERT INTO SEASON (Name, StartDate, EndDate)
+INSERT INTO SEASON (NAME, STARTDATE, ENDDATE)
 VALUES (
         'New Year',
-        '2000-01-01',
-        '2000-01-07'
+        '2021-01-01',
+        '2021-01-07'
        );
 
-INSERT INTO SEASON (Name, StartDate, EndDate)
-VALUES (
-        'New Year',
-        '2000-01-01',
-        '2000-01-07'
-       );
-
-INSERT INTO SEASON (Name, StartDate, EndDate)
+INSERT INTO SEASON (NAME, STARTDATE, ENDDATE)
 VALUES (
         'Nauryz',
-        '2000-03-21',
-        '2000-03-23'
+        '2021-03-21',
+        '2021-03-23'
        );
 
-INSERT INTO SEASON (Name)
+INSERT INTO `HOTEL_WORKS DURING_SEASON` (HotelID, SeasonID)
 VALUES (
-        'Default'
+        1,
+        1
+       );
+
+INSERT INTO `HOTEL_WORKS DURING_SEASON` (HotelID, SeasonID)
+VALUES (
+        1,
+        2
+       );
+
+INSERT INTO `HOTEL_WORKS DURING_SEASON` (HotelID, SeasonID)
+VALUES (
+        2,
+        1
+       );
+
+INSERT INTO `HOTEL_WORKS DURING_SEASON` (HotelID, SeasonID)
+VALUES (
+        2,
+        2
+       );
+
+INSERT INTO `HOTEL_WORKS DURING_SEASON` (HotelID, SeasonID)
+VALUES (
+        3,
+        1
+       );
+
+INSERT INTO `HOTEL_WORKS DURING_SEASON` (HotelID, SeasonID)
+VALUES (
+        3,
+        2
+       );
+
+INSERT INTO `HOTEL_WORKS DURING_SEASON` (HotelID, SeasonID)
+VALUES (
+        4,
+        1
+       );
+
+INSERT INTO `HOTEL_WORKS DURING_SEASON` (HotelID, SeasonID)
+VALUES (
+        4,
+        2
+       );
+
+INSERT INTO HOLIDAY (NAME, COUNTRYCODE, STARTDATE, ENDDATE, ISEVERYYEAR)
+VALUES (
+        'New Year',
+        'KZ',
+        '2021-01-01',
+        '2020-01-03',
+        1
+       );
+
+INSERT INTO `HOTEL_WORKS DURING_HOLIDAY` (HotelID, HolidayID, Coefficient)
+VALUES (
+        1,
+        1,
+        1.3
+       );
+
+INSERT INTO `HOTEL_WORKS DURING_HOLIDAY` (HotelID, HolidayID, Coefficient)
+VALUES (
+        2,
+        1,
+        1.2
+       );
+
+INSERT INTO `HOTEL_WORKS DURING_HOLIDAY` (HotelID, HolidayID, Coefficient)
+VALUES (
+        3,
+        1,
+        1.25
+       );
+
+INSERT INTO `HOTEL_WORKS DURING_HOLIDAY` (HotelID, HolidayID, Coefficient)
+VALUES (
+        4,
+        1,
+        1.15
        );

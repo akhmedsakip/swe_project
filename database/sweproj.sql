@@ -133,8 +133,8 @@ DROP TABLE IF EXISTS `sweproj`.`SEASON` ;
 CREATE TABLE IF NOT EXISTS `sweproj`.`SEASON` (
   `SeasonID` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(45) NOT NULL,
-  `StartDate` DATE NULL,
-  `EndDate` DATE NULL,
+  `StartDate` DATE NOT NULL,
+  `EndDate` DATE NOT NULL,
   PRIMARY KEY (`SeasonID`))
 ENGINE = InnoDB;
 
@@ -147,7 +147,7 @@ DROP TABLE IF EXISTS `sweproj`.`SEASON_has_DAYOFWEEK` ;
 CREATE TABLE IF NOT EXISTS `sweproj`.`SEASON_has_DAYOFWEEK` (
   `SeasonID` INT NOT NULL,
   `DayOfWeek` VARCHAR(15) NOT NULL,
-  `Coefficient` INT NOT NULL,
+  `Coefficient` FLOAT NULL DEFAULT 1,
   PRIMARY KEY (`SeasonID`, `DayOfWeek`),
   INDEX `fk_SEASON_has_DAYOFWEEK_DAYOFWEEK1_idx` (`DayOfWeek` ASC) VISIBLE,
   INDEX `fk_SEASON_has_DAYOFWEEK_SEASON1_idx` (`SeasonID` ASC) VISIBLE,
@@ -170,12 +170,12 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `sweproj`.`HOLIDAY` ;
 
 CREATE TABLE IF NOT EXISTS `sweproj`.`HOLIDAY` (
-  `HolidayID` INT NOT NULL,
+  `HolidayID` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(45) NOT NULL,
-  `CountryCode` VARCHAR(2) NULL,
-  `Year` YEAR NULL,
+  `CountryCode` VARCHAR(2) NOT NULL,
   `StartDate` DATE NOT NULL,
   `EndDate` DATE NOT NULL,
+  `IsEveryYear` TINYINT NULL DEFAULT 0,
   PRIMARY KEY (`HolidayID`))
 ENGINE = InnoDB;
 
@@ -225,7 +225,6 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`ROOMTYPE` (
   `Name` VARCHAR(45) NOT NULL,
   `Size` INT NULL,
   `BasePricePerDay` INT NULL,
-  `ActualPricePerDay` INT NULL,
   `Capacity` INT NULL,
   `Description` TEXT NULL,
   `MainPhoto` TEXT NULL,
@@ -740,31 +739,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sweproj`.`SEASON_has_HOLIDAY`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sweproj`.`SEASON_has_HOLIDAY` ;
-
-CREATE TABLE IF NOT EXISTS `sweproj`.`SEASON_has_HOLIDAY` (
-  `SeasonID` INT NOT NULL,
-  `HolidayID` INT NOT NULL,
-  `Coefficient` INT NOT NULL,
-  PRIMARY KEY (`SeasonID`, `HolidayID`),
-  INDEX `fk_SEASON_has_HOLIDAY_HOLIDAY1_idx` (`HolidayID` ASC) VISIBLE,
-  INDEX `fk_SEASON_has_HOLIDAY_SEASON1_idx` (`SeasonID` ASC) VISIBLE,
-  CONSTRAINT `fk_SEASON_has_HOLIDAY_SEASON1`
-    FOREIGN KEY (`SeasonID`)
-    REFERENCES `sweproj`.`SEASON` (`SeasonID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_SEASON_has_HOLIDAY_HOLIDAY1`
-    FOREIGN KEY (`HolidayID`)
-    REFERENCES `sweproj`.`HOLIDAY` (`HolidayID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `sweproj`.`USERS`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `sweproj`.`USERS` ;
@@ -778,6 +752,31 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`USERS` (
   `Gender` VARCHAR(10) NOT NULL,
   `RegistrationDate` DATETIME NOT NULL,
   PRIMARY KEY (`Email`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sweproj`.`HOTEL_works during_HOLIDAY`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sweproj`.`HOTEL_works during_HOLIDAY` ;
+
+CREATE TABLE IF NOT EXISTS `sweproj`.`HOTEL_works during_HOLIDAY` (
+  `HotelID` INT NOT NULL,
+  `HolidayID` INT NOT NULL,
+  `Coefficient` FLOAT NULL DEFAULT 1,
+  PRIMARY KEY (`HotelID`, `HolidayID`),
+  INDEX `fk_HOTEL_has_HOLIDAY_HOLIDAY1_idx` (`HolidayID` ASC) VISIBLE,
+  INDEX `fk_HOTEL_has_HOLIDAY_HOTEL1_idx` (`HotelID` ASC) VISIBLE,
+  CONSTRAINT `fk_HOTEL_has_HOLIDAY_HOTEL1`
+    FOREIGN KEY (`HotelID`)
+    REFERENCES `sweproj`.`HOTEL` (`HotelID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_HOTEL_has_HOLIDAY_HOLIDAY1`
+    FOREIGN KEY (`HolidayID`)
+    REFERENCES `sweproj`.`HOLIDAY` (`HolidayID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
