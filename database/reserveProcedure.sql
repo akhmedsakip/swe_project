@@ -1,78 +1,74 @@
 DROP PROCEDURE IF EXISTS reserve;
 
-CREATE PROCEDURE reserve(IN _gender VARCHAR(10), IN _firstname VARCHAR(30),
-                         IN _lastname VARCHAR(30), IN _phonenumber VARCHAR(45), IN _hotelid INT, IN _orderprice INT,
-                         IN _orderdatetime VARCHAR(20), IN _checkindate VARCHAR(20), IN _checkoutdate VARCHAR(20),
-                         IN _paymentmethod VARCHAR(45), IN _roomtypename varchar(45))
+CREATE PROCEDURE reserve(IN _gender VARCHAR(10), IN _firstName VARCHAR(30),
+ IN _lastName VARCHAR(30), IN _phoneNumber VARCHAR(45), IN _hotelId INT, IN _orderPrice INT,
+ IN _orderDateTime VARCHAR(20), IN _checkInDate VARCHAR(20), IN _checkOutDate VARCHAR(20),
+ IN _paymentMethod VARCHAR(45), IN _roomTypeName varchar(45))
 BEGIN
-    DECLARE _personid INT;
-    DECLARE _roomnumber VARCHAR(10);
+    DECLARE _personId INT;
+    DECLARE _roomNumber VARCHAR(10);
 
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
-        BEGIN
-            ROLLBACK;
-        END;
+    BEGIN
+        ROLLBACK;
+    END;
 
-    SET _personid = 0;
-    SET _roomnumber = NULL;
+    SET _personId = 0;
+    SET _roomNumber = NULL;
 
     START TRANSACTION;
-    SELECT personid
-    INTO _personid
-    FROM guest
-             INNER JOIN person ON person.personid = guestid
-    WHERE person.phonenumber = _phonenumber
-    LIMIT 1;
+    SELECT PersonID INTO _personId FROM GUEST
+        INNER JOIN person ON person.PersonID = GuestID
+        WHERE person.PhoneNumber = _phoneNumber LIMIT 1;
 
-    IF _personid < 1 THEN
-        INSERT INTO person (gender, firstname, lastname, phonenumber)
-        VALUES (_gender,
-                _firstname,
-                _lastname,
-                _phonenumber);
-        SELECT LAST_INSERT_ID() INTO _personid;
-        INSERT INTO guest (guestid) VALUE (_personid);
+    IF _personId < 1 THEN
+        INSERT INTO person (Gender, FirstName, LastName, PhoneNumber) VALUES (
+        _gender,
+        _firstName,
+        _lastName,
+        _phoneNumber
+       );
+        SELECT LAST_INSERT_ID() INTO _personId;
+        INSERT INTO GUEST (GuestID) VALUE (_personId);
     END IF;
 
-    INSERT INTO `order` (hotelid, orderprice, orderdatetime, checkindate, checkoutdate, orderstatus, paymentmethod)
-    VALUES (_hotelid,
-            _orderprice,
-            _orderdatetime,
-            _checkindate,
-            _checkoutdate,
-            'Created',
-            _paymentmethod);
+    INSERT INTO `order` (HotelID, OrderPrice, OrderDateTime, CheckInDate, CheckOutDate, OrderStatus, PaymentMethod) VALUES (
+    _hotelId,
+    _orderPrice,
+    _orderDateTime,
+    _checkInDate,
+    _checkOutDate,
+    'Reserved',
+    _paymentMethod
+   );
 
-    SELECT room.roomnumber
-    INTO _roomnumber
+    SELECT room.RoomNumber INTO _roomNumber
     FROM room
-             INNER JOIN hotel ON hotel.hotelid = room.hotelid
-             INNER JOIN roomtype ON roomtype.hotelid = room.hotelid AND room.roomtypename = roomtype.name
-             LEFT JOIN orderdetails od on room.hotelid = od.roomhotelid and room.roomnumber = od.roomnumber
-             LEFT JOIN `order` o ON hotel.hotelid = o.hotelid and od.orderid = o.orderid
-    WHERE (o.orderid IS NULL
+    INNER JOIN HOTEL ON HOTEL.HotelID = room.HotelID
+    INNER JOIN room_type ON room_type.HotelID = room.HotelID AND room.RoomTypeName = room_type.Name
+    LEFT JOIN order_details OD on room.HotelID = OD.RoomHotelID and room.RoomNumber = OD.RoomNumber
+    LEFT JOIN `order` O ON HOTEL.HotelID = O.HotelID and OD.OrderID = O.OrderID
+    WHERE (O.OrderID IS NULL
         OR NOT
-               (o.checkindate BETWEEN _checkindate AND _checkoutdate
-                   OR
-                o.checkoutdate BETWEEN _checkindate AND _checkoutdate))
-      AND hotel.hotelid = _hotelid
-      AND roomtype.name >= _roomtypename
-    LIMIT 1;
+           (O.CheckInDate BETWEEN _checkInDate AND _checkOutDate
+           OR
+           O.CheckOutDate BETWEEN _checkInDate AND _checkOutDate))
+        AND HOTEL.HotelID = _hotelId
+        AND room_type.Name >= _roomTypeName LIMIT 1;
 
-    INSERT INTO orderdetails (ispayer, orderid, orderhotelid, roomtypehotelid, roomtype, roomhotelid, roomnumber,
-                              guestid)
-    VALUES (TRUE,
-            LAST_INSERT_ID(),
-            _hotelid,
-            _hotelid,
-            _roomtypename,
-            _hotelid,
-            _roomnumber,
-            _personid);
+    INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID, RoomNumber, GuestID) VALUES (
+    TRUE,
+    LAST_INSERT_ID(),
+    _hotelId,
+    _hotelId,
+    _roomTypeName,
+    _hotelId,
+    _roomNumber,
+    _personId);
     COMMIT;
 END;
 
 CALL reserve('Male', 'Timur', 'Rakhimzhan',
-             '+77028606010', 210, 50,
-             '2020-06-05', '2020-06-11', '2020-06-20',
-             'Cash', 'Luxe');
+    '+77028606010', 1, 50,
+    '2020-06-05', '2020-06-11', '2020-06-20',
+    'Cash', 'Luxe');

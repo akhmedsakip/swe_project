@@ -1,9 +1,11 @@
-INSERT INTO identificationtype (name, countrycode)
-VALUES ('Passport',
-        'KZ');
-
-INSERT INTO identificationtype (name)
+INSERT INTO identification_type (Name, CountryCode)
 VALUES (
-           'Passport'
-       );
+        'Passport',
+        'KZ'
+        );
+
+INSERT INTO identification_type (Name)
+VALUES (
+        'Passport'
+        );
 
