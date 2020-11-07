@@ -13,6 +13,6 @@ public class ReservationDataAccessService {
     }
 
     public int reserveRoom(ReservationDetailsRequest reservationDetailsRequest) {
-
+        return 0;
     }
 }
