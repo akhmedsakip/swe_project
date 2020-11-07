@@ -14,6 +14,10 @@ function reducer(state, action) {
     }
 }
 
+function combinedReducer(reducersObj, action) {
+
+}
+
 
 const UserContextProvider = ({children}) => {
     const [state, dispatch] = useReducer(reducer, {loggedIn: false}, undefined);

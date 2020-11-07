@@ -67,7 +67,6 @@ function RegistrationForm() {
             })
         },
     });
-    const [dataFocused, setDataFocused] = useState(false);
 
     return (
         <>
