@@ -249,7 +249,7 @@ INSERT INTO day_of_week(Day) VALUE ('Thursday');
 INSERT INTO day_of_week(Day) VALUE ('Friday');
 INSERT INTO day_of_week(Day) VALUE ('Saturday');
 
-INSERT INTO SEASON (NAME, STARTDATE, ENDDATE)
+INSERT INTO season (Name, StartDate, EndDate)
 VALUES (
         'New Year',
         '2021-01-01',
@@ -264,7 +264,7 @@ INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (1,
 INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Friday', 1.15);
 INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Saturday', 1.16);
 
-INSERT INTO SEASON (NAME, STARTDATE, ENDDATE)
+INSERT INTO season (Name, StartDate, EndDate)
 VALUES (
         'Summer',
         '2021-06-01',
@@ -327,7 +327,7 @@ VALUES (
         2
        );
 
-INSERT INTO HOLIDAY (NAME, COUNTRYCODE, STARTDATE, ENDDATE, ISEVERYYEAR)
+INSERT INTO holiday (Name, CountryCode, StartDate, EndDate, IsEveryYear)
 VALUES (
         'New Year',
         'KZ',
