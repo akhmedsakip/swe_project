@@ -17,14 +17,14 @@ public class UserDataAccessService {
     }
 
     int insertUser(User user) {
-        String sql = "INSERT INTO USERS (FirstName, LastName, Password, Email, DateOfBirth, Gender, RegistrationDate)" +
+        String sql = "INSERT INTO 'user' (FirstName, LastName, Password, Email, DateOfBirth, Gender, RegistrationDate)" +
                             "VALUES (?, ?, ?, ?, ?, ? ,?)";
         return jdbcTemplate.update(sql, user.getFirstName(), user.getLastName(),
                 user.getPassword(), user.getUsername(), user.getDateOfBirth(), user.getGender(), LocalDate.now());
     }
 
     User loadUserByUsername(String email) {
-        String sql = "SELECT * FROM USERS WHERE Email = ?";
+        String sql = "SELECT * FROM 'user' WHERE Email = ?";
         List<User> users = jdbcTemplate.query(sql,(rs, rowNum) -> {
             User user = new User(rs.getString("Email"), rs.getString("Password"));
             user.setFirstName(rs.getString("FirstName"));
@@ -42,14 +42,14 @@ public class UserDataAccessService {
 
     int editUser(User newUser) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String sql = "UPDATE USERS SET FirstName = ?, LastName = ?,DateOfBirth = ?, Gender = ? WHERE Email = ?";
+        String sql = "UPDATE 'user' SET FirstName = ?, LastName = ?,DateOfBirth = ?, Gender = ? WHERE Email = ?";
         return jdbcTemplate.update(sql, newUser.getFirstName(), newUser.getLastName(),
                 newUser.getDateOfBirth(), newUser.getGender(), user.getUsername());
     }
 
     int changePassword(String newPasswordEncoded) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String sql = "UPDATE USERS SET Password = ? WHERE Email = ?";
+        String sql = "UPDATE 'user' SET Password = ? WHERE Email = ?";
         return jdbcTemplate.update(sql, newPasswordEncoded, user.getUsername());
     }
 }

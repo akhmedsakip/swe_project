@@ -35,37 +35,37 @@ public class HotelDataAccessService {
     }
 
     List<Hotel> getHotels() {
-        String sql = "SELECT * FROM HOTEL";
+        String sql = "SELECT * FROM hotel";
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> mapFromDB(rs));
     }
 
     List<String> getCities() {
-        String sql = "SELECT DISTINCT City FROM HOTEL;";
+        String sql = "SELECT DISTINCT City FROM hotel;";
         return jdbcTemplate.query(sql, (rs, rowNum) -> rs.getString("City"));
     }
 
     List<Hotel> getAvailableHotels(ReservationRequest info) {
-        String sql = "SELECT HOTEL.*\n" +
-                "FROM ROOM\n" +
-                "INNER JOIN HOTEL ON HOTEL.HotelID = ROOM.HotelID\n" +
-                "INNER JOIN ROOMTYPE ON ROOMTYPE.HotelID = ROOM.HotelID AND ROOM.RoomTypeName = ROOMTYPE.Name\n" +
-                "LEFT JOIN ORDERDETAILS OD on ROOM.HotelID = OD.RoomHotelID and ROOM.RoomNumber = OD.RoomNumber\n" +
-                "LEFT JOIN `ORDER` O ON HOTEL.HotelID = O.HotelID and OD.OrderID = O.OrderID\n" +
+        String sql = "SELECT hotel.*\n" +
+                "FROM room\n" +
+                "INNER JOIN hotel ON hotel.HotelID = room.HotelID\n" +
+                "INNER JOIN room_type ON room_type.HotelID = room.HotelID AND room.RoomTypeName = room_type.Name\n" +
+                "LEFT JOIN order_details OD on room.HotelID = OD.RoomHotelID and room.RoomNumber = OD.RoomNumber\n" +
+                "LEFT JOIN `order` O ON hotel.HotelID = O.HotelID and OD.OrderID = O.OrderID\n" +
                 "WHERE (O.OrderID IS NULL\n" +
                 "    OR NOT\n" +
                 "       (O.CheckInDate BETWEEN ? AND ?\n" +
                 "       OR\n" +
                 "       O.CheckOutDate BETWEEN ? AND ?))\n" +
-                "    AND HOTEL.City = ?\n" +
-                "    AND ROOMTYPE.Capacity >= ?\n" +
-                "GROUP BY HOTEL.HotelID;";
+                "    AND hotel.City = ?\n" +
+                "    AND room_type.Capacity >= ?\n" +
+                "GROUP BY hotel.HotelID;";
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> mapFromDB(rs), info.getCheckInDate(), info.getCheckOutDate(), info.getCheckInDate(), info.getCheckOutDate(), info.getCity(), info.getNumberOfPeople());
     }
 
     Hotel getHotel(int hotelID) {
-        String sql = "SELECT * FROM HOTEL WHERE HotelID = ?";
+        String sql = "SELECT * FROM hotel WHERE HotelID = ?";
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> mapFromDB(rs), hotelID).get(0);
     }
