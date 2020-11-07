@@ -53,6 +53,7 @@ public class RoomTypeDataAccessService {
                 "    AND room_type.Capacity >= ?\n" +
                 "GROUP BY room_type.Name, room_type.HotelID";
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> mapFromDB(rs), info.getCheckInDate(), info.getCheckOutDate(), info.getCheckInDate(), info.getCheckOutDate(), info.getHotelId(), info.getNumberOfPeople());
+        return jdbcTemplate.query(sql, (rs, rowNum) -> mapFromDB(rs), info.getCheckInDate(), info.getCheckOutDate(),
+                info.getCheckInDate(), info.getCheckOutDate(), info.getHotelId(), info.getNumberOfPeople());
     }
 }

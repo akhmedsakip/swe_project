@@ -5,6 +5,7 @@ import com.example.sweproj.models.ReservationDetailsGroup;
 import com.example.sweproj.models.ReservationDetailsRequest;
 import com.example.sweproj.models.ReservationRequest;
 import com.example.sweproj.services.GuestService;
+import com.example.sweproj.services.ReservationService;
 import com.example.sweproj.utils.Message;
 import com.example.sweproj.utils.ValidationUtil;
 import com.google.gson.Gson;
@@ -19,14 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/reservation")
+@RequestMapping("/api/reserve")
 public class ReservationController {
 
     @Autowired
     private Gson gson;
 
-//    @Autowired
-//    private GuestService guestService;
+    @Autowired
+    private ReservationService reservationService;
 
     @Autowired
     private ValidationUtil validationUtil;
@@ -40,15 +41,13 @@ public class ReservationController {
         if(serverErrors.size() > 0) {
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
-//        try {
-//            guestService.addGuest(newGuest);
-//        } catch(DuplicateKeyException ignored) {
-//            serverErrors.add(new Message("Person with this phone number already exists"));
-//            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
-//        } catch(Exception error) {
-//            serverErrors.add(new Message("Server error"));
-//            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
-//        }
-        return ResponseEntity.ok().body(gson.toJson(reservationDetailsRequest.getGuest()));
+        try {
+            reservationService.reserveRoom(reservationDetailsRequest);
+        } catch(Exception error) {
+            error.printStackTrace();
+            serverErrors.add(new Message("Server error"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+        return ResponseEntity.ok().body(gson.toJson(new Message("Successfully reserved the room")));
     }
 }
