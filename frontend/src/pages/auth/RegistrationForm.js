@@ -11,6 +11,7 @@ import AppContext from "../../store/AppContext";
 import registrationAction from "../../actions/auth/registrationAction";
 import LoadingButton from "../../components/LoadingButton";
 import useSubmit from "../../hooks/useSubmit";
+import {AUTH_SET_LOGIN, AUTH_SET_LOGIN_MESSAGE} from "../../store/auth/authActionTypes";
 
 function RegistrationForm() {
     const {dispatch} = useContext(AppContext);
@@ -25,7 +26,10 @@ function RegistrationForm() {
         gender: "",
     });
     const action =  async() => await registrationAction(dispatch, values);
-    const onSuccess = () => {};
+    const onSuccess = () => {
+        dispatch({type: AUTH_SET_LOGIN_MESSAGE, payload: 'Successfully registered'});
+        dispatch({type: AUTH_SET_LOGIN});
+    };
     const onErrorArray = (serverErrors) => {
         serverErrors.forEach((serverError) =>
             setFieldError(serverError.field || "email", serverError.message));

@@ -6,8 +6,6 @@ import {AUTH_CLOSE_DIALOG} from "../../store/auth/authActionTypes";
 const loginAction = async(dispatch, values) => {
     try {
         await axios.post("/api/authenticate", values);
-        dispatch({type: AUTH_CLOSE_DIALOG});
-        await fetchUserAction(dispatch);
     } catch(error) {
         throw error;
     }

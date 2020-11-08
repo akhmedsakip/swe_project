@@ -8,6 +8,9 @@ import loginAction from "../../actions/auth/loginAction";
 import AppContext from "../../store/AppContext";
 import LoadingButton from "../../components/LoadingButton";
 import useSubmit from "../../hooks/useSubmit";
+import {AUTH_CLOSE_DIALOG} from "../../store/auth/authActionTypes";
+import fetchUserAction from "../../actions/user/fetchUserAction";
+import {USER_SET_LOADING, USER_UNSET_LOADING} from "../../store/user/userActionsTypes";
 
 
 function LoginForm() {
@@ -19,7 +22,12 @@ function LoginForm() {
         password: "",
     });
     const action =  async() => await loginAction(dispatch, values);
-    const onSuccess = () => {};
+    const onSuccess = async () => {
+        dispatch({type: AUTH_CLOSE_DIALOG});
+        dispatch({type: USER_SET_LOADING});
+        await fetchUserAction(dispatch);
+        dispatch({type: USER_UNSET_LOADING});
+    };
     const onErrorArray = (serverErrors) => setFailMessage("Email or password is incorrect");
     const onError = (serverError) => setFailMessage(serverError.message || "Server error");
     const {loading, onSubmit} = useSubmit(action, onSuccess, onErrorArray, onError);
