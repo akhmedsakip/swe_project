@@ -49,13 +49,13 @@ function ProfileInfoForm() {
     onSubmit
   });
   const {handleSubmit, values} = formik;
-  const imageURL = "https://miro.medium.com/max/2048/0*0fClPmIScV5pTLoE.jpg";
 
   return (
       <ProfileContext.Provider value={{editing, setEditing, setChangePassword, formik, loading}}>
         <form className={classes.block} onSubmit={handleSubmit}>
           <div className={`${classes.centerBlock} ${classes.marginBottom12}`}>
-            <Avatar alt="profile image" src={imageURL} className={classes.image} />
+            <Avatar alt="profile image" src={`data:image/png;base64,${userInfo.identicon}`}
+                    className={classes.image} />
           </div>
           <div className={classes.centerBlock}>
             {success ?

@@ -1,4 +1,4 @@
-import {useContext} from 'react';
+import {useContext, useEffect} from 'react';
 import {Link, useHistory} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import React from "react";
@@ -24,8 +24,10 @@ const DesktopMenu = () => {
     const {state, dispatch} = useContext(AppContext);
     const classes = useStyles();
     const history = useHistory();
-    const { loggedIn } = state.user;
-    console.log(state, "state");
+    const { loggedIn, userInfo } = state.user;
+    // useEffect(() => {
+    //     console.log(identicon);
+    // }, [identicon]);
     return <div>
         <Link to="/" className={classes.link}>
             <Button color="inherit">Home</Button>
@@ -51,7 +53,7 @@ const DesktopMenu = () => {
         }
         {
             loggedIn ? <Button onClick={() => history.push('/profile')}>
-                <Avatar alt="Profile" src='https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png' />
+                <Avatar alt="Profile" src={`data:image/png;base64,${userInfo.identicon}`} />
             </Button> : null
         }
     </div>
