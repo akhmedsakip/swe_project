@@ -2,7 +2,8 @@ import { Collapse, IconButton, makeStyles, Typography } from '@material-ui/core'
 import React, { useState, useEffect } from 'react';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Link as Scroll } from 'react-scroll';
-
+import Footer from '../components/footer/Footer';
+import { FooterContainer } from '../components/footer/FooterContainer';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -85,21 +86,13 @@ function Home() {
       <div id="section-2" className={classes.section2 + " " + classes.bg} title="section-1">
         <div className={classes.info}>
           <Typography style={{fontSize: '3.5vmin'}}>
-            {loremIpsum1 + loremIpsum2}
+            AMITA Hotels is a collection of modern hotels located throughout every part of the world. 
+Beautifully designed and nested in the heart of the city, The AMITA Hotel, Almaty effortlessly combines all of the best features of a modern hotel in the dynamic urban center. After a day spent exploring the city, guests at this five-star hotel can reflect upon their time in Kazakhstan from the unique perspective. Our hotel welcomes those who would like to spend quality time and enjoy comfortable rooms, restaurants suitable for any taste and much more. Our reception staff will be happy to help you during your stay in Almaty, suggesting itineraries, places to visit and gourmet restaurants in this charming city. Let us create your perfect stay.
+Contact the AMITA HOTELS, Almaty reservations team to book your stay with us.
           </Typography>
         </div>
       </div>
-      <div className={classes.bottomBar}>
-        <h3 style={{ fontFamily: 'Staatliches' }}>
-          Amita hotels
-        </h3>
-        <h3 style={{ fontFamily: 'Staatliches' }}>
-          +7 777 654 32 10
-        </h3>
-        <h3 style={{ fontFamily: 'Staatliches' }}>
-          Almaty, Kazakhstan
-        </h3>
-      </div>
+      <FooterContainer />
     </div>
   )
 }
