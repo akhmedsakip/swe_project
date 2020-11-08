@@ -62,23 +62,21 @@ public class RoomTypeDataAccessService {
     }
 
     public int getTotalPrice(ReservationRequest info) {
-        String sql1 = "DROP PROCEDURE IF EXISTS getprice;";
-        String sql2 = "CREATE PROCEDURE getprice(IN _hotelId INT, IN _checkInDate DATE, IN _checkOutDate DATE,\n" +
-                "                          IN _roomTypeName VARCHAR(45), OUT _totalPrice INT)\n" +
+        String sql1 = "DROP FUNCTION IF EXISTS getPrice;";
+        String sql2 = "CREATE FUNCTION getPrice(_hotelId INT, _checkInDate DATE, _checkOutDate DATE,\n" +
+                "                             _roomTypeName VARCHAR(45))\n" +
+                "    RETURNS INT\n" +
+                "    READS SQL DATA\n" +
+                "    DETERMINISTIC\n" +
                 "BEGIN\n" +
                 "    DECLARE _date VARCHAR(20);\n" +
                 "    DECLARE _coefficient FLOAT;\n" +
                 "    DECLARE _basePrice INT;\n" +
-                "\n" +
-                "    DECLARE EXIT HANDLER FOR SQLEXCEPTION\n" +
-                "        BEGIN\n" +
-                "            ROLLBACK;\n" +
-                "        END;\n" +
+                "    DECLARE _totalPrice INT;\n" +
                 "\n" +
                 "    SET _totalPrice = 0;\n" +
                 "    SET _date = _checkInDate;\n" +
                 "\n" +
-                "    START TRANSACTION;\n" +
                 "    SELECT room_type.BasePricePerDay\n" +
                 "    INTO _basePrice\n" +
                 "    FROM room_type\n" +
@@ -93,7 +91,8 @@ public class RoomTypeDataAccessService {
                 "            FROM hotel_works_during_holiday hwdh\n" +
                 "                     INNER JOIN holiday ON holiday.HolidayID = hwdh.HolidayID\n" +
                 "            WHERE _date BETWEEN holiday.StartDate AND holiday.EndDate\n" +
-                "              AND hwdh.HotelID = _hotelId LIMIT 1;\n" +
+                "              AND hwdh.HotelID = _hotelId\n" +
+                "            LIMIT 1;\n" +
                 "\n" +
                 "            IF _coefficient IS NULL THEN\n" +
                 "                SELECT shdow.Coefficient\n" +
@@ -104,7 +103,8 @@ public class RoomTypeDataAccessService {
                 "                         INNER JOIN day_of_week dow ON shdow.DayOfWeek = dow.Day\n" +
                 "                WHERE _date BETWEEN season.StartDate AND season.EndDate\n" +
                 "                  AND dow.Day = DAYNAME(_date)\n" +
-                "                  AND hwds.HotelID = _hotelId LIMIT 1;\n" +
+                "                  AND hwds.HotelID = _hotelId\n" +
+                "                LIMIT 1;\n" +
                 "            END IF;\n" +
                 "\n" +
                 "            IF _coefficient IS NULL THEN\n" +
@@ -114,24 +114,14 @@ public class RoomTypeDataAccessService {
                 "            SET _totalPrice = _totalPrice + CEIL(_basePrice * ROUND(_coefficient, 4));\n" +
                 "            SET _date = DATE_ADD(_date, INTERVAL 1 DAY);\n" +
                 "        END WHILE;\n" +
-                "    COMMIT;\n" +
+                "    RETURN _totalPrice;\n" +
                 "END;";
-        String sql3 = "CALL getprice(?, ?, ?, ?, @totalPrice);";
-        String sqlSet = "SET @totalPrice = 1";
-        String sql4 = "SELECT @totalPrice;";
+        String sql3 = "SELECT getPrice(?, ?, ?, ?) TotalPrice;";
 
         jdbcTemplate.execute(sql1);
         jdbcTemplate.execute(sql2);
-        jdbcTemplate.update(sql3, info.getHotelId(), info.getCheckInDate(), info.getCheckOutDate(),
-                info.getRoomTypeName());
 
-        jdbcTemplate.execute(sqlSet);
-
-        System.out.println(info.getHotelId());
-        System.out.println(info.getCheckInDate());
-        System.out.println(info.getCheckOutDate());
-        System.out.println(info.getRoomTypeName());
-
-        return jdbcTemplate.query(sql4, (rs, rowNum) -> rs.getInt("@totalPrice")).get(0);
+        return jdbcTemplate.query(sql3, (rs, rowNum) -> rs.getInt("TotalPrice"), info.getHotelId(),
+                info.getCheckInDate(), info.getCheckOutDate(), info.getRoomTypeName()).get(0);
     }
 }

@@ -58,11 +58,11 @@
 #
 # SELECT @totalPrice;
 
-SET GLOBAL log_bin_trust_function_creators = 0;
+# SET GLOBAL log_bin_trust_function_creators = 0;
 
-DROP FUNCTION IF EXISTS getpricefunc;
+DROP FUNCTION IF EXISTS getPrice;
 
-CREATE FUNCTION getpricefunc(_hotelId INT, _checkInDate DATE, _checkOutDate DATE,
+CREATE FUNCTION getPrice(_hotelId INT, _checkInDate DATE, _checkOutDate DATE,
                              _roomTypeName VARCHAR(45))
     RETURNS INT
     READS SQL DATA
@@ -116,7 +116,7 @@ BEGIN
     RETURN _totalPrice;
 END;
 
-SELECT getpricefunc(1, '2021-01-01', '2099-12-31', 'Standard');
+SELECT getPrice(1, '2021-01-01', '2099-12-31', 'Standard') TotalPrice;
 
 # SELECT Coefficient
 # FROM hotel_works_during_holiday hwdh
