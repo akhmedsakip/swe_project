@@ -3,12 +3,14 @@ import AppBar from '@material-ui/core/AppBar';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import AuthenticationDialog from "../pages/auth/AuthenticationDialog";
 import useTheme from '@material-ui/core/styles/useTheme';
 import DesktopMenu from "./menus/DesktopMenu";
 import MobileMenu from "./menus/MobileMenu";
+import Spinner from "./Spinner";
+import AppContext from "../store/AppContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +41,8 @@ export default function ButtonAppBar() {
 
   const theme = useTheme();
   const isMobileScreen = useMediaQuery(theme.breakpoints.down('xs'));
+  const {state} = useContext(AppContext);
+  const {loading} = state.user;
 
 
   return (
@@ -51,13 +55,17 @@ export default function ButtonAppBar() {
               Amita Hotels
           </Typography>
           </Link>
-
           <div className={classes.title}>
           </div>
-
-          {!isMobileScreen ? <DesktopMenu />
-            : <MobileMenu />
-          }
+          {(() => {
+            if(loading) {
+              return <Spinner />
+            }
+            if(isMobileScreen) {
+              return <MobileMenu />
+            }
+            return <DesktopMenu />
+          })()}
         </Toolbar>
       </AppBar>
       <AuthenticationDialog />

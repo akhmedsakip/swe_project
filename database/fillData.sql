@@ -332,7 +332,7 @@ VALUES (
         'New Year',
         'KZ',
         '2021-01-01',
-        '2020-01-03',
+        '2021-01-03',
         1
        );
 
@@ -343,6 +343,8 @@ VALUES (
         1.3
        );
 
+    SET _personId = NULL;
+    SET _roomNumber = NULL;
 INSERT INTO hotel_works_during_holiday (HotelID, HolidayID, Coefficient)
 VALUES (
         2,

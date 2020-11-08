@@ -6,8 +6,6 @@ import Hotels from './pages/Hotels';
 import RoomType from "./pages/RoomTypes";
 import Home from './pages/Home';
 import AvailabilityPage from "./pages/availability/AvailabilityPage";
-import { makeStyles } from '@material-ui/core';
-import UserContextProvider from "./context-providers/UserContextProvider";
 import Root from "./components/Root";
 import ProfilePage from "./pages/profile/ProfilePage";
 import PrivateRoute from "./components/PrivateRoute";

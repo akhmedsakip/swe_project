@@ -5,21 +5,16 @@ import InputLabel from "@material-ui/core/InputLabel";
 import {useFormik} from "formik";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import TextFieldWithError from "../../shared/TextFieldWithError";
-import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
 import {registrationSchema} from "../../utils/validationSchemas";
 import AppContext from "../../store/AppContext";
-import registrationAction from "../../actions/userContextActions/registrationAction";
-
-const useStyles = makeStyles({
-    marginTop16: {
-        marginTop: 16,
-    }
-});
+import registrationAction from "../../actions/auth/registrationAction";
+import LoadingButton from "../../components/LoadingButton";
+import useSubmit from "../../hooks/useSubmit";
 
 function RegistrationForm() {
-    const classes = useStyles();
     const {dispatch} = useContext(AppContext);
+    const classes = useStyles();
     const initialValues = useRef({
         firstName: "",
         lastName: "",
@@ -29,19 +24,15 @@ function RegistrationForm() {
         dateOfBirth: "",
         gender: "",
     });
+    const action =  async() => await registrationAction(dispatch, values);
+    const onSuccess = () => {};
+    const onErrorArray = (serverErrors) => {
+        serverErrors.forEach((serverError) =>
+            setFieldError(serverError.field || "email", serverError.message));
+    };
+    const onError = (serverError) => setFieldError("email", serverError.message || "Server error");
+    const {loading, onSubmit} = useSubmit(action, onSuccess, onErrorArray, onError);
 
-    async function onSubmit () {
-        try {
-            await registrationAction(dispatch, values);
-        } catch(error) {
-            const serverErrors = error.response.data;
-            serverErrors?.forEach((serverError) => {
-                if(serverError.message) {
-                    setFieldError(serverError.field || "email", serverError.message);
-                }
-            })
-        }
-    }
     const {handleSubmit, handleBlur, handleChange, values, touched, errors, isValid, setFieldError} = useFormik({
         initialValues,
         initialErrors: initialValues,
@@ -89,13 +80,20 @@ function RegistrationForm() {
                     {touched.gender && !!errors.gender ?
                         <FormHelperText error>{errors.gender}</FormHelperText> : null }
                 </FormControl>
-                <Button disabled={!isValid} className={classes.marginTop16}
+                <LoadingButton loading={loading} disabled={!isValid} className={classes.marginTop16}
                         type={'submit'} variant={'outlined'} color={'primary'}>
                     Register
-                </Button>
+                </LoadingButton>
             </form>
         </>
     );
 }
 
 export default RegistrationForm;
+
+
+const useStyles = makeStyles({
+    marginTop16: {
+        marginTop: 16,
+    },
+});

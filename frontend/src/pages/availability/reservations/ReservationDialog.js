@@ -4,7 +4,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import ReservationForm from "./ReservationForm";
 import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
-import AvailabilityContext from "../../../contexts/availabilityContext";
 import {AVAILABILITY_UNSET_ROOM_TYPE} from "../../../store/availability/availabilityActionTypes";
 import AppContext from "../../../store/AppContext";
 

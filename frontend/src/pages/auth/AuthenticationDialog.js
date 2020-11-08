@@ -24,14 +24,17 @@ function AuthenticationDialog() {
     const {isRegistration, isOpened} = state.auth;
     const classes = useStyles();
 
+    function onClose() {
+        dispatch({type: AUTH_CLOSE_DIALOG});
+    }
     return (
-        <Dialog classes={{paper: classes.root}} open={isOpened} onClose={() => dispatch({type: AUTH_CLOSE_DIALOG})} aria-labelledby="form-dialog-title">
+        <Dialog classes={{paper: classes.root}} open={isOpened} onClose={onClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Login</DialogTitle>
             <DialogContent>
                 {isRegistration ? <RegistrationForm /> : <LoginForm />}
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => dispatch({type: AUTH_CLOSE_DIALOG})} color="primary">
+                <Button onClick={onClose} color="primary">
                     Cancel
                 </Button>
                 {

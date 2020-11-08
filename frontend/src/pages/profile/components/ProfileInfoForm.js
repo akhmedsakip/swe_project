@@ -4,18 +4,20 @@ import useTheme from "@material-ui/core/styles/useTheme";
 import ProfileContext from "../../../contexts/ProfileContext";
 import {useFormik} from "formik";
 import {editInfoSchema} from "../../../utils/validationSchemas";
-import editProfileAction from "../../../actions/userContextActions/editProfileAction";
+import editProfileAction from "../../../actions/user/editProfileAction";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import ChangePasswordDialog from "./ChangePasswordDialog";
 import ProfileInfoInputs from "./ProfileInfoInputs";
 import ProfileInfoButtons from "./ProfileInfoButtons";
 import AppContext from "../../../store/AppContext";
+import useSubmit from "../../../hooks/useSubmit";
 
 function ProfileInfoForm() {
   const [editing, setEditing] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [success, setSuccess] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
+
   const {state, dispatch} = useContext(AppContext);
   const {userInfo} = state.user;
 
@@ -23,22 +25,21 @@ function ProfileInfoForm() {
   const isMobileScreen = useMediaQuery(theme.breakpoints.down('xs'));
   const classes = useStyles({isMobileScreen});
 
-  async function onSubmit() {
-    try {
-      await editProfileAction(values, dispatch);
-      setSuccess(true);
-      setEditing(false);
-    } catch(error) {
-      const serverErrors = error.response.message;
-      setSuccess(false);
-      if(serverErrors.length) {
-        setErrorMessage(serverErrors[0].message);
-      } else {
-        setErrorMessage('Server error')
-      }
-    }
+  const action  = async () => await editProfileAction(values, dispatch);
+  const onSuccess = () => {
+    setSuccess(true);
+    setEditing(false);
+  };
+  const onErrorArray = (serverErrors) => {
+    setErrorMessage(serverErrors[0].message);
+    setSuccess(false);
+  };
+  const onError = () => {
+    setErrorMessage('Server error');
+    setSuccess(false);
+  };
 
-  }
+  const {loading, onSubmit} = useSubmit(action, onSuccess, onErrorArray, onError);
 
   const formik = useFormik({
     initialValues: userInfo,
@@ -51,7 +52,7 @@ function ProfileInfoForm() {
   const imageURL = "https://miro.medium.com/max/2048/0*0fClPmIScV5pTLoE.jpg";
 
   return (
-      <ProfileContext.Provider value={{editing, setEditing, setChangePassword, formik}}>
+      <ProfileContext.Provider value={{editing, setEditing, setChangePassword, formik, loading}}>
         <form className={classes.block} onSubmit={handleSubmit}>
           <div className={`${classes.centerBlock} ${classes.marginBottom12}`}>
             <Avatar alt="profile image" src={imageURL} className={classes.image} />

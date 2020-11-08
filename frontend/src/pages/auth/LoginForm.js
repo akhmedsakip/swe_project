@@ -2,11 +2,12 @@ import {FormHelperText} from "@material-ui/core";
 import React, {useContext, useEffect, useRef, useState} from "react";
 import {useFormik} from "formik";
 import TextFieldWithError from "../../shared/TextFieldWithError";
-import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
 import {loginSchema} from "../../utils/validationSchemas";
-import loginAction from "../../actions/userContextActions/loginAction";
+import loginAction from "../../actions/auth/loginAction";
 import AppContext from "../../store/AppContext";
+import LoadingButton from "../../components/LoadingButton";
+import useSubmit from "../../hooks/useSubmit";
 
 
 function LoginForm() {
@@ -17,20 +18,11 @@ function LoginForm() {
         email: "",
         password: "",
     });
-
-    async function onSubmit() {
-        try {
-            await loginAction(dispatch, values.email, values.password);
-        } catch(error) {
-            const serverErrors = error.response.data;
-            if(serverErrors.length) {
-                setFailMessage("Email or password is incorrect");
-            } else if(serverErrors) {
-                setFailMessage("Server error");
-            }
-        }
-
-    }
+    const action =  async() => await loginAction(dispatch, values);
+    const onSuccess = () => {};
+    const onErrorArray = (serverErrors) => setFailMessage("Email or password is incorrect");
+    const onError = (serverError) => setFailMessage(serverError.message || "Server error");
+    const {loading, onSubmit} = useSubmit(action, onSuccess, onErrorArray, onError);
 
     const classes = useStyles();
     const {handleBlur, handleChange, values, handleSubmit, errors, touched, isValid} = useFormik({
@@ -55,10 +47,10 @@ function LoginForm() {
                     type="password" fullWidth error={touched.password && !!errors.password}
                     errorMessage={errors.email} autocomplete={"on"}
                 />
-                <Button disabled={!isValid} className={classes.marginTop16} type={'submit'}
+                <LoadingButton loading={loading} disabled={!isValid} className={classes.marginTop16} type={'submit'}
                         variant={'outlined'} color={'primary'}>
-                    Login
-                </Button>
+                    Submit
+                </LoadingButton>
             </form>
         </>
     );

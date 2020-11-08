@@ -1,11 +1,9 @@
 import React, {useContext, useEffect} from 'react';
-import AvailabilityContext from "../../../contexts/availabilityContext";
 import {Grid} from "@material-ui/core";
 import RoomTypeCard from "../../../components/RoomTypeCard";
 import {makeStyles} from "@material-ui/core/styles";
 import BackButton from "../../../components/BackButton";
 import {useHistory} from 'react-router-dom';
-import ReservationDialog from "../reservations/ReservationDialog";
 import AppContext from "../../../store/AppContext";
 import {AVAILABILITY_SET_ROOM_TYPE} from "../../../store/availability/availabilityActionTypes";
 

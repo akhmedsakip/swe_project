@@ -1,5 +1,5 @@
 import axios from 'axios'
-import logoutAction from "./logoutAction";
+import logoutAction from "../auth/logoutAction";
 import {AUTH_OPEN_DIALOG, AUTH_SET_LOGIN_MESSAGE} from "../../store/auth/authActionTypes";
 
 const changePasswordAction = async (data, dispatch) => {

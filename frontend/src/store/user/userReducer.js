@@ -1,8 +1,9 @@
-import {USER_LOG_IN, USER_SIGN_OUT} from "./userActionsTypes";
+import {USER_LOG_IN, USER_SET_LOADING, USER_SIGN_OUT, USER_UNSET_LOADING} from "./userActionsTypes";
 
 export const initialUserState = {
     loggedIn: false,
     userInfo: null,
+    loading: false,
 };
 
 function userReducer(state, action) {
@@ -10,7 +11,11 @@ function userReducer(state, action) {
         case USER_LOG_IN:
             return {...state, userInfo: action.payload, loggedIn: true};
         case USER_SIGN_OUT:
-            return {userInfo: null, loggedIn: false};
+            return {...state, userInfo: null, loggedIn: false};
+        case USER_SET_LOADING:
+            return {...state, loading: true};
+        case USER_UNSET_LOADING:
+            return {...state, loading: false};
         default:
             return state;
     }

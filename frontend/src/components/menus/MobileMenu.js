@@ -3,7 +3,7 @@ import {IconButton, Menu, MenuItem} from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import {Link, useHistory} from "react-router-dom";
 import {makeStyles} from "@material-ui/core/styles";
-import logoutAction from "../../actions/userContextActions/logoutAction";
+import logoutAction from "../../actions/auth/logoutAction";
 import AppContext from "../../store/AppContext";
 import {AUTH_OPEN_DIALOG} from "../../store/auth/authActionTypes";
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 import {AVAILABILITY_SET_HOTELS, AVAILABILITY_SET_PARAMS} from "../../store/availability/availabilityActionTypes";
 
-const fetchAvailableHotels = async (dispatch, values) => {
+const fetchAvailableHotelsAction = async (dispatch, values) => {
     try {
         const response = await axios.get("/api/hotels/availableHotels", {params: values});
         dispatch({type: AVAILABILITY_SET_PARAMS, payload: values});
@@ -11,4 +11,4 @@ const fetchAvailableHotels = async (dispatch, values) => {
     }
 };
 
-export default fetchAvailableHotels;
+export default fetchAvailableHotelsAction;

@@ -1,9 +1,9 @@
 import {
     AVAILABILITY_SET_CITIES,
-    AVAILABILITY_SET_HOTELS,
+    AVAILABILITY_SET_HOTELS, AVAILABILITY_SET_LOADING,
     AVAILABILITY_SET_PARAMS,
     AVAILABILITY_SET_ROOM_TYPE,
-    AVAILABILITY_SET_ROOM_TYPES,
+    AVAILABILITY_SET_ROOM_TYPES, AVAILABILITY_UNSET_LOADING,
     AVAILABILITY_UNSET_ROOM_TYPE
 } from "./availabilityActionTypes";
 
@@ -30,6 +30,10 @@ function availabilityReducer(state, action) {
             return {...state, params: action.payload};
         case AVAILABILITY_SET_CITIES:
             return {...state, cities: action.payload};
+        case AVAILABILITY_SET_LOADING:
+            return {...state, loading: true};
+        case AVAILABILITY_UNSET_LOADING:
+            return {...state, loading: false};
         default:
             return state;
     }

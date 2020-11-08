@@ -3,7 +3,7 @@ import {Link, useHistory} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import logoutAction from "../../actions/userContextActions/logoutAction";
+import logoutAction from "../../actions/auth/logoutAction";
 import Avatar from "@material-ui/core/Avatar";
 import AppContext from "../../store/AppContext";
 import {AUTH_OPEN_DIALOG} from "../../store/auth/authActionTypes";
