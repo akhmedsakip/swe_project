@@ -1,30 +1,35 @@
 import React from 'react';
-import StoreContext from "./StoreContext";
+import AppContext from "./AppContext";
 import {useReducer} from "react";
-import userReducer from "./user/userReducer";
+import userReducer, {initialUserState} from "./user/userReducer";
+import authReducer, {initialAuthState} from "./auth/authReducer";
+import availabilityReducer, {initialRoomTypeState} from "./availability/availavilityReducer";
 
 const initialState = {
-    user: {logged_in: false}
+    user: initialUserState,
+    auth: initialAuthState,
+    availability: initialRoomTypeState,
 };
 
 const combineReducers = (slices) => (state, action) =>
-    Object.keys(slices).reduce( // use for..in loop, if you prefer it
-        (accumulator, prop) => ({
+    Object.keys(slices).reduce((accumulator, prop) => ({
             ...accumulator,
             [prop]: slices[prop](accumulator[prop], action),
         }),
         state
     );
 
-const reducers = combineReducers({
+const reducer = combineReducers({
     user: userReducer,
+    auth: authReducer,
+    availability: availabilityReducer,
 });
 
 const StoreProvider = ({children}) => {
-    const [state, dispatch] = useReducer(combineReducers(), initialState, undefined);
-    return <StoreContext.Provider value={{state, dispatch}}>
+    const [state, dispatch] = useReducer(reducer, initialState, undefined);
+    return <AppContext.Provider value={{state, dispatch}}>
         {children}
-    </StoreContext.Provider>
+    </AppContext.Provider>
 };
 
 export default StoreProvider;

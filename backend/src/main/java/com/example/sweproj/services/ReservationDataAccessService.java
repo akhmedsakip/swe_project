@@ -27,6 +27,7 @@ public class ReservationDataAccessService {
                 "    DECLARE EXIT HANDLER FOR SQLEXCEPTION\n" +
                 "    BEGIN\n" +
                 "        ROLLBACK;\n" +
+                "        RESIGNAL; \n" +
                 "    END;\n" +
                 "\n" +
                 "    SET _personId = 0;\n" +
@@ -71,6 +72,9 @@ public class ReservationDataAccessService {
                 "           O.CheckOutDate BETWEEN _checkInDate AND _checkOutDate))\n" +
                 "        AND hotel.HotelID = _hotelId\n" +
                 "        AND room_type.Name >= _roomTypeName LIMIT 1;\n" +
+                "    IF _roomNumber IS NULL THEN\n" +
+                "        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'There is no free room';\n" +
+                "   END IF;"+
                 "\n" +
                 "    INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID, RoomNumber, GuestID) VALUES (\n" +
                 "    TRUE,\n" +

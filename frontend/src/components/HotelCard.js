@@ -8,11 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import {Link} from "react-router-dom";
 import Rating from '@material-ui/lab/Rating';
-import fetchAvailableHotels from "../actions/availabilityContextActions/fetchAvailableHotels";
-import AvailabilityContext from "../contexts/availabilityContext";
-import fetchAvailableRoomTypes from "../actions/availabilityContextActions/fetchAvailableRoomTypes";
 
 const useStyles = makeStyles({
   root: {

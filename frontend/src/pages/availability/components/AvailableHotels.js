@@ -1,11 +1,15 @@
 import React, {useContext, useEffect} from 'react';
-import AvailabilityContext from "../../../contexts/availabilityContext";
 import HotelCard from "../../../components/HotelCard";
 import {Grid} from "@material-ui/core";
-import fetchAvailableRoomTypes from "../../../actions/availabilityContextActions/fetchAvailableRoomTypes";
+import fetchAvailableRoomTypes from "../../../actions/availability/fetchAvailableRoomTypes";
 import {makeStyles} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import {useHistory} from "react-router-dom";
+import AppContext from "../../../store/AppContext";
+import {
+    AVAILABILITY_SET_LOADING,
+    AVAILABILITY_UNSET_LOADING
+} from "../../../store/availability/availabilityActionTypes";
 
 const useStyles = makeStyles({
     root: {
@@ -18,29 +22,33 @@ const useStyles = makeStyles({
 });
 
 const AvailableHotels = () => {
-    const {state, dispatch} = useContext(AvailabilityContext);
+    const {state, dispatch} = useContext(AppContext);
+    const {hotels, params} = state.availability;
     const classes = useStyles();
     const history = useHistory();
+
+    async function onClick (hotel) {
+        dispatch({type: AVAILABILITY_SET_LOADING});
+        await fetchAvailableRoomTypes(dispatch, {...params, hotelId:hotel.hotelId})
+        setTimeout(() => {
+            dispatch({type: AVAILABILITY_UNSET_LOADING});
+            history.push('/availability/roomTypes');
+        }, 300);
+    }
     return (
         <div className={classes.root}>
-            {state.hotels && state.hotels.length === 0 ? <Typography>
+            {hotels?.length === 0 ? <Typography>
                 No results found
             </Typography> : null}
             <Grid container direction="row"
                   justify="space-evenly" alignItems="center">
-                {state.hotels?.map(hotel => {
-                    return (
+                {hotels?.map(hotel =>
                         <Grid key={hotel.hotelId} >
                             <HotelCard hotelName={hotel.name} hotelDescription={hotel.description}
                                        hotelMainPhoto={hotel.mainHotelPicture} hotelStars={hotel.starCount}
-                                       onClick={() => {
-                                           console.log("hi")
-                                           fetchAvailableRoomTypes(dispatch, {...state.params, hotelId:hotel.hotelId})
-                                               .then(() => history.push('/availability/roomTypes'))
-                                       }}/>
+                                       onClick={() => onClick(hotel)}/>
                         </Grid>
-                    );
-                })}
+                    )}
             </Grid>
         </div>
     )

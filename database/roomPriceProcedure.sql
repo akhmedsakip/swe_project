@@ -54,7 +54,7 @@ BEGIN
     COMMIT;
 END;
 
-CALL getprice(1, '2021-01-02', '2021-01-03', 'Standard', @totalPrice);
+CALL getprice(1, '2021-01-08', '2021-01-09', 'Standard', @totalPrice);
 
 SELECT @totalPrice;
 

@@ -1,58 +1,61 @@
 import {Avatar, Button, makeStyles, useMediaQuery} from '@material-ui/core';
 import React, {useContext, useEffect, useState} from 'react';
-import EditIcon from '@material-ui/icons/Edit';
-
-import InformationRow from "./InformationRow";
-import UserContext from "../../../contexts/userContext";
 import useTheme from "@material-ui/core/styles/useTheme";
-import ProfileContext from "../../../contexts/profileContext";
+import ProfileContext from "../../../contexts/ProfileContext";
 import {useFormik} from "formik";
 import {editInfoSchema} from "../../../utils/validationSchemas";
-import TextField from "@material-ui/core/TextField";
-import moment from 'moment';
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
-import editProfileAction from "../../../actions/userContextActions/editProfileAction";
+import editProfileAction from "../../../actions/user/editProfileAction";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import ChangePasswordDialog from "./ChangePasswordDialog";
 import ProfileInfoInputs from "./ProfileInfoInputs";
 import ProfileInfoButtons from "./ProfileInfoButtons";
+import AppContext from "../../../store/AppContext";
+import useSubmit from "../../../hooks/useSubmit";
 
 function ProfileInfoForm() {
   const [editing, setEditing] = useState(false);
-  const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [success, setSuccess] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
-  const {state} = useContext(UserContext);
+
+  const {state, dispatch} = useContext(AppContext);
+  const {userInfo} = state.user;
+
   const theme = useTheme();
   const isMobileScreen = useMediaQuery(theme.breakpoints.down('xs'));
   const classes = useStyles({isMobileScreen});
-  const {dispatch} = useContext(UserContext);
+
+  const action  = async () => await editProfileAction(values, dispatch);
+  const onSuccess = () => {
+    setSuccess(true);
+    setEditing(false);
+  };
+  const onErrorArray = (serverErrors) => {
+    setErrorMessage(serverErrors[0].message);
+    setSuccess(false);
+  };
+  const onError = () => {
+    setErrorMessage('Server error');
+    setSuccess(false);
+  };
+
+  const {loading, onSubmit} = useSubmit(action, onSuccess, onErrorArray, onError);
+
   const formik = useFormik({
-    initialValues: state,
-    initialErrors: Object.fromEntries(Object.entries(state).map(([key]) => [key, ""])),
+    initialValues: userInfo,
+    initialErrors: Object.fromEntries(Object.entries(userInfo).map(([key]) => [key, ""])),
     validationSchema: editInfoSchema,
     enableReinitialize: true,
-    onSubmit: async () => {
-      const errors = await editProfileAction(values, dispatch);
-      if(errors && errors.length) {
-        setSuccess(false);
-        setError(errors[0].message);
-      } else {
-        setSuccess(true);
-        setEditing(false);
-        setError("");
-      }
-    }
+    onSubmit
   });
   const {handleSubmit, values} = formik;
-  const imageURL = "https://miro.medium.com/max/2048/0*0fClPmIScV5pTLoE.jpg";
 
   return (
-      <ProfileContext.Provider value={{editing, setEditing, setChangePassword, formik}}>
+      <ProfileContext.Provider value={{editing, setEditing, setChangePassword, formik, loading}}>
         <form className={classes.block} onSubmit={handleSubmit}>
           <div className={`${classes.centerBlock} ${classes.marginBottom12}`}>
-            <Avatar alt="profile image" src={imageURL} className={classes.image} />
+            <Avatar alt="profile image" src={`data:image/png;base64,${userInfo.identicon}`}
+                    className={classes.image} />
           </div>
           <div className={classes.centerBlock}>
             {success ?
@@ -60,7 +63,7 @@ function ProfileInfoForm() {
                 Successfully edited
               </FormHelperText> :
               <FormHelperText error>
-                {error}
+                {errorMessage}
               </FormHelperText>
             }
           </div>

@@ -44,21 +44,21 @@ public class RoomTypeDataAccessService {
     List<RoomType> getAvailableRoomTypes(ReservationRequest info) {
         String sql = "SELECT COUNT(room_type.Name) RoomTypesCount, room_type.* \n" +
                 "FROM room\n" +
-                "INNER JOIN HOTEL ON HOTEL.HotelID = room.HotelID\n" +
+                "INNER JOIN hotel ON hotel.HotelID = room.HotelID\n" +
                 "INNER JOIN room_type ON room_type.HotelID = room.HotelID AND room.RoomTypeName = room_type.Name\n" +
                 "LEFT JOIN order_details OD on room.HotelID = OD.RoomHotelID and room.RoomNumber = OD.RoomNumber\n" +
-                "LEFT JOIN `order` O ON HOTEL.HotelID = O.HotelID and OD.OrderID = O.OrderID\n" +
+                "LEFT JOIN `order` O ON hotel.HotelID = O.HotelID and OD.OrderID = O.OrderID\n" +
+
                 "WHERE (O.OrderID IS NULL\n" +
                 "    OR NOT\n" +
                 "       (O.CheckInDate BETWEEN ? AND ?\n" +
                 "       OR\n" +
                 "       O.CheckOutDate BETWEEN ? AND ?))\n" +
-                "    AND HOTEL.HotelID = ?\n" +
+                "    AND hotel.HotelID = ?\n" +
                 "    AND room_type.Capacity >= ?\n" +
                 "GROUP BY room_type.Name, room_type.HotelID";
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> mapFromDB(rs), info.getCheckInDate(), info.getCheckOutDate(),
-                info.getCheckInDate(), info.getCheckOutDate(), info.getHotelId(), info.getNumberOfPeople());
+        return jdbcTemplate.query(sql, (rs, rowNum) -> mapFromDB(rs), info.getCheckInDate(), info.getCheckOutDate(), info.getCheckInDate(), info.getCheckOutDate(), info.getHotelId(), info.getNumberOfPeople());
     }
 
     public int getTotalPrice(ReservationRequest info) {

@@ -1,12 +1,13 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import TextFieldWithError from "../../../shared/TextFieldWithError";
-import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
 import {useFormik} from "formik";
 import {changePasswordSchema} from "../../../utils/validationSchemas";
-import UserContext from "../../../contexts/userContext";
-import changePasswordAction from "../../../actions/userContextActions/changePasswordAction";
+import changePasswordAction from "../../../actions/user/changePasswordAction";
 import PropTypes from 'prop-types'
+import AppContext from "../../../store/AppContext";
+import LoadingButton from "../../../components/LoadingButton";
+import useSubmit from "../../../hooks/useSubmit";
 
 const useStyles = makeStyles({
     marginTop10: {
@@ -15,26 +16,25 @@ const useStyles = makeStyles({
 });
 
 const ChangePasswordForm = ({closeDialog}) => {
-    const {dispatch} = useContext(UserContext);
+    const {dispatch} = useContext(AppContext);
+    const initialValues = useRef({
+        oldPassword: '',
+        newPassword: '',
+        newPasswordConfirm: '',
+    });
+
+    const action = async () => await changePasswordAction(values, dispatch);
+    const onSuccess = () => console.log("Password changed");
+    const onErrorArray = (serverErrors) => {
+        serverErrors.forEach(
+            (error) => setFieldError(error.field || "oldPassword", error.message));
+    };
+    const onError = (serverError) => setFieldError('oldPassword', serverError.message || "Server error");
+    const {loading, onSubmit} = useSubmit(action, onSuccess, onErrorArray, onError);
     const {handleChange, handleBlur, handleSubmit, errors, touched, isValid, values, setFieldError} = useFormik({
-        initialValues: {
-            oldPassword: '',
-            newPassword: '',
-            newPasswordConfirm: '',
-        },
-        initialErrors: {
-            oldPassword: '',
-            newPassword: '',
-            newPasswordConfirm: '',
-        },
-        onSubmit: async () => {
-            const errors = await changePasswordAction(values, dispatch);
-            if(errors && errors.length) {
-                errors.forEach((error) => setFieldError(error.field || "oldPassword", error.message))
-            } else {
-                closeDialog();
-            }
-        },
+        initialValues,
+        initialErrors: initialValues,
+        onSubmit,
         validationSchema: changePasswordSchema,
     });
 
@@ -64,9 +64,10 @@ const ChangePasswordForm = ({closeDialog}) => {
             error={!!errors.newPasswordConfirm && touched.newPasswordConfirm}
             fullWidth
         />
-        <Button color="primary" type={'submit'} variant={'outlined'} disabled={!isValid} className={classes.marginTop10}>
+        <LoadingButton  loading={loading} color="primary" type={'submit'}
+                        variant={'outlined'} disabled={!isValid} className={classes.marginTop10}>
             Submit
-        </Button>
+        </LoadingButton>
     </form>
 };
 

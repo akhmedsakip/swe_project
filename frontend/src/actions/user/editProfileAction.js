@@ -6,7 +6,7 @@ const editProfileAction = async (user, dispatch) => {
         await axios.put('/api/user', user);
         await fetchUserAction(dispatch);
     } catch(error) {
-        return error.response.data;
+        throw error;
     }
 };
 

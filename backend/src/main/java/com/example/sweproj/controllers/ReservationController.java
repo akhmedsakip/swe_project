@@ -4,19 +4,20 @@ import com.example.sweproj.models.Guest;
 import com.example.sweproj.models.ReservationDetailsGroup;
 import com.example.sweproj.models.ReservationDetailsRequest;
 import com.example.sweproj.models.ReservationRequest;
-import com.example.sweproj.services.GuestService;
 import com.example.sweproj.services.ReservationService;
 import com.example.sweproj.utils.Message;
 import com.example.sweproj.utils.ValidationUtil;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -36,13 +37,26 @@ public class ReservationController {
 
     @PostMapping
     ResponseEntity<String> reserveRoom(@RequestBody ReservationDetailsRequest reservationDetailsRequest) {
-        List<Message> serverErrors = validationUtil.validate(reservationDetailsRequest.getGuest());
+        List<Message> serverErrors = new ArrayList<>();
+        Guest guest = reservationDetailsRequest.getGuest();
+        ReservationRequest reservationRequest = reservationDetailsRequest.getReservationRequest();
+        if(guest == null || reservationRequest == null) {
+            serverErrors.add(new Message("Guest and reservation detail should not be empty"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+        serverErrors.addAll(validationUtil.validate(reservationDetailsRequest.getGuest()));
         serverErrors.addAll(validationUtil.validate(reservationDetailsRequest.getReservationRequest(), ReservationDetailsGroup.class));
         if(serverErrors.size() > 0) {
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
         try {
             reservationService.reserveRoom(reservationDetailsRequest);
+        } catch(DataIntegrityViolationException error) {
+            serverErrors.add(new Message("Such hotel does not exists"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        } catch(UncategorizedSQLException error) {
+            serverErrors.add(new Message("All rooms are already booked"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         } catch(Exception error) {
             error.printStackTrace();
             serverErrors.add(new Message("Server error"));

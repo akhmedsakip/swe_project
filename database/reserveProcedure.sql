@@ -11,10 +11,8 @@ BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
+        RESIGNAL;
     END;
-
-    SET _personId = NULL;
-    SET _roomNumber = NULL;
 
     START TRANSACTION;
     SELECT PersonID INTO _personId FROM guest
@@ -56,6 +54,10 @@ BEGIN
         AND hotel.HotelID = _hotelId
         AND room_type.Name >= _roomTypeName LIMIT 1;
 
+    IF _roomNumber IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'There is no free room';
+    end if;
+
     INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID, RoomNumber, GuestID) VALUES (
     TRUE,
     LAST_INSERT_ID(),
@@ -68,7 +70,64 @@ BEGIN
     COMMIT;
 END;
 
+
+SELECT DISTINCT *
+FROM room
+         INNER JOIN hotel ON hotel.HotelID = room.HotelID
+         INNER JOIN room_type ON room_type.HotelID = room.HotelID AND room.RoomTypeName = room_type.Name
+         LEFT JOIN order_details OD on room.HotelID = OD.RoomHotelID and room.RoomNumber = OD.RoomNumber
+         LEFT JOIN `order` O ON hotel.HotelID = O.HotelID and OD.OrderID = O.OrderID
+WHERE (O.OrderID IS NULL
+    OR (SELECT `order`.CheckOutDate
+        FROM `order`
+                 INNER JOIN order_details d on `order`.OrderID = d.OrderID and `order`.HotelID = d.OrderHotelID
+        WHERE d.RoomType = 'Standard'
+          AND (`order`.CheckInDate BETWEEN '2022-11-01' AND '2022-12-10' OR
+               `order`.CheckOutDate BETWEEN '2022-11-01' AND '2022-12-10')) IS NULL)
+  AND hotel.HotelID = 1
+  AND room_type.Name = 'Standard';
+
 CALL reserve('Male', 'Timur', 'Rakhimzhan',
     '+77028606010', 1, 50,
     '2020-06-05', '2020-06-11', '2020-06-20',
-    'Cash', 'Luxe');
+    'Cash', 'Test');
+
+# INSERT INTO hotel_feature (Name) VALUE ('Test');
+# INSERT INTO hotel_has_hotel_feature (HotelID, HotelFeatureName) VALUES(5, 'Hello');
+
+# SELECT * FROM room WHERE RoomTypeName='Test';
+
+
+SELECT DISTINCT *
+FROM room
+         INNER JOIN hotel ON hotel.HotelID = room.HotelID
+         INNER JOIN room_type ON room_type.HotelID = room.HotelID AND room.RoomTypeName = room_type.Name
+         LEFT JOIN order_details OD on room.HotelID = OD.RoomHotelID and room.RoomNumber = OD.RoomNumber
+         LEFT JOIN `order` O ON hotel.HotelID = O.HotelID and OD.OrderID = O.OrderID
+WHERE (O.OrderID IS NULL
+    OR (SELECT `order`.CheckOutDate
+        FROM `order`
+                 INNER JOIN order_details d on `order`.OrderID = d.OrderID and `order`.HotelID = d.OrderHotelID
+        WHERE d.RoomNumber = room.RoomNumber
+          AND (`order`.CheckInDate BETWEEN '2020-11-01' AND '2022-11-10' OR
+               `order`.CheckOutDate BETWEEN '2020-11-01' AND '2022-11-10')) IS NULL)
+  AND hotel.HotelID = 1
+  AND room_type.Name = 'Test';
+
+
+SELECT COUNT(DISTINCT room.RoomNumber) RoomTypesCount, room_type.*
+FROM room
+INNER JOIN hotel ON hotel.HotelID = room.HotelID
+INNER JOIN room_type ON room_type.HotelID = room.HotelID AND room.RoomTypeName = room_type.Name
+LEFT JOIN order_details OD on room.HotelID = OD.RoomHotelID and room.RoomNumber = OD.RoomNumber
+LEFT JOIN `order` O ON hotel.HotelID = O.HotelID and OD.OrderID = O.OrderID
+WHERE (O.OrderID IS NULL
+    OR (SELECT `order`.CheckOutDate
+        FROM `order`
+                 INNER JOIN order_details d on `order`.OrderID = d.OrderID and `order`.HotelID = d.OrderHotelID
+        WHERE d.RoomType = room.RoomTypeName
+          AND (`order`.CheckInDate BETWEEN '2020-11-01' AND '2020-12-10' OR
+               `order`.CheckOutDate BETWEEN '2020-11-01' AND '2020-12-10')) IS NULL)
+    AND hotel.HotelID = 1
+    AND room_type.Capacity >= 1
+GROUP BY RoomTypeName, room.HotelID
