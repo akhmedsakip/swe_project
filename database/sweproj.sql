@@ -331,6 +331,23 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `sweproj`.`user`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sweproj`.`user` ;
+
+CREATE TABLE IF NOT EXISTS `sweproj`.`user` (
+  `Email` VARCHAR(45) NOT NULL,
+  `FirstName` VARCHAR(45) NOT NULL,
+  `LastName` VARCHAR(45) NOT NULL,
+  `Password` MEDIUMTEXT NOT NULL,
+  `DateOfBirth` DATE NOT NULL,
+  `Gender` VARCHAR(10) NOT NULL,
+  `RegistrationDate` DATETIME NOT NULL,
+  PRIMARY KEY (`Email`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `sweproj`.`order`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `sweproj`.`order` ;
@@ -346,9 +363,11 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`order` (
   `CheckOutDate` DATE NULL,
   `OrderStatus` VARCHAR(45) NOT NULL,
   `PaymentMethod` VARCHAR(45) NOT NULL,
+  `UserEmail` VARCHAR(45) NULL,
   PRIMARY KEY (`OrderID`, `HotelID`),
   INDEX `fk_ORDER_ORDERSTATUS1_idx` (`OrderStatus` ASC) VISIBLE,
   INDEX `fk_ORDER_PAYMENTMETHOD1_idx` (`PaymentMethod` ASC) VISIBLE,
+  INDEX `fk_order_user1_idx` (`UserEmail` ASC) VISIBLE,
   CONSTRAINT `fk_ORDER_HOTEL1`
     FOREIGN KEY (`HotelID`)
     REFERENCES `sweproj`.`hotel` (`HotelID`)
@@ -362,6 +381,11 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`order` (
   CONSTRAINT `fk_ORDER_PAYMENTMETHOD1`
     FOREIGN KEY (`PaymentMethod`)
     REFERENCES `sweproj`.`payment_method` (`Name`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_order_user1`
+    FOREIGN KEY (`UserEmail`)
+    REFERENCES `sweproj`.`user` (`Email`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -735,23 +759,6 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`employee_supervises_employee` (
     REFERENCES `sweproj`.`employee` (`EmployeeID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `sweproj`.`user`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sweproj`.`user` ;
-
-CREATE TABLE IF NOT EXISTS `sweproj`.`user` (
-  `Email` VARCHAR(45) NOT NULL,
-  `FirstName` VARCHAR(45) NOT NULL,
-  `LastName` VARCHAR(45) NOT NULL,
-  `Password` MEDIUMTEXT NOT NULL,
-  `DateOfBirth` DATE NOT NULL,
-  `Gender` VARCHAR(10) NOT NULL,
-  `RegistrationDate` DATETIME NOT NULL,
-  PRIMARY KEY (`Email`))
 ENGINE = InnoDB;
 
 
