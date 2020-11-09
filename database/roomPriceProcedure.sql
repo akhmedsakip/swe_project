@@ -116,7 +116,7 @@ BEGIN
     RETURN _totalPrice;
 END;
 
-SELECT getPrice(1, '2021-01-01', '2099-12-31', 'Standard') TotalPrice;
+SELECT getPrice(1, '2021-01-01', '2021-12-31', 'Standard') TotalPrice;
 
 # SELECT Coefficient
 # FROM hotel_works_during_holiday hwdh

@@ -20,7 +20,8 @@ const useStyles = makeStyles({
 
 const AvailableRoomTypes = () => {
     const {state, dispatch} = useContext(AppContext);
-    const {roomTypes} = state.availability;
+    const {roomTypes, totalPrices} = state.availability;
+    // console.log(totalPrices);
     const classes = useStyles();
     const history = useHistory();
     return (
@@ -30,10 +31,11 @@ const AvailableRoomTypes = () => {
             </div>
             <Grid container direction="row"
                   justify="space-evenly" alignItems="center">
-                {roomTypes?.map(roomType =>
+                {roomTypes?.forEach((roomType, index) =>
                     <Grid key={roomType.name} >
                             <RoomTypeCard roomTypeName={roomType.name} roomTypeDescription={roomType.description}
                                           roomTypeCapacity={roomType.capacity} roomTypeMainPhoto={roomType.photo}
+                                          roomTypeTotalPrice={null}
                                           onClick={() => dispatch({type: AVAILABILITY_SET_ROOM_TYPE, payload:roomType})}/>
                         </Grid>)}
             </Grid>

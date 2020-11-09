@@ -42,86 +42,30 @@ public class RoomTypeDataAccessService {
     }
 
     List<RoomType> getAvailableRoomTypes(ReservationRequest info) {
-        String sql = "SELECT COUNT(room_type.Name) RoomTypesCount, room_type.* \n" +
+        String sql = "SELECT COUNT(DISTINCT room.RoomNumber) RoomTypesCount, room_type.*\n" +
                 "FROM room\n" +
                 "INNER JOIN hotel ON hotel.HotelID = room.HotelID\n" +
                 "INNER JOIN room_type ON room_type.HotelID = room.HotelID AND room.RoomTypeName = room_type.Name\n" +
                 "LEFT JOIN order_details OD on room.HotelID = OD.RoomHotelID and room.RoomNumber = OD.RoomNumber\n" +
                 "LEFT JOIN `order` O ON hotel.HotelID = O.HotelID and OD.OrderID = O.OrderID\n" +
-
                 "WHERE (O.OrderID IS NULL\n" +
-                "    OR NOT\n" +
-                "       (O.CheckInDate BETWEEN ? AND ?\n" +
-                "       OR\n" +
-                "       O.CheckOutDate BETWEEN ? AND ?))\n" +
+                "    OR (SELECT `order`.CheckOutDate\n" +
+                "        FROM `order`\n" +
+                "                 INNER JOIN order_details d on `order`.OrderID = d.OrderID and `order`.HotelID = d.OrderHotelID\n" +
+                "        WHERE d.RoomType = room.RoomTypeName\n" +
+                "          AND (`order`.CheckInDate BETWEEN ? AND ? OR\n" +
+                "               `order`.CheckOutDate BETWEEN ? AND ?)) IS NULL)\n" +
                 "    AND hotel.HotelID = ?\n" +
                 "    AND room_type.Capacity >= ?\n" +
-                "GROUP BY room_type.Name, room_type.HotelID";
+                "GROUP BY RoomTypeName, room.HotelID;";
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> mapFromDB(rs), info.getCheckInDate(), info.getCheckOutDate(), info.getCheckInDate(), info.getCheckOutDate(), info.getHotelId(), info.getNumberOfPeople());
     }
 
     public int getTotalPrice(ReservationRequest info) {
-        String sql1 = "DROP FUNCTION IF EXISTS getPrice;";
-        String sql2 = "CREATE FUNCTION getPrice(_hotelId INT, _checkInDate DATE, _checkOutDate DATE,\n" +
-                "                             _roomTypeName VARCHAR(45))\n" +
-                "    RETURNS INT\n" +
-                "    READS SQL DATA\n" +
-                "    DETERMINISTIC\n" +
-                "BEGIN\n" +
-                "    DECLARE _date VARCHAR(20);\n" +
-                "    DECLARE _coefficient FLOAT;\n" +
-                "    DECLARE _basePrice INT;\n" +
-                "    DECLARE _totalPrice INT;\n" +
-                "\n" +
-                "    SET _totalPrice = 0;\n" +
-                "    SET _date = _checkInDate;\n" +
-                "\n" +
-                "    SELECT room_type.BasePricePerDay\n" +
-                "    INTO _basePrice\n" +
-                "    FROM room_type\n" +
-                "    WHERE room_type.Name = _roomTypeName\n" +
-                "      AND room_type.HotelID = _hotelId\n" +
-                "    LIMIT 1;\n" +
-                "\n" +
-                "    WHILE _date < _checkOutDate\n" +
-                "        DO\n" +
-                "            SELECT Coefficient\n" +
-                "            INTO _coefficient\n" +
-                "            FROM hotel_works_during_holiday hwdh\n" +
-                "                     INNER JOIN holiday ON holiday.HolidayID = hwdh.HolidayID\n" +
-                "            WHERE _date BETWEEN holiday.StartDate AND holiday.EndDate\n" +
-                "              AND hwdh.HotelID = _hotelId\n" +
-                "            LIMIT 1;\n" +
-                "\n" +
-                "            IF _coefficient IS NULL THEN\n" +
-                "                SELECT shdow.Coefficient\n" +
-                "                INTO _coefficient\n" +
-                "                FROM hotel_works_during_season hwds\n" +
-                "                         INNER JOIN season on hwds.SeasonID = season.SeasonID\n" +
-                "                         INNER JOIN season_has_day_of_week shdow on season.SeasonID = shdow.SeasonID\n" +
-                "                         INNER JOIN day_of_week dow ON shdow.DayOfWeek = dow.Day\n" +
-                "                WHERE _date BETWEEN season.StartDate AND season.EndDate\n" +
-                "                  AND dow.Day = DAYNAME(_date)\n" +
-                "                  AND hwds.HotelID = _hotelId\n" +
-                "                LIMIT 1;\n" +
-                "            END IF;\n" +
-                "\n" +
-                "            IF _coefficient IS NULL THEN\n" +
-                "                SET _coefficient = 1;\n" +
-                "            END IF;\n" +
-                "\n" +
-                "            SET _totalPrice = _totalPrice + CEIL(_basePrice * ROUND(_coefficient, 4));\n" +
-                "            SET _date = DATE_ADD(_date, INTERVAL 1 DAY);\n" +
-                "        END WHILE;\n" +
-                "    RETURN _totalPrice;\n" +
-                "END;";
-        String sql3 = "SELECT getPrice(?, ?, ?, ?) TotalPrice;";
+        String sql = "SELECT getPrice(?, ?, ?, ?) TotalPrice;";
 
-        jdbcTemplate.execute(sql1);
-        jdbcTemplate.execute(sql2);
-
-        return jdbcTemplate.query(sql3, (rs, rowNum) -> rs.getInt("TotalPrice"), info.getHotelId(),
+        return jdbcTemplate.query(sql, (rs, rowNum) -> rs.getInt("TotalPrice"), info.getHotelId(),
                 info.getCheckInDate(), info.getCheckOutDate(), info.getRoomTypeName()).get(0);
     }
 }
