@@ -17,12 +17,12 @@ public class ReservationDataAccessService {
         this.roomTypeService = roomTypeService;
     }
 
-    public int reserveRoom(ReservationDetailsRequest info) {
+    public int reserveRoom(ReservationDetailsRequest info, String userEmail) {
         String sql1 = "DROP PROCEDURE IF EXISTS reserve;\n";
         String sql2 = "CREATE PROCEDURE reserve(IN _gender VARCHAR(10), IN _firstName VARCHAR(30),\n" +
                 "                         IN _lastName VARCHAR(30), IN _phoneNumber VARCHAR(45), IN _hotelId INT, IN _orderPrice INT,\n" +
                 "                         IN _orderDateTime VARCHAR(20), IN _checkInDate VARCHAR(20), IN _checkOutDate VARCHAR(20),\n" +
-                "                         IN _paymentMethod VARCHAR(45), IN _roomTypeName varchar(45))\n" +
+                "                         IN _paymentMethod VARCHAR(45), IN _roomTypeName varchar(45), IN _userEmail VARCHAR(45))\n" +
                 "BEGIN\n" +
                 "    DECLARE _personId INT;\n" +
                 "    DECLARE _roomNumber VARCHAR(10);\n" +
@@ -51,14 +51,16 @@ public class ReservationDataAccessService {
                 "        INSERT INTO guest (GuestID) VALUE (_personId);\n" +
                 "    END IF;\n" +
                 "\n" +
-                "    INSERT INTO `order` (HotelID, OrderPrice, OrderDateTime, CheckInDate, CheckOutDate, OrderStatus, PaymentMethod)\n" +
+                "    INSERT INTO `order` (HotelID, OrderPrice, OrderDateTime, CheckInDate, CheckOutDate, OrderStatus, PaymentMethod,\n" +
+                "                         UserEmail)\n" +
                 "    VALUES (_hotelId,\n" +
                 "            _orderPrice,\n" +
                 "            _orderDateTime,\n" +
                 "            _checkInDate,\n" +
                 "            _checkOutDate,\n" +
                 "            'Reserved',\n" +
-                "            _paymentMethod);\n" +
+                "            _paymentMethod,\n" +
+                "            _userEmail);\n" +
                 "\n" +
                 "    SELECT DISTINCT room.RoomNumber\n" +
                 "    INTO _roomNumber\n" +
@@ -94,7 +96,9 @@ public class ReservationDataAccessService {
                 "            _personId);\n" +
                 "    COMMIT;\n" +
                 "END;";
-        String sql3 = "CALL reserve(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        String sql3 = "CALL reserve(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+        System.out.println(userEmail);
 
         jdbcTemplate.execute(sql1);
         jdbcTemplate.execute(sql2);
@@ -104,6 +108,7 @@ public class ReservationDataAccessService {
         return jdbcTemplate.update(sql3, info.getGuest().getGender(), info.getGuest().getFirstName(),
                 info.getGuest().getLastName(), info.getGuest().getPhoneNumber(), info.getReservationRequest().getHotelId(),
                 roomTotalPrice, LocalDate.now(), info.getReservationRequest().getCheckInDate(),
-                info.getReservationRequest().getCheckOutDate(), "Cash", info.getReservationRequest().getRoomTypeName());
+                info.getReservationRequest().getCheckOutDate(), "Cash", info.getReservationRequest().getRoomTypeName(),
+                userEmail);
     }
 }

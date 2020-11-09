@@ -3,7 +3,7 @@ DROP PROCEDURE IF EXISTS reserve;
 CREATE PROCEDURE reserve(IN _gender VARCHAR(10), IN _firstName VARCHAR(30),
                          IN _lastName VARCHAR(30), IN _phoneNumber VARCHAR(45), IN _hotelId INT, IN _orderPrice INT,
                          IN _orderDateTime VARCHAR(20), IN _checkInDate VARCHAR(20), IN _checkOutDate VARCHAR(20),
-                         IN _paymentMethod VARCHAR(45), IN _roomTypeName varchar(45))
+                         IN _paymentMethod VARCHAR(45), IN _roomTypeName varchar(45), IN _userEmail VARCHAR(45))
 BEGIN
     DECLARE _personId INT;
     DECLARE _roomNumber VARCHAR(10);
@@ -32,14 +32,16 @@ BEGIN
         INSERT INTO guest (GuestID) VALUE (_personId);
     END IF;
 
-    INSERT INTO `order` (HotelID, OrderPrice, OrderDateTime, CheckInDate, CheckOutDate, OrderStatus, PaymentMethod)
+    INSERT INTO `order` (HotelID, OrderPrice, OrderDateTime, CheckInDate, CheckOutDate, OrderStatus, PaymentMethod,
+                         UserEmail)
     VALUES (_hotelId,
             _orderPrice,
             _orderDateTime,
             _checkInDate,
             _checkOutDate,
             'Reserved',
-            _paymentMethod);
+            _paymentMethod,
+            _userEmail);
 
     SELECT DISTINCT room.RoomNumber
     INTO _roomNumber
@@ -96,7 +98,7 @@ END;
 CALL reserve('Male', 'Timur', 'Rakhimzhan',
     '+77028606010', 1, 50,
     '2020-06-05', '2020-06-11', '2020-06-20',
-    'Cash', 'Standard');
+    'Cash', 'Standard', 'akhmed.sakip@nu.edu.kz');
 
 # INSERT INTO hotel_feature (Name) VALUE ('Test');
 # INSERT INTO hotel_has_hotel_feature (HotelID, HotelFeatureName) VALUES(5, 'Hello');

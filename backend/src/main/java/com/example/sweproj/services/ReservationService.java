@@ -13,7 +13,7 @@ public class ReservationService {
     @Autowired
     private ReservationDataAccessService reservationDataAccessService;
 
-    public int reserveRoom(ReservationDetailsRequest reservationDetailsRequest) {
-        return this.reservationDataAccessService.reserveRoom(reservationDetailsRequest);
+    public int reserveRoom(ReservationDetailsRequest reservationDetailsRequest, String userEmail) {
+        return this.reservationDataAccessService.reserveRoom(reservationDetailsRequest, userEmail);
     }
 }
