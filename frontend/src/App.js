@@ -8,7 +8,9 @@ import Home from './pages/Home';
 import AvailabilityPage from "./pages/availability/AvailabilityPage";
 import Root from "./components/Root";
 import ProfilePage from "./pages/profile/ProfilePage";
+import AdminPage from "./pages/admin/AdminPage";
 import PrivateRoute from "./components/PrivateRoute";
+import PrivateAdminRoute from "./components/PrivateAdminRoute";
 import StoreProvider from "./store/store";
 
 
@@ -25,6 +27,7 @@ function App() {
             <Route path="/roomTypes" component={RoomType} />
             <Route path="/availability" component={AvailabilityPage} />
             <PrivateRoute path="/profile" component={ProfilePage} />
+            <PrivateAdminRoute path="/admin" component={AdminPage} />
             <Route path="*" render={() => (<Redirect to="/" />)} />
           </Switch>
         </Root>
