@@ -1,6 +1,5 @@
 package com.example.sweproj.services;
 
-import com.example.sweproj.Datasource;
 import com.example.sweproj.models.ReservationRequest;
 import com.example.sweproj.models.RoomType;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,18 +11,16 @@ import java.util.List;
 
 @Repository
 public class RoomTypeDataAccessService {
-    private final Datasource datasource;
 
     private final JdbcTemplate jdbcTemplate;
 
-    RoomTypeDataAccessService(Datasource datasource, JdbcTemplate jdbcTemplate) {
-        this.datasource = datasource;
+    RoomTypeDataAccessService(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     private RoomType mapFromDB(ResultSet rs) throws SQLException {
         RoomType roomType = new RoomType();
-        roomType.setHotelID(rs.getInt("HotelID"));
+        roomType.setHotelId(rs.getInt("HotelID"));
         roomType.setName(rs.getString("Name"));
         roomType.setCapacity(rs.getString("Capacity"));
         roomType.setPhoto(rs.getString("MainPhoto"));

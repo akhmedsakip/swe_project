@@ -5,8 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotNull;
 
 public class RoomType {
-	
-	private int hotelID;
+	private int hotelId;
 
     @JsonProperty @NotNull(message = "Room type name is empty")
     private String name;
@@ -24,12 +23,12 @@ public class RoomType {
     
     public RoomType() {}
 
-    public int getHotelID() {
-        return hotelID;
+    public int getHotelId() {
+        return hotelId;
     }
 
-    public void setHotelID(int hotelID) {
-        this.hotelID = hotelID;
+    public void setHotelId(int hotelId) {
+        this.hotelId = hotelId;
     }
 
     public String getName() {

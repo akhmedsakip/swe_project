@@ -85,7 +85,7 @@ public class RoomTypeController {
         }
         try {
             int totalPrice = this.roomTypeService.getTotalPrice(info);
-            return ResponseEntity.ok().body(gson.toJson(totalPrice));
+            return ResponseEntity.ok().body("{\"totalPrice\": " + totalPrice + "}");
         } catch(Exception error) {
             error.printStackTrace();
             serverErrors.add(new Message("Error calculating room price"));
