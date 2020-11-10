@@ -1,104 +1,108 @@
 import {Avatar, Button, makeStyles, useMediaQuery} from '@material-ui/core';
 import React, {useContext, useEffect, useState} from 'react';
-import UserContext from "../../../contexts/userContext";
 import useTheme from "@material-ui/core/styles/useTheme";
-import ProfileContext from "../../../contexts/profileContext";
+import ProfileContext from "../../../contexts/ProfileContext";
 import {useFormik} from "formik";
 import {editInfoSchema} from "../../../utils/validationSchemas";
-import editProfileAction from "../../../actions/userContextActions/editProfileAction";
+import editProfileAction from "../../../actions/user/editProfileAction";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import ChangePasswordDialog from "./ChangePasswordDialog";
 import ProfileInfoInputs from "./ProfileInfoInputs";
 import ProfileInfoButtons from "./ProfileInfoButtons";
-import Identicon from "identicon.js";
+import AppContext from "../../../store/AppContext";
+import useSubmit from "../../../hooks/useSubmit";
 
 function ProfileInfoForm() {
-    const [editing, setEditing] = useState(false);
-    const [error, setError] = useState("");
-    const [success, setSuccess] = useState(false);
-    const [changePassword, setChangePassword] = useState(false);
-    const {state} = useContext(UserContext);
-    const theme = useTheme();
-    const isMobileScreen = useMediaQuery(theme.breakpoints.down('xs'));
-    const classes = useStyles({isMobileScreen});
-    const {dispatch} = useContext(UserContext);
-    const formik = useFormik({
-        initialValues: state,
-        initialErrors: Object.fromEntries(Object.entries(state).map(([key]) => [key, ""])),
-        validationSchema: editInfoSchema,
-        enableReinitialize: true,
-        onSubmit: async () => {
-            const errors = await editProfileAction(values, dispatch);
-            if(errors && errors.length) {
-                setSuccess(false);
-                setError(errors[0].message);
-            } else {
-                setSuccess(true);
-                setEditing(false);
-                setError("");
-            }
-        }
-    });
-    const {handleSubmit, values} = formik;
-    let hash = values.email;
-    while (hash.length < 15) {
-        hash += hash;
-    }
-    const identicon = new Identicon(hash).toString();
-    const srcIdenticon = 'data:image/png;base64,' + identicon + '';
+  const [editing, setEditing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [changePassword, setChangePassword] = useState(false);
 
-    return (
-        <ProfileContext.Provider value={{editing, setEditing, setChangePassword, formik}}>
-            <form className={classes.block} onSubmit={handleSubmit}>
-                <div className={`${classes.centerBlock} ${classes.marginBottom12}`}>
-                    <Avatar alt="profile image" src={srcIdenticon} className={classes.image} />
-                </div>
-                <div className={classes.centerBlock}>
-                    {success ?
-                        <FormHelperText className={classes.message}>
-                            Successfully edited
-                        </FormHelperText> :
-                        <FormHelperText error>
-                            {error}
-                        </FormHelperText>
-                    }
-                </div>
-                <ProfileInfoInputs />
-                <ProfileInfoButtons />
-            </form>
-            <ChangePasswordDialog onClose={() => setChangePassword(false)} open={changePassword}/>
-        </ProfileContext.Provider>
-    );
+  const {state, dispatch} = useContext(AppContext);
+  const {userInfo} = state.user;
+
+  const theme = useTheme();
+  const isMobileScreen = useMediaQuery(theme.breakpoints.down('xs'));
+  const classes = useStyles({isMobileScreen});
+
+  const action  = async () => await editProfileAction(values, dispatch);
+  const onSuccess = () => {
+    setSuccess(true);
+    setEditing(false);
+  };
+  const onErrorArray = (serverErrors) => {
+    setErrorMessage(serverErrors[0].message);
+    setSuccess(false);
+  };
+  const onError = () => {
+    setErrorMessage('Server error');
+    setSuccess(false);
+  };
+
+  const {loading, onSubmit} = useSubmit(action, onSuccess, onErrorArray, onError);
+
+  const formik = useFormik({
+    initialValues: userInfo,
+    initialErrors: Object.fromEntries(Object.entries(userInfo).map(([key]) => [key, ""])),
+    validationSchema: editInfoSchema,
+    enableReinitialize: true,
+    onSubmit
+  });
+  const {handleSubmit, values} = formik;
+
+  return (
+      <ProfileContext.Provider value={{editing, setEditing, setChangePassword, formik, loading}}>
+        <form className={classes.block} onSubmit={handleSubmit}>
+          <div className={`${classes.centerBlock} ${classes.marginBottom12}`}>
+            <Avatar alt="profile image" src={`data:image/png;base64,${userInfo.identicon}`}
+                    className={classes.image} />
+          </div>
+          <div className={classes.centerBlock}>
+            {success ?
+              <FormHelperText className={classes.message}>
+                Successfully edited
+              </FormHelperText> :
+              <FormHelperText error>
+                {errorMessage}
+              </FormHelperText>
+            }
+          </div>
+          <ProfileInfoInputs />
+          <ProfileInfoButtons />
+        </form>
+        <ChangePasswordDialog onClose={() => setChangePassword(false)} open={changePassword}/>
+      </ProfileContext.Provider>
+  );
 }
 export default ProfileInfoForm;
 
 
 const useStyles = makeStyles((theme) => ({
-    block: {
-        width: ({isMobileScreen}) => isMobileScreen ? '90vw' : '40vw',
-        maxWidth: ({isMobileScreen}) => isMobileScreen ? '90vw' : '40vw',
-        minWidth: ({isMobileScreen}) => isMobileScreen ? '90vw' : 400,
-        padding: '32px 16px',
-        borderRadius: 10,
-        backgroundColor: 'white',
-        display: 'flex',
-        flexDirection: 'column',
-        height: 'auto',
-    },
-    message: {
-        color: 'green',
-    },
-    centerBlock: {
-        display: 'flex',
-        justifyContent: 'center'
-    },
-    image: {
-        height: ({isMobileScreen}) => isMobileScreen ? 120 : 90,
-        width: ({isMobileScreen}) => isMobileScreen ? 120 : 90,
-        borderRadius: '50%',
-    },
-    marginBottom12: {
-        marginBottom: 12,
-    }
+  block: {
+    width: ({isMobileScreen}) => isMobileScreen ? '90vw' : '40vw',
+    maxWidth: ({isMobileScreen}) => isMobileScreen ? '90vw' : '40vw',
+    minWidth: ({isMobileScreen}) => isMobileScreen ? '90vw' : 400,
+    padding: '32px 16px',
+    borderRadius: 10,
+    backgroundColor: 'white',
+    display: 'flex',
+    flexDirection: 'column',
+    height: 'auto',
+  },
+  message: {
+    color: 'green',
+  },
+  centerBlock: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  image: {
+    height: ({isMobileScreen}) => isMobileScreen ? 120 : 90,
+    width: ({isMobileScreen}) => isMobileScreen ? 120 : 90,
+    borderRadius: '50%',
+  },
+  marginBottom12: {
+    marginBottom: 12,
+  }
 }));
 

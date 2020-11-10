@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import TextFieldWithError from "../../../shared/TextFieldWithError";
-import ProfileContext from "../../../contexts/profileContext";
+import ProfileContext from "../../../contexts/ProfileContext";
 import TextField from "@material-ui/core/TextField";
 import useTheme from "@material-ui/core/styles/useTheme";
 import {useMediaQuery} from "@material-ui/core";

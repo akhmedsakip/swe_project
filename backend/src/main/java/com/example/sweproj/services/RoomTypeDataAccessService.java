@@ -1,6 +1,6 @@
 package com.example.sweproj.services;
 
-import com.example.sweproj.models.AvailableEntitiesRequest;
+import com.example.sweproj.models.ReservationRequest;
 import com.example.sweproj.models.RoomType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -28,30 +28,31 @@ public class RoomTypeDataAccessService {
     }
 
     List<RoomType> getRoomTypes(int hotelID) {
-        String sql = "SELECT * FROM ROOMTYPE WHERE HotelID = ?";
+        String sql = "SELECT * FROM room_type WHERE HotelID = ?";
         return jdbcTemplate.query(sql, (rs, rowNum) -> mapFromDB(rs), hotelID);
     }
 
     RoomType getRoomType(int hotelID, String roomTypeName) {
-        String sql = "SELECT * FROM ROOMTYPE WHERE HotelID = ? AND Name = ?";
+        String sql = "SELECT * FROM room_type WHERE HotelID = ? AND Name = ?";
         return jdbcTemplate.query(sql, (rs, rowNum) -> mapFromDB(rs), hotelID, roomTypeName).get(0);
     }
 
-    List<RoomType> getAvailableRoomTypes(AvailableEntitiesRequest info) {
-        String sql = "SELECT COUNT(ROOMTYPE.Name) RoomTypesCount, ROOMTYPE.* \n" +
-                "FROM ROOM\n" +
-                "INNER JOIN HOTEL ON HOTEL.HotelID = ROOM.HotelID\n" +
-                "INNER JOIN ROOMTYPE ON ROOMTYPE.HotelID = ROOM.HotelID AND ROOM.RoomTypeName = ROOMTYPE.Name\n" +
-                "LEFT JOIN ORDERDETAILS OD on ROOM.HotelID = OD.RoomHotelID and ROOM.RoomNumber = OD.RoomNumber\n" +
-                "LEFT JOIN `ORDER` O ON HOTEL.HotelID = O.HotelID and OD.OrderID = O.OrderID\n" +
+    List<RoomType> getAvailableRoomTypes(ReservationRequest info) {
+        String sql = "SELECT COUNT(room_type.Name) RoomTypesCount, room_type.* \n" +
+                "FROM room\n" +
+                "INNER JOIN hotel ON hotel.HotelID = room.HotelID\n" +
+                "INNER JOIN room_type ON room_type.HotelID = room.HotelID AND room.RoomTypeName = room_type.Name\n" +
+                "LEFT JOIN order_details OD on room.HotelID = OD.RoomHotelID and room.RoomNumber = OD.RoomNumber\n" +
+                "LEFT JOIN `order` O ON hotel.HotelID = O.HotelID and OD.OrderID = O.OrderID\n" +
+
                 "WHERE (O.OrderID IS NULL\n" +
                 "    OR NOT\n" +
                 "       (O.CheckInDate BETWEEN ? AND ?\n" +
                 "       OR\n" +
                 "       O.CheckOutDate BETWEEN ? AND ?))\n" +
-                "    AND HOTEL.HotelID = ?\n" +
-                "    AND ROOMTYPE.Capacity >= ?\n" +
-                "GROUP BY ROOMTYPE.Name, ROOMTYPE.HotelID";
+                "    AND hotel.HotelID = ?\n" +
+                "    AND room_type.Capacity >= ?\n" +
+                "GROUP BY room_type.Name, room_type.HotelID";
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> mapFromDB(rs), info.getCheckInDate(), info.getCheckOutDate(), info.getCheckInDate(), info.getCheckOutDate(), info.getHotelId(), info.getNumberOfPeople());
     }
