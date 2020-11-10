@@ -42,6 +42,11 @@ const DesktopMenu = () => {
             <Button color="inherit">Search</Button>
         </Link>
         {
+            loggedIn && <Button onClick={() => history.push('/my-orders')}>
+                My orders
+            </Button>
+        }
+        {
             (!loggedIn
                 ? <Button color="inherit" className={classes.loginButton} onClick={() => dispatch({type: AUTH_OPEN_DIALOG})}>
                     Login
@@ -56,6 +61,7 @@ const DesktopMenu = () => {
                 <Avatar alt="Profile" src={`data:image/png;base64,${userInfo.identicon}`} />
             </Button> : null
         }
+        
     </div>
 };
 

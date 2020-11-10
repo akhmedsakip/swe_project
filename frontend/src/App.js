@@ -10,6 +10,7 @@ import Root from "./components/Root";
 import ProfilePage from "./pages/profile/ProfilePage";
 import PrivateRoute from "./components/PrivateRoute";
 import StoreProvider from "./store/store";
+import MyOrders from "./pages/myOrders/MyOrders";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
             <Route path="/about" component={AboutUs} />
             <Route path="/roomTypes" component={RoomType} />
             <Route path="/availability" component={AvailabilityPage} />
+            <PrivateRoute path="/my-orders" component={MyOrders} />
             <PrivateRoute path="/profile" component={ProfilePage} />
             <Route path="*" render={() => (<Redirect to="/" />)} />
           </Switch>
