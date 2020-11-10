@@ -4,8 +4,7 @@ import {
     AVAILABILITY_SET_PARAMS,
     AVAILABILITY_SET_ROOM_TYPE,
     AVAILABILITY_SET_ROOM_TYPES, AVAILABILITY_UNSET_LOADING,
-    AVAILABILITY_UNSET_ROOM_TYPE,
-    AVAILABILITY_SET_TOTAL_PRICES
+    AVAILABILITY_UNSET_ROOM_TYPE
 } from "./availabilityActionTypes";
 
 export const initialRoomTypeState = {
@@ -24,8 +23,6 @@ function availabilityReducer(state, action) {
             return {...state, hotels: action.payload};
         case AVAILABILITY_SET_ROOM_TYPES:
             return {...state, roomTypes: action.payload};
-        case AVAILABILITY_SET_TOTAL_PRICES:
-            return {...state, totalPrices: action.payload};
         case AVAILABILITY_SET_ROOM_TYPE:
             return {...state, roomType: action.payload};
         case AVAILABILITY_UNSET_ROOM_TYPE:

@@ -10,7 +10,6 @@ import {
     AVAILABILITY_SET_LOADING,
     AVAILABILITY_UNSET_LOADING
 } from "../../../store/availability/availabilityActionTypes";
-import fetchTotalPrices from "../../../actions/availability/fetchTotalPrices";
 
 const useStyles = makeStyles({
     root: {
@@ -30,11 +29,7 @@ const AvailableHotels = () => {
 
     async function onClick (hotel) {
         dispatch({type: AVAILABILITY_SET_LOADING});
-        await fetchAvailableRoomTypes(dispatch, {...params, hotelId:hotel.hotelId})
-        roomTypes.map(async (roomType) => {
-            await fetchTotalPrices(dispatch, {checkInDate: params.checkInDate, checkOutDate: params.checkOutDate,
-                hotelId: hotel.hotelId, roomTypeName: roomType.name});
-        });
+        await fetchAvailableRoomTypes(dispatch, {...params, hotelId:hotel.hotelId});
         setTimeout(() => {
             dispatch({type: AVAILABILITY_UNSET_LOADING});
             history.push('/availability/roomTypes');
