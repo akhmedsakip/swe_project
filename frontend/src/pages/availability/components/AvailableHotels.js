@@ -23,7 +23,7 @@ const useStyles = makeStyles({
 
 const AvailableHotels = () => {
     const {state, dispatch} = useContext(AppContext);
-    const {hotels, roomTypes, params} = state.availability;
+    const {hotels, params} = state.availability;
     const classes = useStyles();
     const history = useHistory();
 

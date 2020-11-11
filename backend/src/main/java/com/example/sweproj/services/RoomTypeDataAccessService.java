@@ -46,12 +46,12 @@ public class RoomTypeDataAccessService {
                 "LEFT JOIN order_details OD on room.HotelID = OD.RoomHotelID and room.RoomNumber = OD.RoomNumber\n" +
                 "LEFT JOIN `order` O ON hotel.HotelID = O.HotelID and OD.OrderID = O.OrderID\n" +
                 "WHERE (O.OrderID IS NULL\n" +
-                "    OR (SELECT `order`.CheckOutDate\n" +
+                "    OR NOT EXISTS (SELECT `order`.CheckOutDate\n" +
                 "        FROM `order`\n" +
                 "                 INNER JOIN order_details d on `order`.OrderID = d.OrderID and `order`.HotelID = d.OrderHotelID\n" +
                 "        WHERE d.RoomType = room.RoomTypeName\n" +
                 "          AND (`order`.CheckInDate BETWEEN ? AND ? OR\n" +
-                "               `order`.CheckOutDate BETWEEN ? AND ?)) IS NULL)\n" +
+                "               `order`.CheckOutDate BETWEEN ? AND ?)))\n" +
                 "    AND hotel.HotelID = ?\n" +
                 "    AND room_type.Capacity >= ?\n" +
                 "GROUP BY RoomTypeName, room.HotelID;";
