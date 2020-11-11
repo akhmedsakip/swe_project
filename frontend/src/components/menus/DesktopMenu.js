@@ -24,7 +24,7 @@ const DesktopMenu = () => {
     const {state, dispatch} = useContext(AppContext);
     const classes = useStyles();
     const history = useHistory();
-    const { loggedIn, userInfo } = state.user;
+    const { loggedIn, userInfo, isAdmin } = state.user;
     // useEffect(() => {
     //     console.log(identicon);
     // }, [identicon]);
@@ -41,6 +41,12 @@ const DesktopMenu = () => {
         <Link to="/availability" className={classes.link}>
             <Button color="inherit">Search</Button>
         </Link>
+        
+        {
+            isAdmin ? <Button color="inherit" className={classes.link} onClick={() => history.push('/admin')}>
+                Admin
+            </Button> : null
+        }
         {
             loggedIn && <Button onClick={() => history.push('/my-orders')}>
                 My orders
