@@ -12,6 +12,7 @@ import AdminPage from "./pages/admin/AdminPage";
 import PrivateRoute from "./components/PrivateRoute";
 import PrivateAdminRoute from "./components/PrivateAdminRoute";
 import StoreProvider from "./store/store";
+import MyOrders from "./pages/myOrders/MyOrders";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
             <Route path="/about" component={AboutUs} />
             <Route path="/roomTypes" component={RoomType} />
             <Route path="/availability" component={AvailabilityPage} />
+            <PrivateRoute path="/my-orders" component={MyOrders} />
             <PrivateRoute path="/profile" component={ProfilePage} />
             <PrivateAdminRoute path="/admin" component={AdminPage} />
             <Route path="*" render={() => (<Redirect to="/" />)} />
