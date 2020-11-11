@@ -31,7 +31,7 @@ const ReservationDialog = () => {
         <DialogContent>
             {
                 loggedIn ? <ReservationForm/> : <FormHelperText error>{"Please, log in to make a reservation"}</FormHelperText>
-            }   
+            }
         </DialogContent>
         <DialogActions>
             <Button onClick={onClose} color="primary">

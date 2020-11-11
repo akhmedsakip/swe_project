@@ -55,8 +55,8 @@ BEGIN
             FROM `order`
                      INNER JOIN order_details d on `order`.OrderID = d.OrderID and `order`.HotelID = d.OrderHotelID
             WHERE d.RoomNumber = room.RoomNumber
-              AND (`order`.CheckInDate BETWEEN _checkInDate AND _checkOutDate OR
-                   `order`.CheckOutDate BETWEEN _checkInDate AND _checkOutDate)))
+              AND (`order`.CheckInDate BETWEEN _checkInDate AND DATE_SUB(_checkOutDate, INTERVAL 1 DAY) OR
+                   `order`.CheckOutDate BETWEEN DATE_ADD(_checkInDate, INTERVAL 1 DAY) AND _checkOutDate)))
       AND hotel.HotelID = _hotelId
       AND room_type.Name = _roomTypeName
     LIMIT 1;
@@ -134,8 +134,8 @@ WHERE (O.OrderID IS NULL
         FROM `order`
                  INNER JOIN order_details d on `order`.OrderID = d.OrderID and `order`.HotelID = d.OrderHotelID
         WHERE d.RoomType = room.RoomTypeName
-          AND (`order`.CheckInDate BETWEEN '2020-11-01' AND '2020-12-10' OR
-               `order`.CheckOutDate BETWEEN '2020-11-01' AND '2020-12-10')))
+          AND (`order`.CheckInDate BETWEEN '2020-11-01' AND DATE_SUB('2020-12-10', INTERVAL 1 DAY) OR
+               `order`.CheckOutDate BETWEEN DATE_ADD('2020-11-01', INTERVAL 1 DAY) AND '2020-12-10')))
     AND hotel.HotelID = 1
     AND room_type.Capacity >= 1
 GROUP BY RoomTypeName, room.HotelID;

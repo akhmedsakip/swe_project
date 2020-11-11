@@ -133,8 +133,8 @@ public class ProcedureInitializer {
                 "            FROM `order`\n" +
                 "                     INNER JOIN order_details d on `order`.OrderID = d.OrderID and `order`.HotelID = d.OrderHotelID\n" +
                 "            WHERE d.RoomNumber = room.RoomNumber\n" +
-                "              AND (`order`.CheckInDate BETWEEN _checkInDate AND _checkOutDate OR\n" +
-                "                   `order`.CheckOutDate BETWEEN _checkInDate AND _checkOutDate)))\n" +
+                "              AND (`order`.CheckInDate BETWEEN _checkInDate AND DATE_SUB(_checkOutDate, INTERVAL 1 DAY) OR\n" +
+                "                   `order`.CheckOutDate BETWEEN DATE_ADD(_checkInDate, INTERVAL 1 DAY) AND _checkOutDate)))\n" +
                 "      AND hotel.HotelID = _hotelId\n" +
                 "      AND room_type.Name = _roomTypeName\n" +
                 "    LIMIT 1;\n" +

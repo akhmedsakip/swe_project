@@ -50,8 +50,8 @@ public class RoomTypeDataAccessService {
                 "        FROM `order`\n" +
                 "                 INNER JOIN order_details d on `order`.OrderID = d.OrderID and `order`.HotelID = d.OrderHotelID\n" +
                 "        WHERE d.RoomType = room.RoomTypeName\n" +
-                "          AND (`order`.CheckInDate BETWEEN ? AND ? OR\n" +
-                "               `order`.CheckOutDate BETWEEN ? AND ?)))\n" +
+                "          AND (`order`.CheckInDate BETWEEN ? AND DATE_SUB(?, INTERVAL 1 DAY) OR\n" +
+                "               `order`.CheckOutDate BETWEEN DATE_ADD(?, INTERVAL 1 DAY) AND ?)))\n" +
                 "    AND hotel.HotelID = ?\n" +
                 "    AND room_type.Capacity >= ?\n" +
                 "GROUP BY RoomTypeName, room.HotelID;";

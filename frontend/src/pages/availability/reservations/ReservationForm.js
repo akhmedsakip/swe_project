@@ -46,13 +46,15 @@ const ReservationForm = () => {
     const {roomType, params} = state.availability;
     const [failMessage, setFailMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
+    const [reservationDone, setReservationDone] = useState(false);
     const history = useHistory();
 
     const action =  async() => await reserveRoom(dispatch, {...params, roomTypeName: roomType.name, hotelId: roomType.hotelId,
         firstName: values.firstName, lastName: values.lastName, gender: values.gender,
         phoneNumber: values.phoneNumber});
     const onSuccess = async () => {
-        setSuccessMessage("Room successfully reserved!\n You will be redirected to the Home Page in 3 seconds...")
+        setSuccessMessage("Room successfully reserved!\n You will be redirected to the Home Page in 3 seconds...");
+        setReservationDone(true);
         setTimeout(() => {
             dispatch({type: AVAILABILITY_SET_ROOM_TYPE, payload: null})
             history.push('/');
@@ -105,7 +107,7 @@ const ReservationForm = () => {
                     </Select>
                     {!!errors.gender && touched.gender ?<FormHelperText error>{errors.gender}</FormHelperText> : null }
                 </FormControl>
-                <LoadingButton loading={loading} disabled={!isValid} type={'submit'}
+                <LoadingButton loading={loading} disabled={!isValid || reservationDone} type={'submit'}
                                variant={'contained'} color={'primary'}>
                     Reserve
                 </LoadingButton>
