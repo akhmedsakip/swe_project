@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
 import {AVAILABILITY_UNSET_ROOM_TYPE} from "../../../store/availability/availabilityActionTypes";
 import AppContext from "../../../store/AppContext";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 const useStyles = makeStyles({
     root: {
@@ -17,6 +18,7 @@ const ReservationDialog = () => {
     const classes = useStyles();
     const {state, dispatch} = useContext(AppContext);
     const {roomType} = state.availability;
+    const { loggedIn } = state.user;
 
     function onClose() {
         dispatch({type: AVAILABILITY_UNSET_ROOM_TYPE});
@@ -27,7 +29,9 @@ const ReservationDialog = () => {
                    open={!!roomType} aria-labelledby="form-dialog-title">
         <DialogTitle>Reserve a room</DialogTitle>
         <DialogContent>
-            <ReservationForm/>
+            {
+                loggedIn ? <ReservationForm/> : <FormHelperText error>{"Please, log in to make a reservation"}</FormHelperText>
+            }   
         </DialogContent>
         <DialogActions>
             <Button onClick={onClose} color="primary">

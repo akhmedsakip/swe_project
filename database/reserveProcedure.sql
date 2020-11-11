@@ -51,12 +51,12 @@ BEGIN
              LEFT JOIN order_details OD on room.HotelID = OD.RoomHotelID and room.RoomNumber = OD.RoomNumber
              LEFT JOIN `order` O ON hotel.HotelID = O.HotelID and OD.OrderID = O.OrderID
     WHERE (O.OrderID IS NULL
-        OR (SELECT `order`.CheckOutDate
+        OR NOT EXISTS (SELECT `order`.CheckOutDate
             FROM `order`
                      INNER JOIN order_details d on `order`.OrderID = d.OrderID and `order`.HotelID = d.OrderHotelID
             WHERE d.RoomNumber = room.RoomNumber
               AND (`order`.CheckInDate BETWEEN _checkInDate AND _checkOutDate OR
-                   `order`.CheckOutDate BETWEEN _checkInDate AND _checkOutDate)) IS NULL)
+                   `order`.CheckOutDate BETWEEN _checkInDate AND _checkOutDate)))
       AND hotel.HotelID = _hotelId
       AND room_type.Name = _roomTypeName
     LIMIT 1;
@@ -123,19 +123,19 @@ END;
 #   AND room_type.Name = 'Standard';
 #
 #
-# SELECT COUNT(DISTINCT room.RoomNumber) RoomTypesCount, room_type.*
-# FROM room
-# INNER JOIN hotel ON hotel.HotelID = room.HotelID
-# INNER JOIN room_type ON room_type.HotelID = room.HotelID AND room.RoomTypeName = room_type.Name
-# LEFT JOIN order_details OD on room.HotelID = OD.RoomHotelID and room.RoomNumber = OD.RoomNumber
-# LEFT JOIN `order` O ON hotel.HotelID = O.HotelID and OD.OrderID = O.OrderID
-# WHERE (O.OrderID IS NULL
-#     OR (SELECT `order`.CheckOutDate
-#         FROM `order`
-#                  INNER JOIN order_details d on `order`.OrderID = d.OrderID and `order`.HotelID = d.OrderHotelID
-#         WHERE d.RoomType = room.RoomTypeName
-#           AND (`order`.CheckInDate BETWEEN '2020-11-01' AND '2020-12-10' OR
-#                `order`.CheckOutDate BETWEEN '2020-11-01' AND '2020-12-10')) IS NULL)
-#     AND hotel.HotelID = 1
-#     AND room_type.Capacity >= 1
-# GROUP BY RoomTypeName, room.HotelID;
+SELECT COUNT(DISTINCT room.RoomNumber) RoomTypesCount, room_type.*
+FROM room
+INNER JOIN hotel ON hotel.HotelID = room.HotelID
+INNER JOIN room_type ON room_type.HotelID = room.HotelID AND room.RoomTypeName = room_type.Name
+LEFT JOIN order_details OD on room.HotelID = OD.RoomHotelID and room.RoomNumber = OD.RoomNumber
+LEFT JOIN `order` O ON hotel.HotelID = O.HotelID and OD.OrderID = O.OrderID
+WHERE (O.OrderID IS NULL
+    OR NOT EXISTS (SELECT `order`.CheckOutDate
+        FROM `order`
+                 INNER JOIN order_details d on `order`.OrderID = d.OrderID and `order`.HotelID = d.OrderHotelID
+        WHERE d.RoomType = room.RoomTypeName
+          AND (`order`.CheckInDate BETWEEN '2020-11-01' AND '2020-12-10' OR
+               `order`.CheckOutDate BETWEEN '2020-11-01' AND '2020-12-10')))
+    AND hotel.HotelID = 1
+    AND room_type.Capacity >= 1
+GROUP BY RoomTypeName, room.HotelID;
