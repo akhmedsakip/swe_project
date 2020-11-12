@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, {useRef, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,9 +9,12 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import PrintIcon from '@material-ui/icons/Print';
 import MyOrderContext from '../../../contexts/MyOrdersContext';
 import { Toolbar, Typography } from '@material-ui/core';
-
+import { useReactToPrint } from 'react-to-print';
+import ReceiptPrint from './ComponentPrint';
+import ReactToPrint from "react-to-print";
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -22,22 +25,24 @@ const useStyles = makeStyles({
   }
 });
 
+
+
 const DesktopTable = ({ data }) => {
 
   const { setDeletion } = useContext(MyOrderContext);
   const classes = useStyles();
-
-
+  const componentRef = useRef();
   return (
+       
     <TableContainer component={Paper} variant="outlined">
-
+      
       <Toolbar>
         <Typography className={classes.title} variant="h5" id="tableTitle" component="div">
           My Orders
         </Typography>
-      </Toolbar>
+      </Toolbar> 
 
-      <Table className={classes.table} aria-label="simple table">
+      <Table className={classes.table} aria-label="simple table" >
         <TableHead>
           <TableRow>
             <TableCell>Order №</TableCell>
@@ -64,6 +69,13 @@ const DesktopTable = ({ data }) => {
                 <IconButton onClick={() => setDeletion(true)}>
                   <DeleteIcon />
                 </IconButton>
+                <ReactToPrint
+                  trigger={() => <IconButton><PrintIcon /></IconButton>}
+                  content={() => componentRef.current}
+                />
+                <div style={{display:'none'}}>
+                  <ReceiptPrint orderNo={row.ID} hotel={row.Hotel} roomType={row.RoomType} checkIn={row.CheckInDate} checkOut={row.CheckOutDate} reservation={row.ReservationDate} ref={el => (componentRef.current = el)} />
+                </div> 
               </TableCell>
             </TableRow>
           ))}

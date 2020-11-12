@@ -22,6 +22,7 @@
     "react-scripts": "4.0.0",
     "react-scroll": "^1.8.1",
     "react-social-icons": "^4.1.0",
+    "react-to-print": "^2.11.0",
     "react-transition-group": "latest",
     "styled-components": "^5.2.1",
     "web-vitals": "^0.2.4",
