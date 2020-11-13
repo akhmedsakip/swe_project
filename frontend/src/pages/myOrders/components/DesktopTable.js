@@ -31,7 +31,7 @@ const DesktopTable = ({ data }) => {
 
   const { setDeletion } = useContext(MyOrderContext);
   const classes = useStyles();
-  const componentRef = useRef();
+  const componentRef = useRef([]);
   return (
        
     <TableContainer component={Paper} variant="outlined">
@@ -71,10 +71,10 @@ const DesktopTable = ({ data }) => {
                 </IconButton>
                 <ReactToPrint
                   trigger={() => <IconButton><PrintIcon /></IconButton>}
-                  content={() => componentRef.current}
+                  content={() => componentRef.current[row.ID]}
                 />
                 <div style={{display:'none'}}>
-                  <ReceiptPrint orderNo={row.ID} hotel={row.Hotel} roomType={row.RoomType} checkIn={row.CheckInDate} checkOut={row.CheckOutDate} reservation={row.ReservationDate} ref={el => (componentRef.current = el)} />
+                  <ReceiptPrint orderNo={row.ID} hotel={row.Hotel} roomType={row.RoomType} checkIn={row.CheckInDate} checkOut={row.CheckOutDate} reservation={row.ReservationDate} ref={el => (componentRef.current[row.ID] = el)} />
                 </div> 
               </TableCell>
             </TableRow>
