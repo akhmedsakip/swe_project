@@ -11,7 +11,7 @@ import AdminPage from "./pages/admin/AdminPage";
 import PrivateRoute from "./components/PrivateRoute";
 import PrivateAdminRoute from "./components/PrivateAdminRoute";
 import StoreProvider from "./store/store";
-import MyOrders from "./pages/myOrders/MyOrders";
+import MyOrders from "./pages/my-orders/MyOrders";
 
 
 function App() {

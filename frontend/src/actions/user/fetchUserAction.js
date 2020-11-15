@@ -10,8 +10,7 @@ const fetchUserAction = async (dispatch) => {
         if(data['email']) {
             const sha1= Sha1(data['email']).toString();
             const identicon = new Identicon(sha1, 420).toString();
-            return data['admin'] ? dispatch({type: ADMIN_LOG_IN, payload: {...data, identicon}})
-             : dispatch({type: USER_LOG_IN, payload: {...data, identicon}});
+            return dispatch({type: USER_LOG_IN, payload: {...data, identicon}});
         }
     } catch (error) {
         dispatch({type: USER_SIGN_OUT});

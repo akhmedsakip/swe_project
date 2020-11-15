@@ -7,7 +7,7 @@ const PrivateAdminRoute = ({...other}) => {
     if(state.user.isAdmin) {
         return <Route {...other}/>
     }
-    return <Redirect to={"/admin"} />
+    return <Redirect to={"/"} />
 };
 
 export default PrivateAdminRoute;
