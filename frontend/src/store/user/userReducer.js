@@ -1,4 +1,4 @@
-import {ADMIN_LOG_IN, USER_LOG_IN, USER_SET_LOADING, USER_SIGN_OUT, USER_UNSET_LOADING} from "./userActionsTypes";
+import {USER_SET_ADMIN, USER_LOG_IN, USER_SET_LOADING, USER_SIGN_OUT, USER_UNSET_LOADING} from "./userActionsTypes";
 
 export const initialUserState = {
     loggedIn: false,
