@@ -29,8 +29,8 @@ const DesktopTableRow = ({row}) => {
                 content={() => componentRef.current[row.ID]}
             />
             <div style={{display:'none'}}>
-                <ReceiptPrint orderNo={row.ID} hotel={row.Hotel} roomType={row.RoomType}
-                              checkIn={row.CheckInDate} checkOut={row.CheckOutDate} reservation={row.OrderDateTime}
+                <ReceiptPrint orderNo={1} hotel={row.hotel} roomType={row.roomType}
+                              checkIn={row.checkInDate} checkOut={row.checkOutDate} reservation={row.orderDateTime}
                               ref={el => (componentRef.current[row.ID] = el)} />
             </div>
         </TableCell>
