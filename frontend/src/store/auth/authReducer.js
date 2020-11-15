@@ -9,7 +9,7 @@ import {
 export const initialAuthState = {
     isOpened: false,
     isRegistration: false,
-    loginMessage: "",
+    loginMessage: null,
 };
 
 function authReducer(state, action) {
@@ -17,7 +17,7 @@ function authReducer(state, action) {
         case AUTH_OPEN_DIALOG:
             return {...state, isRegistration: false, isOpened: true};
         case AUTH_CLOSE_DIALOG:
-            return {...state, isOpened: false, loginMessage: ""};
+            return {...state, isOpened: false, loginMessage: null};
         case AUTH_SET_REGISTRATION:
             return {...state, isRegistration: true};
         case AUTH_SET_LOGIN:

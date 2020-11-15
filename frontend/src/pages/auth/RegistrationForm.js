@@ -27,7 +27,11 @@ function RegistrationForm() {
     });
     const action =  async() => await registrationAction(dispatch, values);
     const onSuccess = () => {
-        dispatch({type: AUTH_SET_LOGIN_MESSAGE, payload: 'Successfully registered'});
+        const message = {
+            message: 'Successfully registered',
+            error: false,
+        }
+        dispatch({type: AUTH_SET_LOGIN_MESSAGE, payload: message});
         dispatch({type: AUTH_SET_LOGIN});
     };
     const onErrorArray = (serverErrors) => {

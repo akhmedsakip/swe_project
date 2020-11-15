@@ -129,19 +129,19 @@ public class ProcedureInitializer {
                 "             LEFT JOIN order_details OD on room.HotelID = OD.RoomHotelID and room.RoomNumber = OD.RoomNumber\n" +
                 "             LEFT JOIN `order` O ON hotel.HotelID = O.HotelID and OD.OrderID = O.OrderID\n" +
                 "    WHERE (O.OrderID IS NULL\n" +
-                "        OR (SELECT `order`.CheckOutDate\n" +
+                "        OR NOT EXISTS (SELECT `order`.CheckOutDate\n" +
                 "            FROM `order`\n" +
                 "                     INNER JOIN order_details d on `order`.OrderID = d.OrderID and `order`.HotelID = d.OrderHotelID\n" +
                 "            WHERE d.RoomNumber = room.RoomNumber\n" +
-                "              AND (`order`.CheckInDate BETWEEN _checkInDate AND _checkOutDate OR\n" +
-                "                   `order`.CheckOutDate BETWEEN _checkInDate AND _checkOutDate)) IS NULL)\n" +
+                "              AND (`order`.CheckInDate BETWEEN _checkInDate AND DATE_SUB(_checkOutDate, INTERVAL 1 DAY) OR\n" +
+                "                   `order`.CheckOutDate BETWEEN DATE_ADD(_checkInDate, INTERVAL 1 DAY) AND _checkOutDate)))\n" +
                 "      AND hotel.HotelID = _hotelId\n" +
                 "      AND room_type.Name = _roomTypeName\n" +
                 "    LIMIT 1;\n" +
                 "\n" +
                 "    IF _roomNumber IS NULL OR _checkOutDate <= _checkInDate THEN\n" +
                 "        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'There is no free room';\n" +
-                "    END IF;\n" +
+                "    end if;\n" +
                 "\n" +
                 "    INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID, RoomNumber,\n" +
                 "                               GuestID)\n" +

@@ -33,8 +33,14 @@ function AvailiabilityForm() {
         city: "",
     });
 
-    const action = async () => fetchAvailableHotelsAction(dispatch, values);
-    const onSuccess = () => history.push('/availability/hotels');
+    const action = async () => {
+        dispatch({type: AVAILABILITY_SET_LOADING})
+        await fetchAvailableHotelsAction(dispatch, values);
+    }
+    const onSuccess = () => {
+        history.push('/availability/hotels');
+        dispatch({type: AVAILABILITY_UNSET_LOADING});
+    }
     const onErrorArray = (serverErrors) => {
         serverErrors.forEach(error => setFieldError(error.field || "numberOfPeople", error.message))
     };
@@ -52,14 +58,6 @@ function AvailiabilityForm() {
             setTimeout(() => setCitiesLoading(false), 500);
         }
     }, [cities]);
-
-    useEffect(() => {
-        if(loading) {
-            dispatch({type: AVAILABILITY_SET_LOADING})
-        } else {
-            dispatch({type: AVAILABILITY_UNSET_LOADING});
-        }
-    }, [loading, dispatch]);
 
     const {handleBlur, handleChange, values, handleSubmit, errors, touched, isValid, setFieldError} = useFormik({
         onSubmit,
