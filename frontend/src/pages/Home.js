@@ -2,8 +2,6 @@ import { Collapse, IconButton, makeStyles, Typography } from '@material-ui/core'
 import React, { useState, useEffect } from 'react';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Link as Scroll } from 'react-scroll';
-import Footer from '../components/footer/Footer';
-import { FooterContainer } from '../components/footer/FooterContainer';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -89,7 +87,6 @@ Contact the AMITA HOTELS, Almaty reservations team to book your stay with us.
           </Typography>
         </div>
       </div>
-      <FooterContainer />
     </div>
   )
 }
