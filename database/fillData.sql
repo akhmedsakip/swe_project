@@ -343,8 +343,6 @@ VALUES (
         1.3
        );
 
-    SET _personId = NULL;
-    SET _roomNumber = NULL;
 INSERT INTO hotel_works_during_holiday (HotelID, HolidayID, Coefficient)
 VALUES (
         2,

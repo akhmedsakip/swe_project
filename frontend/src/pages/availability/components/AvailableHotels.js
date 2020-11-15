@@ -23,13 +23,13 @@ const useStyles = makeStyles({
 
 const AvailableHotels = () => {
     const {state, dispatch} = useContext(AppContext);
-    const {hotels, params} = state.availability;
+    const {hotels, roomTypes, params} = state.availability;
     const classes = useStyles();
     const history = useHistory();
 
     async function onClick (hotel) {
         dispatch({type: AVAILABILITY_SET_LOADING});
-        await fetchAvailableRoomTypes(dispatch, {...params, hotelId:hotel.hotelId})
+        await fetchAvailableRoomTypes(dispatch, {...params, hotelId:hotel.hotelId});
         setTimeout(() => {
             dispatch({type: AVAILABILITY_UNSET_LOADING});
             history.push('/availability/roomTypes');

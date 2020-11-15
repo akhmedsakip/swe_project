@@ -21,8 +21,11 @@ const useStyles = makeStyles({
 const AvailableRoomTypes = () => {
     const {state, dispatch} = useContext(AppContext);
     const {roomTypes} = state.availability;
+
     const classes = useStyles();
     const history = useHistory();
+
+
     return (
         <div className={classes.root}>
             <div className={classes.marginBottom16}>
@@ -30,10 +33,11 @@ const AvailableRoomTypes = () => {
             </div>
             <Grid container direction="row"
                   justify="space-evenly" alignItems="center">
-                {roomTypes?.map(roomType =>
+                {roomTypes?.map((roomType, index) =>
                     <Grid key={roomType.name} >
                             <RoomTypeCard roomTypeName={roomType.name} roomTypeDescription={roomType.description}
                                           roomTypeCapacity={roomType.capacity} roomTypeMainPhoto={roomType.photo}
+                                          roomTypeTotalPrice={roomType.totalPrice}
                                           onClick={() => dispatch({type: AVAILABILITY_SET_ROOM_TYPE, payload:roomType})}/>
                         </Grid>)}
             </Grid>
