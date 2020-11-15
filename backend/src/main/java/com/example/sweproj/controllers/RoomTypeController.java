@@ -1,8 +1,8 @@
 package com.example.sweproj.controllers;
 
-import com.example.sweproj.models.ReservationDetailsGroup;
-import com.example.sweproj.models.ReservationRequest;
-import com.example.sweproj.models.AvailableRoomTypesGroup;
+import com.example.sweproj.validation.groups.ReservationDetailsGroup;
+import com.example.sweproj.dto.ReservationRequest;
+import com.example.sweproj.validation.groups.AvailableRoomTypesGroup;
 import com.example.sweproj.models.RoomType;
 import com.example.sweproj.services.RoomTypeService;
 import com.example.sweproj.utils.Message;

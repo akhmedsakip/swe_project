@@ -6,7 +6,9 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import MyOrderContext from '../../../contexts/MyOrdersContext';
+import ReservationsContext from '../../../contexts/ReservationsContext';
+import PropTypes from "prop-types";
+import DesktopTableRow from "./DesktopTableRow";
 
 const useStyles = makeStyles({
   root: {
@@ -22,42 +24,41 @@ const useStyles = makeStyles({
   },
   mainInfo: {
     display: 'flex',
-    justifyContent: 'space-between'
+  },
+  marginRight12: {
+    marginRight: 12,
   }
 });
 
-const MobileOrderCard = ({ row }) => {
+const MobileReservationCard = ({ row }) => {
 
-  const {setDeletion} = useContext(MyOrderContext);
+  const {setDeletion} = useContext(ReservationsContext);
   const classes = useStyles();
 
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent>
         <div className={classes.mainInfo}>
-          <Typography className={classes.font20} gutterBottom color="primary">
-            Order №{row.ID}
-          </Typography>
           <Typography className={classes.font20}>
-            {row.Hotel}
+            {row.hotel}
           </Typography>
         </div>
         <div className={classes.mainInfo}>
-          <Typography className={classes.font20} gutterBottom color="primary">
+          <Typography className={`${classes.font20} ${classes.marginRight12}`} gutterBottom color="primary">
             Room Type:
           </Typography>
           <Typography className={classes.font20}>
-            {row.RoomType}
+            {row.roomType}
           </Typography>
         </div>
         <Typography color="textSecondary">
-          Check In: {row.CheckInDate}
+          Check In: {row.checkInDate}
         </Typography>
         <Typography color="textSecondary">
-          Check Out: {row.CheckOutDate}
+          Check Out: {row.checkOutDate}
         </Typography>
         <Typography color="textSecondary">
-          Reserved: {row.ReservationDate}
+          Reserved: {row.orderDateTime}
         </Typography>
       </CardContent>
 
@@ -68,4 +69,15 @@ const MobileOrderCard = ({ row }) => {
   );
 }
 
-export default MobileOrderCard;
+export default MobileReservationCard;
+
+MobileReservationCard.propTypes = {
+  row: PropTypes.shape({
+    hotel: PropTypes.string.isRequired,
+    roomType: PropTypes.string.isRequired,
+    checkInDate: PropTypes.string.isRequired,
+    checkOutDate: PropTypes.string.isRequired,
+    orderDateTime: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+  })
+}

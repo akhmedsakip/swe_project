@@ -56,8 +56,8 @@ const MobileMenu = () => {
             </MenuItem>
             {
                 loggedIn &&
-                    <MenuItem onClick={() => history.push('/my-orders')}>
-                        My Orders
+                    <MenuItem onClick={() => history.push('/reservations')}>
+                        Reservations
                     </MenuItem>
             }
             {

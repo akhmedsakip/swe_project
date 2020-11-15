@@ -18,7 +18,7 @@ export default function AvailabilityPage() {
     return (
         <div className={classes.root}>
             <Paper className={`${classes.formContainer} ${classes.marginBottom32}`}>
-                <Typography variant="h5" className={classes.marginBottom10}>
+                <Typography variant="h5" className={`${classes.marginBottom10} ${classes.title}`}>
                     Booking a room
                 </Typography>
                 <AvailabilityForm />
@@ -46,6 +46,10 @@ export default function AvailabilityPage() {
 }
 
 const useStyles = makeStyles((theme) => ({
+    title: {
+        fontWeight: 700,
+        textTransform: 'uppercase'
+    },
     marginBottom10: {
         marginBottom: 10,
     },

@@ -1,9 +1,9 @@
 import axios from "axios";
-import {AVAILABILITY_SET_PARAMS, AVAILABILITY_SET_ROOM_TYPE} from "../../../store/availability/availabilityActionTypes";
 
-const reserveRoom = async (dispatch, values) => {
+
+const reserveRoomAction = async (dispatch, values) => {
     try {
-        await axios.post("/api/reserve", {reservationRequest: {
+        await axios.post("/api/reservations/reserve", {reservationRequest: {
                 hotelId: values.hotelId, roomTypeName: values.roomTypeName, checkInDate: values.checkInDate,
                 checkOutDate: values.checkOutDate
             }, guest: {firstName: values.firstName, lastName: values.lastName, gender: values.gender,
@@ -13,4 +13,4 @@ const reserveRoom = async (dispatch, values) => {
     }
 };
 
-export default reserveRoom;
+export default reserveRoomAction;

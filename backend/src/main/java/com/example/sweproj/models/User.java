@@ -1,4 +1,6 @@
 package com.example.sweproj.models;
+import com.example.sweproj.validation.groups.UserEditGroup;
+import com.example.sweproj.validation.groups.UserRegisterGroup;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,6 +1,6 @@
 package com.example.sweproj.services;
 
-import com.example.sweproj.models.ReservationRequest;
+import com.example.sweproj.dto.ReservationRequest;
 import com.example.sweproj.models.RoomType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

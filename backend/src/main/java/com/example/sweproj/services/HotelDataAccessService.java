@@ -1,6 +1,6 @@
 package com.example.sweproj.services;
 
-import com.example.sweproj.models.ReservationRequest;
+import com.example.sweproj.dto.ReservationRequest;
 import com.example.sweproj.models.Hotel;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -19,18 +19,18 @@ public class HotelDataAccessService {
 
     private Hotel mapFromDB(ResultSet rs) throws SQLException {
         Hotel hotel = new Hotel();
-        hotel.hotelId = rs.getString("HotelID");
-        hotel.name = rs.getString("Name");
-        hotel.description = rs.getString("Description");
-        hotel.numberOfFloors = rs.getString("Floors#");
-        hotel.numberOfRooms = rs.getString("Rooms#");
-        hotel.numberOfFreeRooms = rs.getString("FreeRooms#");
-        hotel.country = rs.getString("CountryCode");
-        hotel.city = rs.getString("City");
-        hotel.street = rs.getString("Street");
-        hotel.zipCode = rs.getString("ZIPCode");
-        hotel.starCount = rs.getInt("StarCount");
-        hotel.mainHotelPicture = rs.getString("MainHotelPicture");
+        hotel.setHotelId(rs.getString("HotelID"));
+        hotel.setName(rs.getString("Name"));
+        hotel.setDescription(rs.getString("Description"));
+        hotel.setNumberOfFloors(rs.getString("Floors#"));
+        hotel.setNumberOfRooms(rs.getString("Rooms#"));
+        hotel.setNumberOfFreeRooms(rs.getString("FreeRooms#"));
+        hotel.setCountry(rs.getString("CountryCode"));
+        hotel.setCity(rs.getString("City"));
+        hotel.setStreet(rs.getString("Street"));
+        hotel.setZipCode(rs.getString("ZIPCode"));
+        hotel.setStarCount(rs.getInt("StarCount"));
+        hotel.setMainHotelPicture(rs.getString("MainHotelPicture"));
         return hotel;
     }
 

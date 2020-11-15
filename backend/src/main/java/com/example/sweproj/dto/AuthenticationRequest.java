@@ -1,4 +1,4 @@
-package com.example.sweproj.models;
+package com.example.sweproj.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

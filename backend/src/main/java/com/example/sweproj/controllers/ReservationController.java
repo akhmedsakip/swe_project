@@ -1,25 +1,26 @@
 package com.example.sweproj.controllers;
 
+import com.example.sweproj.dto.ReservationDetailsRequest;
+import com.example.sweproj.dto.ReservationRequest;
 import com.example.sweproj.models.*;
 import com.example.sweproj.services.ReservationService;
 import com.example.sweproj.utils.Message;
 import com.example.sweproj.utils.ValidationUtil;
+import com.example.sweproj.validation.groups.ReservationDetailsGroup;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/reserve")
+@RequestMapping("/api/reservations")
 public class ReservationController {
 
     @Autowired
@@ -33,7 +34,7 @@ public class ReservationController {
 
     ReservationController() {}
 
-    @PostMapping
+    @PostMapping("/reserve")
     ResponseEntity<String> reserveRoom(@RequestBody ReservationDetailsRequest reservationDetailsRequest) {
         List<Message> serverErrors = new ArrayList<>();
         Guest guest = reservationDetailsRequest.getGuest();
@@ -64,5 +65,12 @@ public class ReservationController {
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
         return ResponseEntity.ok().body(gson.toJson(new Message("Successfully reserved the room")));
+    }
+
+    @GetMapping
+    ResponseEntity<List<Reservation>> getReservations() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<Reservation> reservations = this.reservationService.getReservations(user.getEmail());
+        return ResponseEntity.ok().body(reservations);
     }
 }
