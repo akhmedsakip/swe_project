@@ -35,13 +35,16 @@ const useStyles = makeStyles({
     capacity: {
         color: "#FF6655",
     },
+    price: {
+        color: "#195C9F"
+    },
     marginBottom16: {
         marginBottom: 16,
     }
 });
 
 
-function RoomTypeCard({ roomTypeName, roomTypeDescription, roomTypeMainPhoto, roomTypeCapacity, onClick }) {
+function RoomTypeCard({ roomTypeName, roomTypeDescription, roomTypeMainPhoto, roomTypeTotalPrice, roomTypeCapacity, onClick }) {
     const classes = useStyles();
 
     return (
@@ -62,8 +65,15 @@ function RoomTypeCard({ roomTypeName, roomTypeDescription, roomTypeMainPhoto, ro
                         {roomTypeDescription}
                     </Typography>
                     <Typography variant="body2" component="p" className={classes.capacity}>
-                        Capacity: {roomTypeCapacity}
+                        Capacity: {roomTypeCapacity} people
                     </Typography>
+                    {
+                        roomTypeTotalPrice != null ?
+                            <Typography variant="body2" component="p" className={classes.price}>
+                                Total Price: {roomTypeTotalPrice}
+                            </Typography>
+                            : null
+                    }
                 </CardContent>
             </CardActionArea>
             <CardActions>
@@ -80,6 +90,7 @@ RoomTypeCard.propTypes = {
     roomTypeDescription: PropTypes.string.isRequired,
     roomTypeMainPhoto: PropTypes.string.isRequired,
     roomTypeCapacity:  PropTypes.string.isRequired,
+    roomTypeTotalPrice: PropTypes.number
 }
 
 export default RoomTypeCard;

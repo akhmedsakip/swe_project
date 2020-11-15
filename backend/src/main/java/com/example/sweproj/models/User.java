@@ -127,5 +127,9 @@ public class User implements UserDetails {
     public String getDateOfBirth() {
         return dateOfBirth;
     }
+
+    public String getEmail() {
+        return email;
+    }
 }
 

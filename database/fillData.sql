@@ -1,3 +1,14 @@
+INSERT INTO identification_type (Name, CountryCode)
+VALUES (
+        'Passport',
+        'KZ'
+        );
+
+INSERT INTO identification_type (Name)
+VALUES (
+        'Passport'
+        );
+
 INSERT INTO hotel (Name,
                    `Floors#`,
                    `Rooms#`,
@@ -343,8 +354,6 @@ VALUES (
         1.3
        );
 
-    SET _personId = NULL;
-    SET _roomNumber = NULL;
 INSERT INTO hotel_works_during_holiday (HotelID, HolidayID, Coefficient)
 VALUES (
         2,

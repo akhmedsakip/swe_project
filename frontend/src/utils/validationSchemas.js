@@ -36,7 +36,8 @@ export const changePasswordSchema = yup.object().shape({
     newPassword: yup.string().required("Password is empty").min(6, "Minimum length of password is 6"),
     newPasswordConfirm: yup.string().required("Please, confirm your password").oneOf([yup.ref('newPassword'), null], "The passwords don't match"),
 });
-const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+const phoneRegExp = /^\+[0-9]?()[0-9](\s|\S)(\d[0-9]{7})$/
+// Taken from https://www.regextester.com/94816
 
 export const reservationSchema = yup.object().shape({
     phoneNumber: yup.string().required("Phone number is empty").matches(phoneRegExp, "Invalid phone"),

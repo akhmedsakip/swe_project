@@ -7,7 +7,11 @@ const changePasswordAction = async (data, dispatch) => {
         await axios.put('/api/user/changePassword', data);
         await logoutAction(dispatch);
         dispatch({type: AUTH_OPEN_DIALOG});
-        dispatch({type: AUTH_SET_LOGIN_MESSAGE, payload: 'Password successfully changed'});
+        const message = {
+            message: 'Password successfully changed',
+            error: false,
+        };
+        dispatch({type: AUTH_SET_LOGIN_MESSAGE, payload: message});
     } catch(error) {
         throw error;
     }

@@ -1,9 +1,6 @@
 package com.example.sweproj.controllers;
 
-import com.example.sweproj.models.Guest;
-import com.example.sweproj.models.ReservationDetailsGroup;
-import com.example.sweproj.models.ReservationDetailsRequest;
-import com.example.sweproj.models.ReservationRequest;
+import com.example.sweproj.models.*;
 import com.example.sweproj.services.ReservationService;
 import com.example.sweproj.utils.Message;
 import com.example.sweproj.utils.ValidationUtil;
@@ -12,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.UncategorizedSQLException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,8 +47,11 @@ public class ReservationController {
         if(serverErrors.size() > 0) {
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userEmail = user.getEmail();
         try {
-            reservationService.reserveRoom(reservationDetailsRequest);
+            reservationService.reserveRoom(reservationDetailsRequest, userEmail);
         } catch(DataIntegrityViolationException error) {
             serverErrors.add(new Message("Such hotel does not exists"));
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
