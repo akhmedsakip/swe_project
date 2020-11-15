@@ -6,6 +6,7 @@ import BackButton from "../../../components/BackButton";
 import {useHistory} from 'react-router-dom';
 import AppContext from "../../../store/AppContext";
 import {AVAILABILITY_SET_ROOM_TYPE} from "../../../store/availability/availabilityActionTypes";
+import {AUTH_OPEN_DIALOG, AUTH_SET_LOGIN_MESSAGE} from "../../../store/auth/authActionTypes";
 
 
 const useStyles = makeStyles({
@@ -21,9 +22,23 @@ const useStyles = makeStyles({
 const AvailableRoomTypes = () => {
     const {state, dispatch} = useContext(AppContext);
     const {roomTypes} = state.availability;
+    const { loggedIn } = state.user;
 
     const classes = useStyles();
     const history = useHistory();
+
+    const onRoomTypeClick = (roomType) => {
+        if(!loggedIn) {
+            const message = {
+                message: 'Please sign in in order to reserve a room',
+                error: true
+            };
+            dispatch({type: AUTH_SET_LOGIN_MESSAGE, payload: message});
+            dispatch({type: AUTH_OPEN_DIALOG});
+            return;
+        }
+        dispatch({type: AVAILABILITY_SET_ROOM_TYPE, payload: roomType});
+    }
 
 
     return (
@@ -38,7 +53,7 @@ const AvailableRoomTypes = () => {
                             <RoomTypeCard roomTypeName={roomType.name} roomTypeDescription={roomType.description}
                                           roomTypeCapacity={roomType.capacity} roomTypeMainPhoto={roomType.photo}
                                           roomTypeTotalPrice={roomType.totalPrice}
-                                          onClick={() => dispatch({type: AVAILABILITY_SET_ROOM_TYPE, payload:roomType})}/>
+                                          onClick={() => onRoomTypeClick(roomType)}/>
                         </Grid>)}
             </Grid>
         </div>

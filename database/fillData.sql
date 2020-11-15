@@ -1,3 +1,14 @@
+INSERT INTO identification_type (Name, CountryCode)
+VALUES (
+        'Passport',
+        'KZ'
+        );
+
+INSERT INTO identification_type (Name)
+VALUES (
+        'Passport'
+        );
+
 INSERT INTO hotel (Name,
                    `Floors#`,
                    `Rooms#`,
