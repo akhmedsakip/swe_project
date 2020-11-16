@@ -1,74 +1,44 @@
-import React, { useContext } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import React, { useContext, useState } from 'react';
 import AppContext from '../../../store/AppContext';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
-});
+import MobileTable from './MobileTable';
+import DesktopTable from './DesktopTable';
+import { useMediaQuery, useTheme } from '@material-ui/core';
+import DeleteOrderDialog from './DeleteOrderDialog';
+import MyOrdersContext from "../../../contexts/MyOrdersContext";
 
 const rows = [
   {
-    Hotel: "Rixos Almaty", 
+    Hotel: "Rixos Almaty",
     RoomType: "Standard",
     CheckInDate: "21-10-2020",
     CheckOutDate: "30-10-2020",
     ReservationDate: "20-10-2020",
     ID: "1"
+  },
+  {
+    Hotel: "Rixos Borovoe",
+    RoomType: "Luxe",
+    CheckInDate: "21-10-2020",
+    CheckOutDate: "30-10-2020",
+    ReservationDate: "20-10-2020",
+    ID: "2"
   }
 ];
 
 const MyOrdersTable = () => {
-  const classes = useStyles();
 
-  const { state, dispatch } = useContext(AppContext);
-  const { userInfo } = state.user;
+  const [deletion, setDeletion] = useState(false);
 
-  console.log(userInfo);
+  const theme = useTheme();
+  const isMobileScreen = useMediaQuery(theme.breakpoints.down('xs'));
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Hotel</TableCell>
-            <TableCell align="right">Room Type</TableCell>
-            <TableCell align="right">Check In</TableCell>
-            <TableCell align="right">Check Out</TableCell>
-            <TableCell align="right">Reservation</TableCell>
-            <TableCell align="right">Action</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.Hotel}
-              </TableCell>
-              <TableCell align="right">{row.RoomType}</TableCell>
-              <TableCell align="right">{row.CheckInDate}</TableCell>
-              <TableCell align="right">{row.CheckOutDate}</TableCell>
-              <TableCell align="right">{row.ReservationDate}</TableCell>
-              <TableCell align="right">
-                <IconButton onClick={() => dispatch({type: 'DELETE_ORDER', payload: row.ID})}>
-                  <DeleteIcon />
-                </IconButton>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <MyOrdersContext.Provider style={{ width: '100%' }} value={{deletion, setDeletion}}>
+      {isMobileScreen ? <MobileTable data={rows} />
+        : <DesktopTable data={rows} />
+      }
+      <DeleteOrderDialog onClose={() => setDeletion(false)} open={deletion} />
+    </MyOrdersContext.Provider>
   );
 }
 

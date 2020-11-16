@@ -50,6 +50,8 @@ function ProfileInfoForm() {
   });
   const {handleSubmit, values} = formik;
 
+  console.log(userInfo);
+
   return (
       <ProfileContext.Provider value={{editing, setEditing, setChangePassword, formik, loading}}>
         <form className={classes.block} onSubmit={handleSubmit}>

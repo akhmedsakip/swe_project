@@ -4,11 +4,13 @@ import {useReducer} from "react";
 import userReducer, {initialUserState} from "./user/userReducer";
 import authReducer, {initialAuthState} from "./auth/authReducer";
 import availabilityReducer, {initialRoomTypeState} from "./availability/availavilityReducer";
+import orderReducer, {initialOrderState} from "./order/orderReducer";
 
 const initialState = {
     user: initialUserState,
     auth: initialAuthState,
     availability: initialRoomTypeState,
+    order: initialOrderState,
 };
 
 const combineReducers = (slices) => (state, action) =>
@@ -23,6 +25,7 @@ const reducer = combineReducers({
     user: userReducer,
     auth: authReducer,
     availability: availabilityReducer,
+    order: orderReducer,
 });
 
 const StoreProvider = ({children}) => {
