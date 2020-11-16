@@ -47,12 +47,20 @@ public class ReservationDataAccessService {
     }
 
     public List<Reservation> getReservations(String email) {
-        String sql = "SELECT H.Name Hotel, RT.Name RoomType, O.CheckInDate, O.CheckOutDate, O.OrderDateTime, OS.Name Status  FROM order_details OD\n" +
+        String sql = "SELECT OD.OrderHotelID, H.Name Hotel, RT.Name RoomType, O.CheckInDate, O.CheckOutDate, O.OrderDateTime, OS.Name Status  FROM order_details OD\n" +
                 "    INNER JOIN `order` O on OD.OrderID = o.OrderID and OD.OrderHotelID = o.HotelID\n" +
                 "    INNER JOIN room_type RT on OD.RoomTypeHotelID = rt.HotelID and OD.RoomType = rt.Name\n" +
                 "    INNER JOIN hotel H on o.HotelID = h.HotelID\n" +
                 "    INNER JOIN order_status OS on O.OrderStatus = os.Name\n" +
                 "    WHERE O.UserEmail = ?;";
         return jdbcTemplate.query(sql, (rs, rowNum) -> mapFromDB(rs), email);
+    }
+
+    public int deleteReservation(int orderId) {
+        String sql1 = "DELETE FROM order_details WHERE OrderID = ?;";
+        String sql2 = "DELETE FROM `order` WHERE OrderID = ?;";
+
+        jdbcTemplate.update(sql1, orderId);
+        return jdbcTemplate.update(sql2, orderId);
     }
 }
