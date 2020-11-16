@@ -1,7 +1,7 @@
 package com.example.sweproj.controllers;
 
-import com.example.sweproj.models.ReservationRequest;
-import com.example.sweproj.models.AvailableHotelsGroup;
+import com.example.sweproj.dto.ReservationRequest;
+import com.example.sweproj.validation.groups.AvailableHotelsGroup;
 import com.example.sweproj.models.Hotel;
 import com.example.sweproj.services.HotelService;
 import com.example.sweproj.utils.Message;

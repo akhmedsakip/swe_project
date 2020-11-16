@@ -20,10 +20,18 @@ export const searchSchema = yup.object().shape({
     checkInDate: yup.date("From date is invalid").required("From date is empty"),
     checkOutDate: yup.date("To date is invalid").when(
         'checkInDate',
-        (checkInDate, schema) => (checkInDate && schema.min(checkInDate)),
-    ).required("To date is empty"),
+        (checkInDate, schema) => (checkInDate && schema.min(nextDay(checkInDate)))
+    )
+    .required("To date is empty"),
     city: yup.string().required("City is empty"),
 });
+
+const nextDay = (date) => {
+    const dateObject = new Date(date);
+    dateObject.setDate(dateObject.getDate() + 2);
+    return dateObject.toISOString().split("T")[0];
+}
+
 export const editInfoSchema = yup.object().shape({
     firstName: yup.string().required("First name is empty"),
     lastName: yup.string().required("Second name is empty"),
@@ -36,7 +44,8 @@ export const changePasswordSchema = yup.object().shape({
     newPassword: yup.string().required("Password is empty").min(6, "Minimum length of password is 6"),
     newPasswordConfirm: yup.string().required("Please, confirm your password").oneOf([yup.ref('newPassword'), null], "The passwords don't match"),
 });
-const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+const phoneRegExp = /^\+[0-9]?()[0-9](\s|\S)(\d[0-9]{7})$/
+// Taken from https://www.regextester.com/94816
 
 export const reservationSchema = yup.object().shape({
     phoneNumber: yup.string().required("Phone number is empty").matches(phoneRegExp, "Invalid phone"),

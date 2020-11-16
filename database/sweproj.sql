@@ -29,6 +29,23 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `sweproj`.`user`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sweproj`.`user` ;
+
+CREATE TABLE IF NOT EXISTS `sweproj`.`user` (
+  `Email` VARCHAR(45) NOT NULL,
+  `FirstName` VARCHAR(45) NOT NULL,
+  `LastName` VARCHAR(45) NOT NULL,
+  `Password` MEDIUMTEXT NOT NULL,
+  `DateOfBirth` DATE NOT NULL,
+  `Gender` VARCHAR(10) NOT NULL,
+  `RegistrationDate` DATETIME NOT NULL,
+  PRIMARY KEY (`Email`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `sweproj`.`person`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `sweproj`.`person` ;
@@ -46,12 +63,19 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`person` (
   `ZIPCode` VARCHAR(20) NULL,
   `PhoneNumber` VARCHAR(45) NOT NULL,
   `IdentificationTypeID` INT NULL,
+  `user_Email` VARCHAR(45) NULL,
   PRIMARY KEY (`PersonID`),
   INDEX `fk_PERSON_IDENTIFICATIONTYPE1_idx` (`IdentificationTypeID` ASC) VISIBLE,
   UNIQUE INDEX `PhoneNumber_UNIQUE` (`PhoneNumber` ASC) VISIBLE,
+  INDEX `fk_person_user1_idx` (`user_Email` ASC) VISIBLE,
   CONSTRAINT `fk_PERSON_IDENTIFICATIONTYPE1`
     FOREIGN KEY (`IdentificationTypeID`)
     REFERENCES `sweproj`.`identification_type` (`IdentificationTypeID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_person_user1`
+    FOREIGN KEY (`user_Email`)
+    REFERENCES `sweproj`.`user` (`Email`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -64,7 +88,7 @@ DROP TABLE IF EXISTS `sweproj`.`employee` ;
 
 CREATE TABLE IF NOT EXISTS `sweproj`.`employee` (
   `EmployeeID` INT NOT NULL,
-  `MonthlySalary` INT NULL,
+  `BaseSalaryPerHour` INT NULL,
   PRIMARY KEY (`EmployeeID`),
   CONSTRAINT `fk_EMPLOYEE_PERSON1`
     FOREIGN KEY (`EmployeeID`)
@@ -346,9 +370,11 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`order` (
   `CheckOutDate` DATE NULL,
   `OrderStatus` VARCHAR(45) NOT NULL,
   `PaymentMethod` VARCHAR(45) NOT NULL,
+  `UserEmail` VARCHAR(45) NULL,
   PRIMARY KEY (`OrderID`, `HotelID`),
   INDEX `fk_ORDER_ORDERSTATUS1_idx` (`OrderStatus` ASC) VISIBLE,
   INDEX `fk_ORDER_PAYMENTMETHOD1_idx` (`PaymentMethod` ASC) VISIBLE,
+  INDEX `fk_order_user1_idx` (`UserEmail` ASC) VISIBLE,
   CONSTRAINT `fk_ORDER_HOTEL1`
     FOREIGN KEY (`HotelID`)
     REFERENCES `sweproj`.`hotel` (`HotelID`)
@@ -362,6 +388,11 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`order` (
   CONSTRAINT `fk_ORDER_PAYMENTMETHOD1`
     FOREIGN KEY (`PaymentMethod`)
     REFERENCES `sweproj`.`payment_method` (`Name`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_order_user1`
+    FOREIGN KEY (`UserEmail`)
+    REFERENCES `sweproj`.`user` (`Email`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -411,11 +442,13 @@ DROP TABLE IF EXISTS `sweproj`.`employee_works_on_day_of_week` ;
 CREATE TABLE IF NOT EXISTS `sweproj`.`employee_works_on_day_of_week` (
   `EmployeeID` INT NOT NULL,
   `DayOfWeek` VARCHAR(15) NOT NULL,
+  `HotelID` INT NOT NULL,
   `StartTime` TIME NOT NULL,
   `EndTime` TIME NOT NULL,
-  PRIMARY KEY (`EmployeeID`, `DayOfWeek`),
+  PRIMARY KEY (`EmployeeID`, `DayOfWeek`, `HotelID`),
   INDEX `fk_EMPLOYEE_has_DAYOFWEEK_DAYOFWEEK1_idx` (`DayOfWeek` ASC) VISIBLE,
   INDEX `fk_EMPLOYEE_has_DAYOFWEEK_EMPLOYEE1_idx` (`EmployeeID` ASC) VISIBLE,
+  INDEX `fk_employee_works_on_day_of_week_hotel1_idx` (`HotelID` ASC) VISIBLE,
   CONSTRAINT `fk_EMPLOYEE_has_DAYOFWEEK_EMPLOYEE1`
     FOREIGN KEY (`EmployeeID`)
     REFERENCES `sweproj`.`employee` (`EmployeeID`)
@@ -424,6 +457,11 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`employee_works_on_day_of_week` (
   CONSTRAINT `fk_EMPLOYEE_has_DAYOFWEEK_DAYOFWEEK1`
     FOREIGN KEY (`DayOfWeek`)
     REFERENCES `sweproj`.`day_of_week` (`Day`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_employee_works_on_day_of_week_hotel1`
+    FOREIGN KEY (`HotelID`)
+    REFERENCES `sweproj`.`hotel` (`HotelID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -735,23 +773,6 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`employee_supervises_employee` (
     REFERENCES `sweproj`.`employee` (`EmployeeID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `sweproj`.`user`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sweproj`.`user` ;
-
-CREATE TABLE IF NOT EXISTS `sweproj`.`user` (
-  `Email` VARCHAR(45) NOT NULL,
-  `FirstName` VARCHAR(45) NOT NULL,
-  `LastName` VARCHAR(45) NOT NULL,
-  `Password` MEDIUMTEXT NOT NULL,
-  `DateOfBirth` DATE NOT NULL,
-  `Gender` VARCHAR(10) NOT NULL,
-  `RegistrationDate` DATETIME NOT NULL,
-  PRIMARY KEY (`Email`))
 ENGINE = InnoDB;
 
 

@@ -1,18 +1,16 @@
 package com.example.sweproj.services;
 
-import com.example.sweproj.models.ReservationRequest;
+import com.example.sweproj.dto.ReservationRequest;
 import com.example.sweproj.models.RoomType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class RoomTypeService {
-    private final RoomTypeDataAccessService roomTypeDataAccessService;
-
-    public RoomTypeService(RoomTypeDataAccessService roomTypeDataAccessService) {
-        this.roomTypeDataAccessService = roomTypeDataAccessService;
-    }
+    @Autowired
+    private RoomTypeDataAccessService roomTypeDataAccessService;
 
     public List<RoomType> getRoomTypes(int id) { return this.roomTypeDataAccessService.getRoomTypes(id); }
 
@@ -25,4 +23,7 @@ public class RoomTypeService {
         return this.roomTypeDataAccessService.getAvailableRoomTypes(info);
     }
 
+    public int getTotalPrice(ReservationRequest info) {
+        return this.roomTypeDataAccessService.getTotalPrice(info);
+    }
 }

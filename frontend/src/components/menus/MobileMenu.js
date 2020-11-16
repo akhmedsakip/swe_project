@@ -55,10 +55,16 @@ const MobileMenu = () => {
                 </Link>
             </MenuItem>
             {
-                loggedIn ?
+                loggedIn &&
+                    <MenuItem onClick={() => history.push('/reservations')}>
+                        Reservations
+                    </MenuItem>
+            }
+            {
+                loggedIn &&
                     <MenuItem onClick={() => history.push('/profile')}>
                         Profile
-                    </MenuItem> : null
+                    </MenuItem>
             }
             {
                 !loggedIn

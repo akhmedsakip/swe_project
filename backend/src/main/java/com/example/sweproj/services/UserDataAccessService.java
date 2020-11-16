@@ -18,9 +18,9 @@ public class UserDataAccessService {
 
     int insertUser(User user) {
         String sql = "INSERT INTO `user` (FirstName, LastName, Password, Email, DateOfBirth, Gender, RegistrationDate)" +
-                            "VALUES (?, ?, ?, ?, ?, ? ,?)";
+                            "VALUES (?, ?, ?, ?, ?, ?, NOW())";
         return jdbcTemplate.update(sql, user.getFirstName(), user.getLastName(),
-                user.getPassword(), user.getUsername(), user.getDateOfBirth(), user.getGender(), LocalDate.now());
+                user.getPassword(), user.getUsername(), user.getDateOfBirth(), user.getGender());
     }
 
     User loadUserByUsername(String email) {

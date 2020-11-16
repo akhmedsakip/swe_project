@@ -1,5 +1,6 @@
-package com.example.sweproj.models;
+package com.example.sweproj.dto;
 
+import com.example.sweproj.models.Guest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.Valid;

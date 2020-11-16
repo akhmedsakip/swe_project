@@ -24,7 +24,7 @@ const DesktopMenu = () => {
     const {state, dispatch} = useContext(AppContext);
     const classes = useStyles();
     const history = useHistory();
-    const { loggedIn, userInfo } = state.user;
+    const { loggedIn, userInfo, isAdmin } = state.user;
     // useEffect(() => {
     //     console.log(identicon);
     // }, [identicon]);
@@ -41,6 +41,17 @@ const DesktopMenu = () => {
         <Link to="/availability" className={classes.link}>
             <Button color="inherit">Search</Button>
         </Link>
+        
+        {
+            isAdmin ? <Button color="inherit" className={classes.link} onClick={() => history.push('/admin')}>
+                Admin
+            </Button> : null
+        }
+        {
+            loggedIn && <Button onClick={() => history.push('/reservations')}>
+                Reservations
+            </Button>
+        }
         {
             (!loggedIn
                 ? <Button color="inherit" className={classes.loginButton} onClick={() => dispatch({type: AUTH_OPEN_DIALOG})}>
@@ -56,6 +67,7 @@ const DesktopMenu = () => {
                 <Avatar alt="Profile" src={`data:image/png;base64,${userInfo.identicon}`} />
             </Button> : null
         }
+        
     </div>
 };
 

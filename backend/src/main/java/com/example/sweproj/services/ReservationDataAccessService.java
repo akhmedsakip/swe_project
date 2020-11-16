@@ -1,100 +1,66 @@
 package com.example.sweproj.services;
 
-import com.example.sweproj.models.ReservationDetailsRequest;
+import com.example.sweproj.controllers.RoomTypeController;
+import com.example.sweproj.dto.ReservationDetailsRequest;
+import com.example.sweproj.models.Hotel;
+import com.example.sweproj.models.Reservation;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public class ReservationDataAccessService {
     private final JdbcTemplate jdbcTemplate;
+    private final RoomTypeService roomTypeService;
 
-    public ReservationDataAccessService(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    private Reservation mapFromDB(ResultSet rs) throws SQLException {
+        Reservation reservation = new Reservation();
+        reservation.setOrderId(rs.getInt("OrderId"));
+        reservation.setHotel(rs.getString("Hotel"));
+        reservation.setRoomType(rs.getString("RoomType"));
+        reservation.setCheckInDate(rs.getString("CheckInDate"));
+        reservation.setCheckOutDate(rs.getString("CheckOutDate"));
+        reservation.setOrderDateTime(rs.getString("OrderDateTime"));
+        reservation.setStatus(rs.getString("Status"));
+        return reservation;
     }
 
-    public int reserveRoom(ReservationDetailsRequest info) {
-        String sql1 = "DROP PROCEDURE IF EXISTS reserve;\n";
-        String sql2 = "CREATE PROCEDURE reserve(IN _gender VARCHAR(10), IN _firstName VARCHAR(30),\n" +
-                " IN _lastName VARCHAR(30), IN _phoneNumber VARCHAR(45), IN _hotelId INT, IN _orderPrice INT,\n" +
-                " IN _orderDateTime VARCHAR(20), IN _checkInDate VARCHAR(20), IN _checkOutDate VARCHAR(20),\n" +
-                " IN _paymentMethod VARCHAR(45), IN _roomTypeName varchar(45))\n" +
-                "BEGIN\n" +
-                "    DECLARE _personId INT;\n" +
-                "    DECLARE _roomNumber VARCHAR(10);\n" +
-                "\n" +
-                "    DECLARE EXIT HANDLER FOR SQLEXCEPTION\n" +
-                "    BEGIN\n" +
-                "        ROLLBACK;\n" +
-                "        RESIGNAL; \n" +
-                "    END;\n" +
-                "\n" +
-                "    SET _personId = 0;\n" +
-                "    SET _roomNumber = NULL;\n" +
-                "\n" +
-                "    START TRANSACTION;\n" +
-                "    SELECT PersonID INTO _personId FROM guest\n" +
-                "        INNER JOIN person ON person.PersonID = GuestID\n" +
-                "        WHERE person.PhoneNumber = _phoneNumber LIMIT 1;\n" +
-                "\n" +
-                "    IF _personId < 1 THEN\n" +
-                "        INSERT INTO person (Gender, FirstName, LastName, PhoneNumber) VALUES (\n" +
-                "        _gender,\n" +
-                "        _firstName,\n" +
-                "        _lastName,\n" +
-                "        _phoneNumber\n" +
-                "       );\n" +
-                "        SELECT LAST_INSERT_ID() INTO _personId;\n" +
-                "        INSERT INTO guest (GuestID) VALUE (_personId);\n" +
-                "    END IF;\n" +
-                "\n" +
-                "    INSERT INTO `order` (HotelID, OrderPrice, OrderDateTime, CheckInDate, CheckOutDate, OrderStatus, PaymentMethod) VALUES (\n" +
-                "    _hotelId,\n" +
-                "    _orderPrice,\n" +
-                "    _orderDateTime,\n" +
-                "    _checkInDate,\n" +
-                "    _checkOutDate,\n" +
-                "    'Reserved',\n" +
-                "    _paymentMethod\n" +
-                "   );\n" +
-                "\n" +
-                "    SELECT room.RoomNumber INTO _roomNumber\n" +
-                "    FROM room\n" +
-                "    INNER JOIN hotel ON hotel.HotelID = room.HotelID\n" +
-                "    INNER JOIN room_type ON room_type.HotelID = room.HotelID AND room.RoomTypeName = room_type.Name\n" +
-                "    LEFT JOIN order_details OD on room.HotelID = OD.RoomHotelID and room.RoomNumber = OD.RoomNumber\n" +
-                "    LEFT JOIN `order` O ON hotel.HotelID = O.HotelID and OD.OrderID = O.OrderID\n" +
-                "    WHERE (O.OrderID IS NULL\n" +
-                "        OR NOT\n" +
-                "           (O.CheckInDate BETWEEN _checkInDate AND _checkOutDate\n" +
-                "           OR\n" +
-                "           O.CheckOutDate BETWEEN _checkInDate AND _checkOutDate))\n" +
-                "        AND hotel.HotelID = _hotelId\n" +
-                "        AND room_type.Name >= _roomTypeName LIMIT 1;\n" +
-                "    IF _roomNumber IS NULL THEN\n" +
-                "        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'There is no free room';\n" +
-                "   END IF;"+
-                "\n" +
-                "    INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID, RoomNumber, GuestID) VALUES (\n" +
-                "    TRUE,\n" +
-                "    LAST_INSERT_ID(),\n" +
-                "    _hotelId,\n" +
-                "    _hotelId,\n" +
-                "    _roomTypeName,\n" +
-                "    _hotelId,\n" +
-                "    _roomNumber,\n" +
-                "    _personId);\n" +
-                "    COMMIT;\n" +
-                "END;\n";
-        String sql3 = "CALL reserve(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    public ReservationDataAccessService(RoomTypeController roomTypeController, JdbcTemplate jdbcTemplate, RoomTypeService roomTypeService) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.roomTypeService = roomTypeService;
+    }
 
-        jdbcTemplate.execute(sql1);
-        jdbcTemplate.execute(sql2);
+    public int reserveRoom(ReservationDetailsRequest info, String userEmail) {
+        String sql = "CALL reserve(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
-        return jdbcTemplate.update(sql3, info.getGuest().getGender(), info.getGuest().getFirstName(),
+        int roomTotalPrice = roomTypeService.getTotalPrice(info.getReservationRequest()); // TODO transfer to controller
+
+        return jdbcTemplate.update(sql, info.getGuest().getGender(), info.getGuest().getFirstName(),
                 info.getGuest().getLastName(), info.getGuest().getPhoneNumber(), info.getReservationRequest().getHotelId(),
-                100, LocalDate.now(), info.getReservationRequest().getCheckInDate(),
-                info.getReservationRequest().getCheckOutDate(), "Cash", info.getReservationRequest().getRoomTypeName());
+                roomTotalPrice, info.getReservationRequest().getCheckInDate(),
+                info.getReservationRequest().getCheckOutDate(), "Cash", info.getReservationRequest().getRoomTypeName(),
+                userEmail);
+    }
+
+    public List<Reservation> getReservations(String email) {
+        String sql = "SELECT O.OrderID, OD.OrderHotelID, H.Name Hotel, RT.Name RoomType, O.CheckInDate, O.CheckOutDate, O.OrderDateTime, OS.Name Status  FROM order_details OD\n" +
+                "    INNER JOIN `order` O on OD.OrderID = o.OrderID and OD.OrderHotelID = o.HotelID\n" +
+                "    INNER JOIN room_type RT on OD.RoomTypeHotelID = rt.HotelID and OD.RoomType = rt.Name\n" +
+                "    INNER JOIN hotel H on o.HotelID = h.HotelID\n" +
+                "    INNER JOIN order_status OS on O.OrderStatus = os.Name\n" +
+                "    WHERE O.UserEmail = ? AND OD.IsPayer=TRUE;";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> mapFromDB(rs), email);
+    }
+
+    public int deleteReservation(int orderId, String email) {
+        String sql1 = "DELETE O, OD FROM order_details OD\n" +
+                "JOIN `order` O on O.OrderID = OD.OrderID and O.HotelID = OD.OrderHotelID\n" +
+                "WHERE O.OrderID = ? AND O.UserEmail = ?";
+        return jdbcTemplate.update(sql1, orderId, email);
     }
 }
