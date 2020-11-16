@@ -1,17 +1,3 @@
-<<<<<<< HEAD
-import axios from "axios";
-import {AVAILABILITY_SET_ROOM_TYPES} from "../../store/availability/availabilityActionTypes";
-
-const fetchAvailableRoomTypes = async (dispatch, values) => {
-    try {
-        const response = await axios.get("/api/roomTypes/availableRoomTypes", {params: values});
-        dispatch({type: AVAILABILITY_SET_ROOM_TYPES, payload: response.data});
-    } catch(error) {
-        throw error;
-    }
-};
-
-=======
 import axios from "axios";
 import {AVAILABILITY_SET_ROOM_TYPES} from "../../store/availability/availabilityActionTypes";
 
@@ -31,5 +17,4 @@ const fetchAvailableRoomTypes = async (dispatch, values) => {
     }
 };
 
->>>>>>> f9ff2b1c20937275384526ff481c6774c5a2fc29
 export default fetchAvailableRoomTypes;

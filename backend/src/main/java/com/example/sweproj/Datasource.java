@@ -17,10 +17,6 @@ public class Datasource {
         dataSource.setUrl("jdbc:mysql://localhost:3306/sweproj");
         dataSource.setUsername("university");
         dataSource.setPassword("password");
-//        System.out.println(dataSource.getConnectionProperties());
-//        System.out.println(dataSource.getCatalog());
-//        System.out.println("dataSource");
-
         return dataSource;
     }
 }

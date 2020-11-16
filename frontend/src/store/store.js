@@ -4,21 +4,13 @@ import {useReducer} from "react";
 import userReducer, {initialUserState} from "./user/userReducer";
 import authReducer, {initialAuthState} from "./auth/authReducer";
 import availabilityReducer, {initialRoomTypeState} from "./availability/availavilityReducer";
-<<<<<<< HEAD
-import orderReducer, {initialOrderState} from "./order/orderReducer";
-=======
 import reservationReducer, {initialReservationsState} from "./reservations/reservationReducer";
->>>>>>> f9ff2b1c20937275384526ff481c6774c5a2fc29
 
 const initialState = {
     user: initialUserState,
     auth: initialAuthState,
     availability: initialRoomTypeState,
-<<<<<<< HEAD
-    order: initialOrderState,
-=======
     reservations: initialReservationsState
->>>>>>> f9ff2b1c20937275384526ff481c6774c5a2fc29
 };
 
 const combineReducers = (slices) => (state, action) =>
@@ -33,11 +25,7 @@ const reducer = combineReducers({
     user: userReducer,
     auth: authReducer,
     availability: availabilityReducer,
-<<<<<<< HEAD
-    order: orderReducer,
-=======
     reservations: reservationReducer,
->>>>>>> f9ff2b1c20937275384526ff481c6774c5a2fc29
 });
 
 const StoreProvider = ({children}) => {
