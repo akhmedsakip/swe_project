@@ -41,7 +41,7 @@ public class ReservationDataAccessService {
 
         return jdbcTemplate.update(sql, info.getGuest().getGender(), info.getGuest().getFirstName(),
                 info.getGuest().getLastName(), info.getGuest().getPhoneNumber(), info.getReservationRequest().getHotelId(),
-                roomTotalPrice, LocalDateTime.now(), info.getReservationRequest().getCheckInDate(),
+                roomTotalPrice, LocalDate.now(), info.getReservationRequest().getCheckInDate(),
                 info.getReservationRequest().getCheckOutDate(), "Cash", info.getReservationRequest().getRoomTypeName(),
                 userEmail);
     }
