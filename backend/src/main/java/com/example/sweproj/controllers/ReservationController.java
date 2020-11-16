@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/reservations")
@@ -65,6 +66,26 @@ public class ReservationController {
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
         return ResponseEntity.ok().body(gson.toJson(new Message("Successfully reserved the room")));
+    }
+
+    @DeleteMapping
+    ResponseEntity<String> deleteReservations(@RequestBody Map<String, Integer> requestBody) {
+        List<Message> serverErrors = new ArrayList<>();
+        Integer orderId = requestBody.get("orderId");
+
+        if(orderId <= 0) {
+            serverErrors.add(new Message("Invalid format of order id"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        int deletedCount = this.reservationService.deleteReservation(orderId, user.getEmail());
+        if(deletedCount == 0) {
+            serverErrors.add(new Message("Error deleting reservation"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+        return ResponseEntity.ok().body(gson.toJson(new Message("Successfully deleted room")));
     }
 
     @GetMapping

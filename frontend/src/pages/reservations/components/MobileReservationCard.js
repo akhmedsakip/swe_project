@@ -39,6 +39,17 @@ const MobileReservationCard = ({ row }) => {
     <Card className={classes.root} variant="outlined">
       <CardContent>
         <div className={classes.mainInfo}>
+          <Typography className={`${classes.font20} ${classes.marginRight12}`} gutterBottom color="primary">
+            Order ID:
+          </Typography>
+          <Typography className={classes.font20}>
+            {row.orderId}
+          </Typography>
+        </div>
+        <div className={classes.mainInfo}>
+          <Typography className={`${classes.font20} ${classes.marginRight12}`} gutterBottom color="primary">
+            Hotel:
+          </Typography>
           <Typography className={classes.font20}>
             {row.hotel}
           </Typography>
@@ -73,6 +84,7 @@ export default MobileReservationCard;
 
 MobileReservationCard.propTypes = {
   row: PropTypes.shape({
+    orderId: PropTypes.number.isRequired,
     hotel: PropTypes.string.isRequired,
     roomType: PropTypes.string.isRequired,
     checkInDate: PropTypes.string.isRequired,

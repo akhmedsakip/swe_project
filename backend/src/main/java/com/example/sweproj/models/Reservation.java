@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Reservation {
     @JsonProperty
+    private int orderId;
+
+    @JsonProperty
     private String hotel;
 
     @JsonProperty
@@ -20,6 +23,14 @@ public class Reservation {
 
     @JsonProperty
     private String status;
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
 
     public String getHotel() {
         return hotel;

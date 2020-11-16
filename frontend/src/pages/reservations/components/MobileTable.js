@@ -30,9 +30,12 @@ const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
     justifyContent: 'center',
-    width: '100%',
     borderRadius: '5px',
-    background: theme.palette.background.paper
+    background: theme.palette.background.paper,
+    padding: 32,
+  },
+  messageContainer: {
+    justifyContent: 'flex-start',
   },
   paddingHor0: {
     paddingRight: 0,
@@ -61,13 +64,13 @@ const MobileTable = () => {
       }
 
       {!loading && reservations.length ? reservations.map((row, i) => {
-        return <ListItem key={row.orderDateTime + i} className={classes.paddingHor0}>
+        return <ListItem key={row.orderId} className={classes.paddingHor0}>
           <MobileReservationCard row={row} />
         </ListItem>
       }) : null}
       {
         !loading && !reservations.length ?
-            <div className={`${classes.container} ${classes.marginTop32}`}>
+            <div className={`${classes.container} ${classes.marginTop32} ${classes.messageContainer}`}>
               No reservations made yet
             </div> : null
       }

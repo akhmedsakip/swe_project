@@ -19,7 +19,7 @@ public class HotelDataAccessService {
 
     private Hotel mapFromDB(ResultSet rs) throws SQLException {
         Hotel hotel = new Hotel();
-        hotel.setHotelId(rs.getString("HotelID"));
+        hotel.setHotelId(rs.getInt("HotelID"));
         hotel.setName(rs.getString("Name"));
         hotel.setDescription(rs.getString("Description"));
         hotel.setNumberOfFloors(rs.getString("Floors#"));

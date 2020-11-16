@@ -19,4 +19,8 @@ public class ReservationService {
     public List<Reservation> getReservations(String email) {
         return this.reservationDataAccessService.getReservations(email);
     }
+
+    public int deleteReservation(int orderId, String email) {
+        return this.reservationDataAccessService.deleteReservation(orderId, email);
+    }
 }

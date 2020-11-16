@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 
 public class Hotel {
 
-    private String hotelId;
+    private int hotelId;
 
     @JsonProperty @NotBlank(message = "Hotel name is empty")
     private String name;
@@ -45,11 +45,11 @@ public class Hotel {
 
     public Hotel() { }
 
-    public String getHotelId() {
+    public int getHotelId() {
         return hotelId;
     }
 
-    public void setHotelId(String hotelId) {
+    public void setHotelId(int hotelId) {
         this.hotelId = hotelId;
     }
 

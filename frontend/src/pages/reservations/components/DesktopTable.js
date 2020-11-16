@@ -7,16 +7,11 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import PrintIcon from '@material-ui/icons/Print';
-import ReservationsContext from '../../../contexts/ReservationsContext';
 import { Toolbar, Typography } from '@material-ui/core';
-import { useReactToPrint } from 'react-to-print';
-import ReceiptPrint from './ComponentPrint';
-import ReactToPrint from "react-to-print";
 import DesktopTableRow from "./DesktopTableRow";
 import AppContext from "../../../store/AppContext";
+import {Box} from "@material-ui/core";
+import Spinner from "../../../components/Spinner";
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -25,6 +20,9 @@ const useStyles = makeStyles({
     flex: '1 1 100%',
     fontWeight: 700,
     textTransform: 'uppercase',
+  },
+  topBar: {
+    borderBottom: '1px solid black'
   }
 });
 
@@ -40,15 +38,16 @@ const DesktopTable = () => {
        
     <TableContainer component={Paper} variant="outlined">
       
-      <Toolbar>
+      <Toolbar className={classes.topBar}>
         <Typography className={classes.title} variant="h5" id="tableTitle" component="div">
           My Orders
         </Typography>
-      </Toolbar> 
+      </Toolbar>
 
       <Table className={classes.table} aria-label="simple table" >
         <TableHead>
           <TableRow>
+            <TableCell align="center">Order ID</TableCell>
             <TableCell align="center">Hotel</TableCell>
             <TableCell align="center">Room Type</TableCell>
             <TableCell align="center">Check In</TableCell>
@@ -59,9 +58,27 @@ const DesktopTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {reservations.map((row, i) => (
-            <DesktopTableRow row={row} key={row.orderDateTime + i} />
-          ))}
+          {
+            loading ? <TableRow>
+              <TableCell colSpan={8} align={'center'}>
+                <Spinner size={'big'} />
+              </TableCell>
+            </TableRow> : null
+          }
+          {
+            reservations.length && !loading ? reservations.map((row, i) => (
+                  <DesktopTableRow row={row} key={row.orderId} />
+              )) : null
+          }
+          {
+            !reservations.length && !loading ? <TableRow>
+              <TableCell colSpan={8} align={'center'}>
+                No reservations made yet
+              </TableCell>
+            </TableRow> : null
+          }
+
+
         </TableBody>
       </Table>
     </TableContainer>

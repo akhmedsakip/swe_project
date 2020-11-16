@@ -14,6 +14,7 @@ const DesktopTableRow = ({row}) => {
     const componentRef = useRef([]);
 
     return <TableRow>
+        <TableCell align="center">{row.orderId}</TableCell>
         <TableCell align="center">{row.hotel}</TableCell>
         <TableCell align="center">{row.roomType}</TableCell>
         <TableCell align="center">{row.checkInDate}</TableCell>
@@ -29,7 +30,7 @@ const DesktopTableRow = ({row}) => {
                 content={() => componentRef.current[row.ID]}
             />
             <div style={{display:'none'}}>
-                <ReceiptPrint orderNo={1} hotel={row.hotel} roomType={row.roomType}
+                <ReceiptPrint orderNo={row.orderId} hotel={row.hotel} roomType={row.roomType}
                               checkIn={row.checkInDate} checkOut={row.checkOutDate} reservation={row.orderDateTime}
                               ref={el => (componentRef.current[row.ID] = el)} />
             </div>
@@ -41,6 +42,7 @@ export default DesktopTableRow;
 
 DesktopTableRow.propTypes = {
     row: PropTypes.shape({
+        orderId: PropTypes.number.isRequired,
         hotel: PropTypes.string.isRequired,
         roomType: PropTypes.string.isRequired,
         checkInDate: PropTypes.string.isRequired,

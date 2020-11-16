@@ -2,7 +2,7 @@ DROP PROCEDURE IF EXISTS reserve;
 
 CREATE PROCEDURE reserve(IN _gender VARCHAR(10), IN _firstName VARCHAR(30),
                          IN _lastName VARCHAR(30), IN _phoneNumber VARCHAR(45), IN _hotelId INT, IN _orderPrice INT,
-                         IN _orderDateTime VARCHAR(20), IN _checkInDate VARCHAR(20), IN _checkOutDate VARCHAR(20),
+                         IN _checkInDate VARCHAR(20), IN _checkOutDate VARCHAR(20),
                          IN _paymentMethod VARCHAR(45), IN _roomTypeName varchar(45), IN _userEmail VARCHAR(45))
 BEGIN
     DECLARE _personId INT;
@@ -36,7 +36,7 @@ BEGIN
                          UserEmail)
     VALUES (_hotelId,
             _orderPrice,
-            _orderDateTime,
+            NOW(),
             _checkInDate,
             _checkOutDate,
             'Reserved',
