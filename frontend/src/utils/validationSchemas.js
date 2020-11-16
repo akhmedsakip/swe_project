@@ -20,10 +20,18 @@ export const searchSchema = yup.object().shape({
     checkInDate: yup.date("From date is invalid").required("From date is empty"),
     checkOutDate: yup.date("To date is invalid").when(
         'checkInDate',
-        (checkInDate, schema) => (checkInDate && schema.min(checkInDate)),
-    ).required("To date is empty"),
+        (checkInDate, schema) => (checkInDate && schema.min(nextDay(checkInDate)))
+    )
+    .required("To date is empty"),
     city: yup.string().required("City is empty"),
 });
+
+const nextDay = (date) => {
+    const dateObject = new Date(date);
+    dateObject.setDate(dateObject.getDate() + 2);
+    return dateObject.toISOString().split("T")[0];
+}
+
 export const editInfoSchema = yup.object().shape({
     firstName: yup.string().required("First name is empty"),
     lastName: yup.string().required("Second name is empty"),
