@@ -12,9 +12,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import PrintIcon from '@material-ui/icons/Print';
 import MyOrderContext from '../../../contexts/MyOrdersContext';
 import { Toolbar, Typography } from '@material-ui/core';
-import { useReactToPrint } from 'react-to-print';
 import ReceiptPrint from './ComponentPrint';
 import ReactToPrint from "react-to-print";
+
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -24,8 +24,6 @@ const useStyles = makeStyles({
     fontFamily: 'Staatliches'
   }
 });
-
-
 
 const DesktopTable = ({ data }) => {
 
