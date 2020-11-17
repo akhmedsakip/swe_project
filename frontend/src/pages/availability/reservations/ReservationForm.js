@@ -8,7 +8,7 @@ import FormControl from "@material-ui/core/FormControl";
 import {useFormik} from "formik";
 import {reservationSchema} from "../../../utils/validationSchemas";
 import AppContext from "../../../store/AppContext";
-import reserveRoom from "../../../actions/availability/reservations/reserveRoom";
+import reserveRoomAction from "../../../actions/availability/reservations/reserveRoomAction";
 import useSubmit from "../../../hooks/useSubmit";
 import LoadingButton from "../../../components/LoadingButton";
 import {
@@ -49,7 +49,7 @@ const ReservationForm = ({setSuccess}) => {
         gender: "",
     });
 
-    const action =  async() => await reserveRoom(dispatch, {...params, roomTypeName: roomType.name, hotelId: roomType.hotelId,
+    const action =  async() => await reserveRoomAction(dispatch, {...params, roomTypeName: roomType.name, hotelId: roomType.hotelId,
         firstName: values.firstName, lastName: values.lastName, gender: values.gender,
         phoneNumber: values.phoneNumber});
     const onSuccess = async () => {

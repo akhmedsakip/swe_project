@@ -3,8 +3,8 @@ import AppContext from '../../../store/AppContext';
 import MobileTable from './MobileTable';
 import DesktopTable from './DesktopTable';
 import { useMediaQuery, useTheme } from '@material-ui/core';
-import DeleteOrderDialog from './DeleteOrderDialog';
-import MyOrdersContext from "../../../contexts/MyOrdersContext";
+import DeleteReservationDialog from './DeleteReservationDialog';
+import MyOrdersContext from "../../../contexts/ReservationsContext";
 
 const rows = [
   {
@@ -25,21 +25,21 @@ const rows = [
   }
 ];
 
-const MyOrdersTable = () => {
+const ReservationsTable = () => {
 
   const [deletion, setDeletion] = useState(false);
 
   const theme = useTheme();
-  const isMobileScreen = useMediaQuery(theme.breakpoints.down('xs'));
+  const isMobileScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <MyOrdersContext.Provider style={{ width: '100%' }} value={{deletion, setDeletion}}>
-      {isMobileScreen ? <MobileTable data={rows} />
-        : <DesktopTable data={rows} />
+    <MyOrdersContext.Provider style={{ width: '100%' }} value={{deletion, setDeletion, rows}}>
+      {isMobileScreen ? <MobileTable />
+        : <DesktopTable />
       }
-      <DeleteOrderDialog onClose={() => setDeletion(false)} open={deletion} />
+      <DeleteReservationDialog onClose={() => setDeletion(false)} open={deletion} />
     </MyOrdersContext.Provider>
   );
 }
 
-export default MyOrdersTable;
+export default ReservationsTable;

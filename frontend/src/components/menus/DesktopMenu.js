@@ -48,8 +48,8 @@ const DesktopMenu = () => {
             </Button> : null
         }
         {
-            loggedIn && <Button onClick={() => history.push('/my-orders')}>
-                My orders
+            loggedIn && <Button onClick={() => history.push('/reservations')}>
+                Reservations
             </Button>
         }
         {

@@ -11,7 +11,7 @@ const useStyles = makeStyles({
     },
 });
 
-const DeleteOrderDialog = ({ onClose, open }) => {
+const DeleteReservationDialog = ({ onClose, open }) => {
     const classes = useStyles();
     return <Dialog classes={{ paper: classes.root }} open={open} onClose={onClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Delete Order</DialogTitle>
@@ -31,9 +31,9 @@ const DeleteOrderDialog = ({ onClose, open }) => {
     </Dialog>
 };
 
-DeleteOrderDialog.propTypes = {
+DeleteReservationDialog.propTypes = {
     onClose: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
 };
 
-export default DeleteOrderDialog;
+export default DeleteReservationDialog;

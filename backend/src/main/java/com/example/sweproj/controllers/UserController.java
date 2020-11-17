@@ -1,8 +1,8 @@
 package com.example.sweproj.controllers;
 
-import com.example.sweproj.models.ChangePasswordRequest;
+import com.example.sweproj.dto.ChangePasswordRequest;
 import com.example.sweproj.models.User;
-import com.example.sweproj.models.UserEditGroup;
+import com.example.sweproj.validation.groups.UserEditGroup;
 import com.example.sweproj.services.UserService;
 import com.example.sweproj.utils.CookieUtil;
 import com.example.sweproj.utils.Message;

@@ -1,5 +1,8 @@
-package com.example.sweproj.models;
+package com.example.sweproj.dto;
 
+import com.example.sweproj.validation.groups.AvailableHotelsGroup;
+import com.example.sweproj.validation.groups.AvailableRoomTypesGroup;
+import com.example.sweproj.validation.groups.ReservationDetailsGroup;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.Valid;

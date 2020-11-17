@@ -1,8 +1,8 @@
 package com.example.sweproj.controllers;
 
-import com.example.sweproj.models.AuthenticationRequest;
+import com.example.sweproj.dto.AuthenticationRequest;
 import com.example.sweproj.models.User;
-import com.example.sweproj.models.UserRegisterGroup;
+import com.example.sweproj.validation.groups.UserRegisterGroup;
 import com.example.sweproj.services.UserService;
 import com.example.sweproj.utils.CookieUtil;
 import com.example.sweproj.utils.JwtUtil;
