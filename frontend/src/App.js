@@ -12,7 +12,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import PrivateAdminRoute from "./components/PrivateAdminRoute";
 import StoreProvider from "./store/store";
 import Reservations from "./pages/reservations/Reservations";
-
+import AllReservations from "./pages/allReservations/AllReservations";
 
 function App() {
   return (
@@ -27,6 +27,7 @@ function App() {
             <Route path="/availability" component={AvailabilityPage} />
             <PrivateRoute path="/reservations" component={Reservations} />
             <PrivateRoute path="/profile" component={ProfilePage} />
+            <PrivateRoute path="/all-reservations" component={AllReservations} />
             <PrivateAdminRoute path="/admin" component={AdminPage} />
             <Route path="*" render={() => (<Redirect to="/" />)} />
           </Switch>

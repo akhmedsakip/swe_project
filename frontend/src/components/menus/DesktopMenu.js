@@ -53,6 +53,11 @@ const DesktopMenu = () => {
             </Button>
         }
         {
+            loggedIn && <Button onClick={() => history.push('/all-reservations')}>
+                All
+            </Button>
+        }
+        {
             (!loggedIn
                 ? <Button color="inherit" className={classes.loginButton} onClick={() => dispatch({type: AUTH_OPEN_DIALOG})}>
                     Login
