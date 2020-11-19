@@ -13,7 +13,7 @@ import ReservationSuccess from "./ReservationSuccess";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: 500
+        minWidth: 500
     }
 }))
 
