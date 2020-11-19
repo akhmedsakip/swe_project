@@ -7,7 +7,7 @@ import Spinner from "../../../components/Spinner";
 import EmployeeScheduleRow from './EmployeeScheduleRow';
 
 const tableName = 'Manager: Employee Schedules';
-const columnNames = ['ID', 'Email', 'First Name', 'Last Name', 'Gender', 'Birth Date', 'Phone Number', 'Country Code', 'City', 'Street', 'ZIP Code', 'Action']
+const columnNames = ['ID', 'Email', 'First Name', 'Last Name', 'Gender', 'Birth Date', 'Phone Number', 'Country Code', 'City', 'Street', 'ZIP Code', '$ Per Hour', 'From', 'To', 'Action']
 const rows = [
     {
         ID: "1",
@@ -21,6 +21,9 @@ const rows = [
         City: 'London',
         Street: 'Baker',
         ZIPCode: '010000',
+        BaseSalaryPerHour: '$12',
+        From: '9:00',
+        To: '18:00',
     },
     {
         ID: "2",
@@ -34,6 +37,9 @@ const rows = [
         City: 'London',
         Street: 'Baker',
         ZIPCode: '010000',
+        BaseSalaryPerHour: '$13',
+        From: '8:00',
+        To: '17:00',
     },
     {
         ID: "3",
@@ -47,6 +53,9 @@ const rows = [
         City: 'London',
         Street: 'Baker',
         ZIPCode: '010000',
+        BaseSalaryPerHour: '$15',
+        From: '17:00',
+        To: '01:00',
     },
     {
         ID: "4",
@@ -60,6 +69,9 @@ const rows = [
         City: 'London',
         Street: 'Baker',
         ZIPCode: '010000',
+        BaseSalaryPerHour: '$10',
+        From: '8:30',
+        To: '18:00',
     },
 ];
 

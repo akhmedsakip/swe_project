@@ -14,7 +14,7 @@ function EmployeeSchedule() {
     <div className={classes.root}>
         <EmployeeScheduleTable />
         <DeleteDialog onClose={() => setDeletion(false)} open={deletion} questionText={'Do you confirm deletion of this employee from the database? It cannot be restored.'}/>
-        <EditDialog onClose={() => setChangeEmployee(false)} open={changeEmployee} name={'Edit Employee'} labels={['First Name', 'Last Name', 'Phone Number', 'Salary']}/>
+        <EditDialog onClose={() => setChangeEmployee(false)} open={changeEmployee} name={'Edit Employee'} labels={['First Name', 'Last Name', 'Phone Number', 'New Base Salary Per Hour']}/>
     </div>
     </MyOrdersContext.Provider>
 }

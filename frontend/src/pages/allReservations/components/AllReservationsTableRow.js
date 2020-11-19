@@ -5,9 +5,10 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import React, {useContext} from "react";
 import AllReservationsContext from "../../../contexts/AllReservationsContext";
 import EditIcon from "@material-ui/icons/Edit";
+import AddBoxIcon from "@material-ui/icons/AddBox";
 
 const AllReservationsTableRow = ({ row }) => {
-  const {setDeletion, setChangeReservation
+  const {setDeletion, setChangeReservation, setAddReservation
     // , editing, setEditing, formik, loading
   } = useContext(AllReservationsContext);
 
@@ -16,6 +17,11 @@ const AllReservationsTableRow = ({ row }) => {
       <TableCell align="center">{row[cell]}</TableCell>
     )}
     <TableCell align="center">
+      <IconButton onClick={() => {
+        setAddReservation(true);
+      }}>
+        <AddBoxIcon />
+      </IconButton>
       <IconButton onClick={() => {
         setChangeReservation(true);
       }}>

@@ -10,6 +10,7 @@ function AllReservations() {
   const classes = useStyles();
   const [deletion, setDeletion] = useState(false);
   const [changeReservation, setChangeReservation] = useState(false);
+  const [addReservation, setAddReservation] = useState(false);
   // useEffect(() => {
   //     (async function () {
   //         dispatch({ type: RESERVATIONS_SET_LOADING });
@@ -18,12 +19,13 @@ function AllReservations() {
   //     })()
   // }, []);
 
-  return <AllReservationsContext.Provider style={{ width: '100%' }} value={{ deletion, setDeletion, changeReservation, setChangeReservation }}>
+  return <AllReservationsContext.Provider style={{ width: '100%' }} value={{ deletion, setDeletion, changeReservation, setChangeReservation, addReservation, setAddReservation }}>
     <div className={classes.root}>
       <AllReservationsTable />
       <DeleteDialog onClose={() => setDeletion(false)} open={deletion} questionText={'Do you confirm cancellation of this order? It cannot be restored.'}/>
       <EditDialog onClose={() => setChangeReservation(false)} open={changeReservation} name={'Edit Reservation'} labels={['First Name', 'Last Name', 'Phone Number']}/>
-  </div>
+      <EditDialog onClose={() => setAddReservation(false)} open={addReservation} name={'Add a Reservation'} labels={['Email', 'First Name', 'Last Name', 'Hotel', 'Room Type', 'Check In', 'Check Out', 'Reservation Date', 'Status']}/>
+    </div>
   </AllReservationsContext.Provider>
 }
 
