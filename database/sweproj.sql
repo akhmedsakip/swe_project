@@ -29,6 +29,17 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `sweproj`.`role`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sweproj`.`role` ;
+
+CREATE TABLE IF NOT EXISTS `sweproj`.`role` (
+  `Role` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`Role`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `sweproj`.`user`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `sweproj`.`user` ;
@@ -41,7 +52,14 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`user` (
   `DateOfBirth` DATE NOT NULL,
   `Gender` VARCHAR(10) NOT NULL,
   `RegistrationDate` DATETIME NOT NULL,
-  PRIMARY KEY (`Email`))
+  `Role` VARCHAR(20) NULL,
+  PRIMARY KEY (`Email`),
+  INDEX `fk_user_role1_idx` (`Role` ASC) VISIBLE,
+  CONSTRAINT `fk_user_role1`
+    FOREIGN KEY (`Role`)
+    REFERENCES `sweproj`.`role` (`Role`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -63,49 +81,22 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`person` (
   `ZIPCode` VARCHAR(20) NULL,
   `PhoneNumber` VARCHAR(45) NOT NULL,
   `IdentificationTypeID` INT NULL,
-  `user_Email` VARCHAR(45) NULL,
+  `UserEmail` VARCHAR(45) NULL,
   PRIMARY KEY (`PersonID`),
   INDEX `fk_PERSON_IDENTIFICATIONTYPE1_idx` (`IdentificationTypeID` ASC) VISIBLE,
   UNIQUE INDEX `PhoneNumber_UNIQUE` (`PhoneNumber` ASC) VISIBLE,
-  INDEX `fk_person_user1_idx` (`user_Email` ASC) VISIBLE,
+  INDEX `fk_person_user1_idx` (`UserEmail` ASC) VISIBLE,
+  UNIQUE INDEX `UserEmail_UNIQUE` (`UserEmail` ASC) VISIBLE,
   CONSTRAINT `fk_PERSON_IDENTIFICATIONTYPE1`
     FOREIGN KEY (`IdentificationTypeID`)
     REFERENCES `sweproj`.`identification_type` (`IdentificationTypeID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_person_user1`
-    FOREIGN KEY (`user_Email`)
+    FOREIGN KEY (`UserEmail`)
     REFERENCES `sweproj`.`user` (`Email`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `sweproj`.`employee`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sweproj`.`employee` ;
-
-CREATE TABLE IF NOT EXISTS `sweproj`.`employee` (
-  `EmployeeID` INT NOT NULL,
-  `BaseSalaryPerHour` INT NULL,
-  PRIMARY KEY (`EmployeeID`),
-  CONSTRAINT `fk_EMPLOYEE_PERSON1`
-    FOREIGN KEY (`EmployeeID`)
-    REFERENCES `sweproj`.`person` (`PersonID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `sweproj`.`day_of_week`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sweproj`.`day_of_week` ;
-
-CREATE TABLE IF NOT EXISTS `sweproj`.`day_of_week` (
-  `Day` VARCHAR(15) NOT NULL,
-  PRIMARY KEY (`Day`))
 ENGINE = InnoDB;
 
 
@@ -129,6 +120,43 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`hotel` (
   `StarCount` INT NULL,
   PRIMARY KEY (`HotelID`),
   UNIQUE INDEX `Name_UNIQUE` (`Name` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sweproj`.`employee`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sweproj`.`employee` ;
+
+CREATE TABLE IF NOT EXISTS `sweproj`.`employee` (
+  `EmployeeID` INT NOT NULL,
+  `BaseSalaryPerHour` INT NULL,
+  `EmploymentDate` DATE NOT NULL,
+  `DismissalDate` DATE NULL,
+  `HotelID` INT NOT NULL,
+  PRIMARY KEY (`EmployeeID`),
+  INDEX `fk_employee_hotel1_idx` (`HotelID` ASC) VISIBLE,
+  CONSTRAINT `fk_EMPLOYEE_PERSON1`
+    FOREIGN KEY (`EmployeeID`)
+    REFERENCES `sweproj`.`person` (`PersonID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_employee_hotel1`
+    FOREIGN KEY (`HotelID`)
+    REFERENCES `sweproj`.`hotel` (`HotelID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sweproj`.`day_of_week`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sweproj`.`day_of_week` ;
+
+CREATE TABLE IF NOT EXISTS `sweproj`.`day_of_week` (
+  `Day` VARCHAR(15) NOT NULL,
+  PRIMARY KEY (`Day`))
 ENGINE = InnoDB;
 
 
@@ -442,13 +470,11 @@ DROP TABLE IF EXISTS `sweproj`.`employee_works_on_day_of_week` ;
 CREATE TABLE IF NOT EXISTS `sweproj`.`employee_works_on_day_of_week` (
   `EmployeeID` INT NOT NULL,
   `DayOfWeek` VARCHAR(15) NOT NULL,
-  `HotelID` INT NOT NULL,
   `StartTime` TIME NOT NULL,
   `EndTime` TIME NOT NULL,
-  PRIMARY KEY (`EmployeeID`, `DayOfWeek`, `HotelID`),
+  PRIMARY KEY (`EmployeeID`, `DayOfWeek`),
   INDEX `fk_EMPLOYEE_has_DAYOFWEEK_DAYOFWEEK1_idx` (`DayOfWeek` ASC) VISIBLE,
   INDEX `fk_EMPLOYEE_has_DAYOFWEEK_EMPLOYEE1_idx` (`EmployeeID` ASC) VISIBLE,
-  INDEX `fk_employee_works_on_day_of_week_hotel1_idx` (`HotelID` ASC) VISIBLE,
   CONSTRAINT `fk_EMPLOYEE_has_DAYOFWEEK_EMPLOYEE1`
     FOREIGN KEY (`EmployeeID`)
     REFERENCES `sweproj`.`employee` (`EmployeeID`)
@@ -457,37 +483,6 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`employee_works_on_day_of_week` (
   CONSTRAINT `fk_EMPLOYEE_has_DAYOFWEEK_DAYOFWEEK1`
     FOREIGN KEY (`DayOfWeek`)
     REFERENCES `sweproj`.`day_of_week` (`Day`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_employee_works_on_day_of_week_hotel1`
-    FOREIGN KEY (`HotelID`)
-    REFERENCES `sweproj`.`hotel` (`HotelID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `sweproj`.`employee_works_at_hotel`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sweproj`.`employee_works_at_hotel` ;
-
-CREATE TABLE IF NOT EXISTS `sweproj`.`employee_works_at_hotel` (
-  `EmployeeID` INT NOT NULL,
-  `HotelID` INT NOT NULL,
-  `EmploymentDate` DATE NOT NULL,
-  `DismissalDate` DATE NULL,
-  PRIMARY KEY (`EmployeeID`, `HotelID`),
-  INDEX `fk_EMPLOYEE_has_HOTEL_HOTEL1_idx` (`HotelID` ASC) VISIBLE,
-  INDEX `fk_EMPLOYEE_has_HOTEL_EMPLOYEE1_idx` (`EmployeeID` ASC) VISIBLE,
-  CONSTRAINT `fk_EMPLOYEE_has_HOTEL_EMPLOYEE1`
-    FOREIGN KEY (`EmployeeID`)
-    REFERENCES `sweproj`.`employee` (`EmployeeID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_EMPLOYEE_has_HOTEL_HOTEL1`
-    FOREIGN KEY (`HotelID`)
-    REFERENCES `sweproj`.`hotel` (`HotelID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -796,6 +791,41 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`hotel_works_during_holiday` (
   CONSTRAINT `fk_HOTEL_has_HOLIDAY_HOLIDAY1`
     FOREIGN KEY (`HolidayID`)
     REFERENCES `sweproj`.`holiday` (`HolidayID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sweproj`.`privilege`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sweproj`.`privilege` ;
+
+CREATE TABLE IF NOT EXISTS `sweproj`.`privilege` (
+  `Privilege` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`Privilege`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sweproj`.`role_has_privilege`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sweproj`.`role_has_privilege` ;
+
+CREATE TABLE IF NOT EXISTS `sweproj`.`role_has_privilege` (
+  `Role` VARCHAR(20) NOT NULL,
+  `Privilege` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`Role`, `Privilege`),
+  INDEX `fk_role_has_privilege_privilege1_idx` (`Privilege` ASC) VISIBLE,
+  INDEX `fk_role_has_privilege_role1_idx` (`Role` ASC) VISIBLE,
+  CONSTRAINT `fk_role_has_privilege_role1`
+    FOREIGN KEY (`Role`)
+    REFERENCES `sweproj`.`role` (`Role`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_role_has_privilege_privilege1`
+    FOREIGN KEY (`Privilege`)
+    REFERENCES `sweproj`.`privilege` (`Privilege`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
