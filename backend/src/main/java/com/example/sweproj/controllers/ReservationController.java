@@ -69,7 +69,7 @@ public class ReservationController {
     }
 
     @DeleteMapping
-    ResponseEntity<String> deleteReservations(@RequestBody Map<String, Integer> requestBody) {
+    ResponseEntity<String> deleteReservation(@RequestBody Map<String, Integer> requestBody) {
         List<Message> serverErrors = new ArrayList<>();
         Integer orderId = requestBody.get("orderId");
 

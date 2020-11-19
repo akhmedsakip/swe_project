@@ -26,6 +26,7 @@ public class ReservationDataAccessService {
         reservation.setCheckInDate(rs.getString("CheckInDate"));
         reservation.setCheckOutDate(rs.getString("CheckOutDate"));
         reservation.setOrderDateTime(rs.getString("OrderDateTime"));
+        reservation.setOrderPrice(rs.getInt("OrderPrice"));
         reservation.setStatus(rs.getString("Status"));
         return reservation;
     }
@@ -48,7 +49,7 @@ public class ReservationDataAccessService {
     }
 
     public List<Reservation> getReservations(String email) {
-        String sql = "SELECT O.OrderID, OD.OrderHotelID, H.Name Hotel, RT.Name RoomType, O.CheckInDate, O.CheckOutDate, O.OrderDateTime, OS.Name Status  FROM order_details OD\n" +
+        String sql = "SELECT O.OrderID, OD.OrderHotelID, H.Name Hotel, RT.Name RoomType, O.CheckInDate, O.CheckOutDate, O.OrderDateTime, O.OrderPrice, OS.Name Status  FROM order_details OD\n" +
                 "    INNER JOIN `order` O on OD.OrderID = o.OrderID and OD.OrderHotelID = o.HotelID\n" +
                 "    INNER JOIN room_type RT on OD.RoomTypeHotelID = rt.HotelID and OD.RoomType = rt.Name\n" +
                 "    INNER JOIN hotel H on o.HotelID = h.HotelID\n" +
@@ -63,4 +64,6 @@ public class ReservationDataAccessService {
                 "WHERE O.OrderID = ? AND O.UserEmail = ?";
         return jdbcTemplate.update(sql1, orderId, email);
     }
+
+
 }
