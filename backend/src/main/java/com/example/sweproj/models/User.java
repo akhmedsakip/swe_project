@@ -3,6 +3,7 @@ import com.example.sweproj.validation.groups.UserEditGroup;
 import com.example.sweproj.validation.groups.UserRegisterGroup;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.Valid;
@@ -13,7 +14,9 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Valid
 public class User implements UserDetails {
@@ -46,15 +49,17 @@ public class User implements UserDetails {
     @JsonProperty
     @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Date is not in valid form (should be yyyy-MM-dd)",
             groups = {UserEditGroup.class, UserRegisterGroup.class})
-    public String dateOfBirth;
+    private String dateOfBirth;
 
     @JsonProperty
     @NotBlank(message = "Gender is empty", groups = {UserEditGroup.class, UserRegisterGroup.class})
     private String gender;
 
+    private ArrayList<String> privileges;
+
     public int getAge() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDate = LocalDate.parse(dateOfBirth, formatter);
+        LocalDate localDate = LocalDate.parse(getDateOfBirth(), formatter);
         Period period = Period.between(localDate, LocalDate.now());
         return period.getYears();
     }
@@ -69,7 +74,11 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for(String p: getPrivileges()) {
+            authorities.add(new SimpleGrantedAuthority(p));
+        }
+        return authorities;
     }
 
     @Override
@@ -132,6 +141,14 @@ public class User implements UserDetails {
 
     public String getEmail() {
         return email;
+    }
+
+    public void setPrivileges(ArrayList<String> privileges) {
+        this.privileges = privileges;
+    }
+
+    public ArrayList<String> getPrivileges() {
+        return privileges;
     }
 }
 

@@ -2,10 +2,12 @@ package com.example.sweproj.services;
 
 import com.example.sweproj.models.User;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -25,12 +27,20 @@ public class UserDataAccessService {
 
     User loadUserByUsername(String email) {
         String sql = "SELECT * FROM `user` WHERE Email = ?";
+        String sqlPrivileges = "SELECT RHP.Privilege\n" +
+                "FROM user\n" +
+                "INNER JOIN role ON role.Role = user.Role\n" +
+                "INNER JOIN role_has_privilege RHP ON RHP.Role = role.Role\n" +
+                "WHERE user.Email = ?;";
+
         List<User> users = jdbcTemplate.query(sql,(rs, rowNum) -> {
             User user = new User(rs.getString("Email"), rs.getString("Password"));
             user.setFirstName(rs.getString("FirstName"));
             user.setLastName(rs.getString("LastName"));
             user.setGender(rs.getString("Gender"));
             user.setDateOfBirth(rs.getString("DateOfBirth"));
+            List<String> privileges = jdbcTemplate.queryForList(sqlPrivileges, String.class, user.getEmail());
+            user.setPrivileges(new ArrayList<>(privileges));
             return user;
         }, email);
 
