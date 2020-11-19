@@ -1,4 +1,4 @@
-import {useContext, useEffect} from 'react';
+import {useContext, useEffect, useRef, useState} from 'react';
 import {Link, useHistory} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import React from "react";
@@ -7,6 +7,7 @@ import logoutAction from "../../actions/auth/logoutAction";
 import Avatar from "@material-ui/core/Avatar";
 import AppContext from "../../store/AppContext";
 import {AUTH_OPEN_DIALOG} from "../../store/auth/authActionTypes";
+import {IconButton, Menu, MenuItem} from "@material-ui/core";
 
 const useStyles = makeStyles({
     link: {
@@ -25,6 +26,8 @@ const DesktopMenu = () => {
     const classes = useStyles();
     const history = useHistory();
     const { loggedIn, userInfo, isAdmin } = state.user;
+    const anchorEl = useRef(null);
+    const [open, setOpen] = useState(false);
     // useEffect(() => {
     //     console.log(identicon);
     // }, [identicon]);
@@ -48,14 +51,38 @@ const DesktopMenu = () => {
             </Button> : null
         }
         {
-            loggedIn && <Button onClick={() => history.push('/reservations')}>
-                Reservations
+            loggedIn && <>
+            <Button
+                edge="start" ref={anchorEl}
+                color="inherit" aria-label="menu" onClick={() => setOpen(true)}>
+                Manage
             </Button>
-        }
-        {
-            loggedIn && <Button onClick={() => history.push('/all-reservations')}>
-                All
-            </Button>
+            <Menu
+            anchorEl={anchorEl.current}
+            open={open}
+            onClose={() => setOpen(false)}>
+                <MenuItem onClick={() => setOpen(false)}>
+                    <Link to="/reservations" className={classes.link}>
+                        Reservations
+                    </Link>
+                </MenuItem>
+                <MenuItem onClick={() => setOpen(false)}>
+                    <Link to="/all-reservations" className={classes.link}>
+                        All Reservations
+                    </Link>
+                </MenuItem>
+                <MenuItem onClick={() => setOpen(false)}>
+                    <Link to="/employee-schedules" className={classes.link}>
+                        Employee Schedules
+                    </Link>
+                </MenuItem>
+                <MenuItem onClick={() => setOpen(false)}>
+                    <Link to="/seasonal-rates" className={classes.link}>
+                        Seasonal Rates
+                    </Link>
+                </MenuItem>
+            </Menu>
+            </>
         }
         {
             (!loggedIn

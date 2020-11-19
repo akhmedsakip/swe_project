@@ -15,6 +15,33 @@ const DesktopTable = () => {
   const { state } = useContext(AppContext)
   const { reservations, loading } = state.reservations;
 
+  const rows = [
+    {
+      Email: 'watson@gmail.com',
+      FirstName: 'Emma',
+      LastName: 'Watson',
+      hotel: "Rixos Almaty",
+      roomType: "Standard",
+      checkInDate: "21-10-2020",
+      checkOutDate: "30-10-2020",
+      orderDateTime: "20-10-2020",
+      status: 'Good',
+      orderId: 1
+    },
+    {
+      Email: 'watson1@gmail.com',
+      FirstName: 'Emma1',
+      LastName: 'Watson1',
+      hotel: "Rixos Borovoe",
+      roomType: "Luxe",
+      checkInDate: "21-10-2020",
+      checkOutDate: "30-10-2020",
+      orderDateTime: "20-10-2020",
+      status: 'bad idk',
+      orderId: 2
+    }
+  ];
+
   return (
     <TableBody>
       {
@@ -25,12 +52,12 @@ const DesktopTable = () => {
         </TableRow> : null
       }
       {
-        reservations.length && !loading ? reservations.map((row, i) => (
+        rows.length && !loading ? rows.map((row, i) => (
           <DesktopTableRow row={row} key={row.orderId} />
         )) : null
       }
       {
-        !reservations.length && !loading ? <TableRow>
+        !rows.length && !loading ? <TableRow>
           <TableCell colSpan={8} align={'center'}>
             No reservations made yet
       </TableCell>

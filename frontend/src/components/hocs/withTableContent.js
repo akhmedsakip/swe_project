@@ -19,7 +19,7 @@ const useStyles = makeStyles({
 
 const withTableContent = (TableComponent, tableName, columnNames) => {
 
-  const NewDesktopTable = () => {
+  const NewTableComponent = () => {
 
     const classes = useStyles();
 
@@ -47,7 +47,7 @@ const withTableContent = (TableComponent, tableName, columnNames) => {
       </TableContainer>
     )
   }
-  return NewDesktopTable
+  return NewTableComponent
 }
 
 export default withTableContent;

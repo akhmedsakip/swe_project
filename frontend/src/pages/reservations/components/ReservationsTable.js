@@ -1,7 +1,7 @@
 import { useMediaQuery, useTheme } from '@material-ui/core';
 import React, { useState } from 'react';
 import MyOrdersContext from "../../../contexts/ReservationsContext";
-import DeleteReservationDialog from './DeleteReservationDialog';
+import DeleteReservationDialog from '../../../components/DeleteDialog';
 import DesktopTable from './DesktopTable';
 import MobileTable from './MobileTable';
 
@@ -17,7 +17,7 @@ const ReservationsTable = () => {
       {isMobileScreen ? <MobileTable />
         : <DesktopTable />
       }
-      <DeleteReservationDialog onClose={() => setDeletion(false)} open={deletion} />
+      <DeleteReservationDialog onClose={() => setDeletion(false)} open={deletion} questionText={'Do you confirm cancellation of your room order? It cannot be restored.'}/>
     </MyOrdersContext.Provider>
   );
 }
