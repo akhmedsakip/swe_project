@@ -1,9 +1,12 @@
 package com.example.sweproj.services;
 
 import com.example.sweproj.controllers.RoomTypeController;
+import com.example.sweproj.dto.HotelReservationDetailsResponse;
 import com.example.sweproj.dto.ReservationDetailsRequest;
+import com.example.sweproj.models.Guest;
 import com.example.sweproj.models.Hotel;
 import com.example.sweproj.models.Reservation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +18,9 @@ import java.util.List;
 
 @Repository
 public class ReservationDataAccessService {
+    @Autowired
+    private GuestDataAccessService guestDataAccessService;
+
     private final JdbcTemplate jdbcTemplate;
     private final RoomTypeService roomTypeService;
 
@@ -65,5 +71,24 @@ public class ReservationDataAccessService {
         return jdbcTemplate.update(sql1, orderId, email);
     }
 
-
+    public List<HotelReservationDetailsResponse> getHotelReservations(int hotelId) {
+        String sql = "SELECT O.OrderID, OD.OrderHotelID, H.Name Hotel, RT.Name RoomType, O.CheckInDate, O.CheckOutDate, O.OrderDateTime, O.OrderPrice, OS.Name Status, P.FirstName, P.LastName, P.Gender, P.PhoneNumber FROM order_details OD\n" +
+                "                INNER JOIN `order` O on OD.OrderID = o.OrderID and OD.OrderHotelID = o.HotelID\n" +
+                "                INNER JOIN room_type RT on OD.RoomTypeHotelID = rt.HotelID and OD.RoomType = rt.Name\n" +
+                "                INNER JOIN hotel H on o.HotelID = h.HotelID\n" +
+                "                INNER JOIN order_status OS on O.OrderStatus = os.Name\n" +
+                "                INNER JOIN person P ON P.PersonID = OD.GuestID\n" +
+                "                WHERE O.HotelID = ? AND OD.IsPayer=TRUE;";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            HotelReservationDetailsResponse hotelReservationDetailsResponse = new HotelReservationDetailsResponse();
+            hotelReservationDetailsResponse.setReservation(mapFromDB(rs));
+            Guest guest = new Guest();
+            guest.setFirstName(rs.getString("FirstName"));
+            guest.setLastName(rs.getString("LastName"));
+            guest.setGender(rs.getString("Gender"));
+            guest.setPhoneNumber(rs.getString("PhoneNumber"));
+            hotelReservationDetailsResponse.setGuest(guest);
+            return hotelReservationDetailsResponse;
+        }, hotelId);
+    }
 }

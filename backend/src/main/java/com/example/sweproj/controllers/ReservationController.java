@@ -1,5 +1,6 @@
 package com.example.sweproj.controllers;
 
+import com.example.sweproj.dto.HotelReservationDetailsResponse;
 import com.example.sweproj.dto.ReservationDetailsRequest;
 import com.example.sweproj.dto.ReservationRequest;
 import com.example.sweproj.models.*;
@@ -8,6 +9,7 @@ import com.example.sweproj.utils.Message;
 import com.example.sweproj.utils.ValidationUtil;
 import com.example.sweproj.validation.groups.ReservationDetailsGroup;
 import com.google.gson.Gson;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -93,5 +95,12 @@ public class ReservationController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Reservation> reservations = this.reservationService.getReservations(user.getEmail());
         return ResponseEntity.ok().body(reservations);
+    }
+
+    @RequestMapping("/panel")
+    @GetMapping
+    ResponseEntity<List<HotelReservationDetailsResponse>> getHotelReservations(@RequestParam(value = "hotelId") Integer hotelId) {
+        List<HotelReservationDetailsResponse>  hotelReservationDetailsResponses= this.reservationService.getHotelReservations(hotelId);
+        return ResponseEntity.ok().body(hotelReservationDetailsResponses);
     }
 }

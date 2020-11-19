@@ -36,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/**").authenticated()
                 .antMatchers("/api/logout").authenticated()
                 .antMatchers("/api/reservations").authenticated()
+                .antMatchers("/api/reservations/panel").hasAnyAuthority("READ_ALL_ORDERS")
                 .antMatchers("/api/reservations/**").authenticated()
                 .and().exceptionHandling().authenticationEntryPoint(new UnauthorizedEntryPoint());
 

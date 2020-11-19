@@ -15,7 +15,7 @@ public class GuestDataAccessService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private Guest mapFromDB(ResultSet rs) throws SQLException {
+    public Guest mapFromDB(ResultSet rs) throws SQLException {
         Guest guest = new Guest();
         guest.setPersonID(rs.getInt("PersonID"));
         guest.setFirstName(rs.getString("FirstName"));
