@@ -44,7 +44,6 @@ export default function ButtonAppBar() {
   const {state} = useContext(AppContext);
   const {loading} = state.user;
 
-
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.bar}>

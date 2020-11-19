@@ -12,7 +12,9 @@ import PrivateRoute from "./components/PrivateRoute";
 import PrivateAdminRoute from "./components/PrivateAdminRoute";
 import StoreProvider from "./store/store";
 import Reservations from "./pages/reservations/Reservations";
-
+import AllReservations from "./pages/allReservations/AllReservations";
+import EmployeeSchedule from "./pages/employeeSchedule/EmployeeSchedule";
+import SeasonalRates from "./pages/seasonalRates/SeasonalRates";
 
 function App() {
   return (
@@ -27,6 +29,9 @@ function App() {
             <Route path="/availability" component={AvailabilityPage} />
             <PrivateRoute path="/reservations" component={Reservations} />
             <PrivateRoute path="/profile" component={ProfilePage} />
+            <PrivateRoute path="/all-reservations" component={AllReservations} />
+            <PrivateRoute path="/employee-schedules" component={EmployeeSchedule} />
+            <PrivateRoute path="/seasonal-rates" component={SeasonalRates} />
             <PrivateAdminRoute path="/admin" component={AdminPage} />
             <Route path="*" render={() => (<Redirect to="/" />)} />
           </Switch>

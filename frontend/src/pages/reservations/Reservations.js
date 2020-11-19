@@ -1,22 +1,20 @@
-import React, {useContext, useEffect} from 'react';
+import React, { useContext, useEffect } from 'react';
 import { makeStyles } from "@material-ui/core/styles";
 import ReservationsTable from './components/ReservationsTable';
 import AppContext from "../../store/AppContext";
 import fetchReservationsAction from "../../actions/reservations/fetchReservationsAction";
-import {RESERVATIONS_SET_LOADING, RESERVATIONS_UNSET_LOADING} from "../../store/reservations/reservationActionTypes";
-
-
+import { RESERVATIONS_SET_LOADING, RESERVATIONS_UNSET_LOADING } from "../../store/reservations/reservationActionTypes";
+import withTableContent from '../../components/hocs/withTableContent';
 
 const Reservations = () => {
     const classes = useStyles();
-    const {state, dispatch} = useContext(AppContext)
-
+    const { state, dispatch } = useContext(AppContext);
 
     useEffect(() => {
-        (async function() {
-            dispatch({type: RESERVATIONS_SET_LOADING});
+        (async function () {
+            dispatch({ type: RESERVATIONS_SET_LOADING });
             await fetchReservationsAction(dispatch);
-            setTimeout(() => dispatch({type: RESERVATIONS_UNSET_LOADING}), 300);
+            setTimeout(() => dispatch({ type: RESERVATIONS_UNSET_LOADING }), 300);
         })()
     }, []);
 
