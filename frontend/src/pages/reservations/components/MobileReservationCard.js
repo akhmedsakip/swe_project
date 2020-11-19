@@ -70,6 +70,14 @@ const MobileReservationCard = ({ row }) => {
             {row.roomType}
           </Typography>
         </div>
+        <div className={classes.mainInfo}>
+          <Typography className={`${classes.font20} ${classes.marginRight12}`} gutterBottom color="primary">
+            Order Price:
+          </Typography>
+          <Typography className={classes.font20}>
+            {row.orderPrice}
+          </Typography>
+        </div>
         <Typography color="textSecondary">
           Check In: {row.checkInDate}
         </Typography>
@@ -98,6 +106,7 @@ MobileReservationCard.propTypes = {
     checkInDate: PropTypes.string.isRequired,
     checkOutDate: PropTypes.string.isRequired,
     orderDateTime: PropTypes.string.isRequired,
+    orderPrice: PropTypes.number.isRequired,
     status: PropTypes.string.isRequired,
   })
 }

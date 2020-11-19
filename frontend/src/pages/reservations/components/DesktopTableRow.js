@@ -28,6 +28,7 @@ const DesktopTableRow = ({row}) => {
         <TableCell align="center">{row.checkInDate}</TableCell>
         <TableCell align="center">{row.checkOutDate}</TableCell>
         <TableCell align="center">{row.orderDateTime}</TableCell>
+        <TableCell align="center">{row.orderPrice}</TableCell>
         <TableCell align="center">{row.status}</TableCell>
         <TableCell align="center">
             <IconButton onClick={onDeleteClick}>
@@ -56,6 +57,7 @@ DesktopTableRow.propTypes = {
         checkInDate: PropTypes.string.isRequired,
         checkOutDate: PropTypes.string.isRequired,
         orderDateTime: PropTypes.string.isRequired,
+        orderPrice: PropTypes.number.isRequired,
         status: PropTypes.string.isRequired,
     })
 }

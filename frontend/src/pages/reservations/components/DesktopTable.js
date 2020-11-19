@@ -53,6 +53,7 @@ const DesktopTable = () => {
             <TableCell align="center">Check In</TableCell>
             <TableCell align="center">Check Out</TableCell>
             <TableCell align="center">Reservation Date</TableCell>
+            <TableCell align="center">Order Price</TableCell>
             <TableCell align="center">Status</TableCell>
             <TableCell align="center">Action</TableCell>
           </TableRow>
@@ -60,7 +61,7 @@ const DesktopTable = () => {
         <TableBody>
           {
             loading ? <TableRow>
-              <TableCell colSpan={8} align={'center'}>
+              <TableCell colSpan={9} align={'center'}>
                 <Spinner size={'big'} />
               </TableCell>
             </TableRow> : null
@@ -72,7 +73,7 @@ const DesktopTable = () => {
           }
           {
             !reservations.length && !loading ? <TableRow>
-              <TableCell colSpan={8} align={'center'}>
+              <TableCell colSpan={9} align={'center'}>
                 No reservations made yet
               </TableCell>
             </TableRow> : null

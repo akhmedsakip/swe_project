@@ -18,3 +18,4 @@ INNER JOIN role_has_privilege RHP ON RHP.Role = role.Role
 WHERE user.Email = 'akhmed.sakip@nu.edu.kz';
 
 SELECT * FROM `user` WHERE Email = 'akhmed.sakip@nu.edu.kz';
+
