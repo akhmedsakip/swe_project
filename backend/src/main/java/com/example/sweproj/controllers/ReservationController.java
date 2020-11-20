@@ -9,7 +9,6 @@ import com.example.sweproj.utils.Message;
 import com.example.sweproj.utils.ValidationUtil;
 import com.example.sweproj.validation.groups.ReservationDetailsGroup;
 import com.google.gson.Gson;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,6 @@ import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,9 +38,9 @@ public class ReservationController {
     @PostMapping("/reserve")
     ResponseEntity<String> reserveRoom(@RequestBody ReservationDetailsRequest reservationDetailsRequest) {
         List<Message> serverErrors = new ArrayList<>();
-        Guest guest = reservationDetailsRequest.getGuest();
+        Person person = reservationDetailsRequest.getGuest();
         ReservationRequest reservationRequest = reservationDetailsRequest.getReservationRequest();
-        if(guest == null || reservationRequest == null) {
+        if(person == null || reservationRequest == null) {
             serverErrors.add(new Message("Guest and reservation detail should not be empty"));
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
@@ -97,10 +95,9 @@ public class ReservationController {
         return ResponseEntity.ok().body(reservations);
     }
 
-    @RequestMapping("/panel")
-    @GetMapping
-    ResponseEntity<List<HotelReservationDetailsResponse>> getHotelReservations(@RequestParam(value = "hotelId") Integer hotelId) {
-        List<HotelReservationDetailsResponse>  hotelReservationDetailsResponses= this.reservationService.getHotelReservations(hotelId);
+    @GetMapping("/panel")
+    ResponseEntity<List<HotelReservationDetailsResponse>> getHotelReservations() {
+        List<HotelReservationDetailsResponse>  hotelReservationDetailsResponses= this.reservationService.getHotelReservations();
         return ResponseEntity.ok().body(hotelReservationDetailsResponses);
     }
 }

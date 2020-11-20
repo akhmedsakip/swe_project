@@ -1,15 +1,14 @@
 package com.example.sweproj.services;
 
-import com.example.sweproj.models.Guest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GuestService {
+public class PersonService {
     @Autowired
-    private GuestDataAccessService guestDataAccessService;
+    private PersonDataAccessService personDataAccessService;
 
-    GuestService() { }
+    PersonService() { }
 
 //    public int addGuest(Guest newGuest) {
 //        return guestDataAccessService.insertGuest(newGuest);

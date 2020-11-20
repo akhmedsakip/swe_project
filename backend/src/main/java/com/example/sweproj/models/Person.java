@@ -1,20 +1,16 @@
 package com.example.sweproj.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Valid
-public class Guest {
+public class Person {
 
-    public Guest() { }
+    public Person() { }
 
-    private int personID;
+    private int personId;
 
     @JsonProperty
     @NotBlank(message = "First name is empty")
@@ -62,12 +58,12 @@ public class Guest {
         this.gender = gender;
     }
 
-    public int getPersonID() {
-        return personID;
+    public int getPersonId() {
+        return personId;
     }
 
-    public void setPersonID(int personID) {
-        this.personID = personID;
+    public void setPersonId(int personId) {
+        this.personId = personId;
     }
 
     public String getFirstName() {

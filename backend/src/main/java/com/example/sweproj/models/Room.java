@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 
 public class Room {
     @JsonProperty @NotBlank(message = "HotelID is empty")
-    private int hotelID;
+    private int hotelId;
 
     @JsonProperty @NotBlank(message = "RoomNumber is empty")
     private String roomNumber;
@@ -27,12 +27,12 @@ public class Room {
 
     }
 
-    public int getHotelID() {
-        return hotelID;
+    public int getHotelId() {
+        return hotelId;
     }
 
-    public void setHotelID(int hotelID) {
-        this.hotelID = hotelID;
+    public void setHotelId(int hotelId) {
+        this.hotelId = hotelId;
     }
 
     public String getRoomNumber() {

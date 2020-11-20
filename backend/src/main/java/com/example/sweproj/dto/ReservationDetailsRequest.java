@@ -1,6 +1,6 @@
 package com.example.sweproj.dto;
 
-import com.example.sweproj.models.Guest;
+import com.example.sweproj.models.Person;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.Valid;
@@ -8,17 +8,17 @@ import javax.validation.Valid;
 @Valid
 public class ReservationDetailsRequest {
     @JsonProperty
-    private Guest guest;
+    private Person person;
 
     @JsonProperty
     private ReservationRequest reservationRequest;
 
-    public Guest getGuest() {
-        return guest;
+    public Person getGuest() {
+        return person;
     }
 
-    public void setGuest(Guest guest) {
-        this.guest = guest;
+    public void setGuest(Person person) {
+        this.person = person;
     }
 
     public ReservationRequest getReservationRequest() {

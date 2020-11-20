@@ -20,7 +20,7 @@ public class ReservationRequest {
     private int hotelId;
 
     @JsonProperty
-    @NotNull(message = "RoomType is not specified", groups= {ReservationDetailsGroup.class})
+    @NotNull(message = "RoomType is not specified", groups = {ReservationDetailsGroup.class})
     private String roomTypeName;
 
     @JsonProperty

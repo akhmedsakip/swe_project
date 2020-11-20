@@ -25,7 +25,7 @@ public class ReservationService {
         return this.reservationDataAccessService.deleteReservation(orderId, email);
     }
 
-    public List<HotelReservationDetailsResponse> getHotelReservations(int hotelId) {
-        return this.reservationDataAccessService.getHotelReservations(hotelId);
+    public List<HotelReservationDetailsResponse> getHotelReservations() {
+        return this.reservationDataAccessService.getHotelReservations();
     }
 }

@@ -1,22 +1,22 @@
 package com.example.sweproj.dto;
 
-import com.example.sweproj.models.Guest;
+import com.example.sweproj.models.Person;
 import com.example.sweproj.models.Reservation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class HotelReservationDetailsResponse {
     @JsonProperty
-    private Guest guest;
+    private Person person;
 
     @JsonProperty
     private Reservation reservation;
 
-    public Guest getGuest() {
-        return guest;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setGuest(Guest guest) {
-        this.guest = guest;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public Reservation getReservation() {

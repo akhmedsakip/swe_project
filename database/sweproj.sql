@@ -29,6 +29,58 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `sweproj`.`person`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sweproj`.`person` ;
+
+CREATE TABLE IF NOT EXISTS `sweproj`.`person` (
+  `PersonID` INT NOT NULL AUTO_INCREMENT,
+  `Gender` VARCHAR(10) NOT NULL,
+  `IdentificationID` VARCHAR(45) NULL,
+  `DateOfBirth` DATE NULL,
+  `FirstName` VARCHAR(30) NOT NULL,
+  `LastName` VARCHAR(30) NOT NULL,
+  `CountryCode` VARCHAR(2) NULL,
+  `City` VARCHAR(30) NULL,
+  `Street` VARCHAR(45) NULL,
+  `ZIPCode` VARCHAR(20) NULL,
+  `PhoneNumber` VARCHAR(45) NOT NULL,
+  `IdentificationTypeID` INT NULL,
+  PRIMARY KEY (`PersonID`),
+  INDEX `fk_PERSON_IDENTIFICATIONTYPE1_idx` (`IdentificationTypeID` ASC) VISIBLE,
+  UNIQUE INDEX `PhoneNumber_UNIQUE` (`PhoneNumber` ASC) VISIBLE,
+  CONSTRAINT `fk_PERSON_IDENTIFICATIONTYPE1`
+    FOREIGN KEY (`IdentificationTypeID`)
+    REFERENCES `sweproj`.`identification_type` (`IdentificationTypeID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sweproj`.`hotel`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sweproj`.`hotel` ;
+
+CREATE TABLE IF NOT EXISTS `sweproj`.`hotel` (
+  `HotelID` INT NOT NULL AUTO_INCREMENT,
+  `Name` VARCHAR(45) NOT NULL,
+  `Floors#` INT NULL,
+  `Rooms#` INT NULL,
+  `FreeRooms#` INT NULL,
+  `CountryCode` VARCHAR(2) NOT NULL,
+  `City` VARCHAR(30) NOT NULL,
+  `Street` VARCHAR(45) NOT NULL,
+  `ZIPCode` VARCHAR(20) NOT NULL,
+  `Description` TEXT NULL,
+  `MainHotelPicture` TEXT NULL,
+  `StarCount` INT NULL,
+  PRIMARY KEY (`HotelID`),
+  UNIQUE INDEX `Name_UNIQUE` (`Name` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `sweproj`.`role`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `sweproj`.`role` ;
@@ -64,66 +116,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sweproj`.`person`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sweproj`.`person` ;
-
-CREATE TABLE IF NOT EXISTS `sweproj`.`person` (
-  `PersonID` INT NOT NULL AUTO_INCREMENT,
-  `Gender` VARCHAR(10) NOT NULL,
-  `IdentificationID` VARCHAR(45) NULL,
-  `DateOfBirth` DATE NULL,
-  `FirstName` VARCHAR(30) NOT NULL,
-  `LastName` VARCHAR(30) NOT NULL,
-  `CountryCode` VARCHAR(2) NULL,
-  `City` VARCHAR(30) NULL,
-  `Street` VARCHAR(45) NULL,
-  `ZIPCode` VARCHAR(20) NULL,
-  `PhoneNumber` VARCHAR(45) NOT NULL,
-  `IdentificationTypeID` INT NULL,
-  `UserEmail` VARCHAR(45) NULL,
-  PRIMARY KEY (`PersonID`),
-  INDEX `fk_PERSON_IDENTIFICATIONTYPE1_idx` (`IdentificationTypeID` ASC) VISIBLE,
-  UNIQUE INDEX `PhoneNumber_UNIQUE` (`PhoneNumber` ASC) VISIBLE,
-  INDEX `fk_person_user1_idx` (`UserEmail` ASC) VISIBLE,
-  UNIQUE INDEX `UserEmail_UNIQUE` (`UserEmail` ASC) VISIBLE,
-  CONSTRAINT `fk_PERSON_IDENTIFICATIONTYPE1`
-    FOREIGN KEY (`IdentificationTypeID`)
-    REFERENCES `sweproj`.`identification_type` (`IdentificationTypeID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_person_user1`
-    FOREIGN KEY (`UserEmail`)
-    REFERENCES `sweproj`.`user` (`Email`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `sweproj`.`hotel`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sweproj`.`hotel` ;
-
-CREATE TABLE IF NOT EXISTS `sweproj`.`hotel` (
-  `HotelID` INT NOT NULL AUTO_INCREMENT,
-  `Name` VARCHAR(45) NOT NULL,
-  `Floors#` INT NULL,
-  `Rooms#` INT NULL,
-  `FreeRooms#` INT NULL,
-  `CountryCode` VARCHAR(2) NOT NULL,
-  `City` VARCHAR(30) NOT NULL,
-  `Street` VARCHAR(45) NOT NULL,
-  `ZIPCode` VARCHAR(20) NOT NULL,
-  `Description` TEXT NULL,
-  `MainHotelPicture` TEXT NULL,
-  `StarCount` INT NULL,
-  PRIMARY KEY (`HotelID`),
-  UNIQUE INDEX `Name_UNIQUE` (`Name` ASC) VISIBLE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `sweproj`.`employee`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `sweproj`.`employee` ;
@@ -134,8 +126,11 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`employee` (
   `EmploymentDate` DATE NOT NULL,
   `DismissalDate` DATE NULL,
   `HotelID` INT NOT NULL,
+  `UserEmail` VARCHAR(45) NULL,
   PRIMARY KEY (`EmployeeID`),
   INDEX `fk_employee_hotel1_idx` (`HotelID` ASC) VISIBLE,
+  INDEX `fk_employee_user1_idx` (`UserEmail` ASC) VISIBLE,
+  UNIQUE INDEX `UserEmail_UNIQUE` (`UserEmail` ASC) VISIBLE,
   CONSTRAINT `fk_EMPLOYEE_PERSON1`
     FOREIGN KEY (`EmployeeID`)
     REFERENCES `sweproj`.`person` (`PersonID`)
@@ -144,6 +139,11 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`employee` (
   CONSTRAINT `fk_employee_hotel1`
     FOREIGN KEY (`HotelID`)
     REFERENCES `sweproj`.`hotel` (`HotelID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_employee_user1`
+    FOREIGN KEY (`UserEmail`)
+    REFERENCES `sweproj`.`user` (`Email`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

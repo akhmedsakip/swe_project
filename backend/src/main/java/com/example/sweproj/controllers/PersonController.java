@@ -1,32 +1,25 @@
 package com.example.sweproj.controllers;
 
-import com.example.sweproj.models.*;
-import com.example.sweproj.services.GuestService;
-import com.example.sweproj.utils.Message;
+import com.example.sweproj.services.PersonService;
 import com.example.sweproj.utils.ValidationUtil;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/guests")
-public class GuestController {
+@RequestMapping("/api/persons")
+public class PersonController {
 
     @Autowired
     private Gson gson;
 
     @Autowired
-    private GuestService guestService;
+    private PersonService personService;
 
     @Autowired
     private ValidationUtil validationUtil;
 
-    GuestController() {}
+    PersonController() {}
 
 //    @PostMapping
 //    ResponseEntity<String> addGuest(@RequestBody Guest newGuest) {
