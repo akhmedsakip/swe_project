@@ -39,6 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/reservations").authenticated()
                 .antMatchers(HttpMethod.GET, "/api/reservations/panel").hasAnyAuthority("READ_ALL_ORDERS")
                 .antMatchers("/api/reservations/**").authenticated()
+                .antMatchers("/api/persons/").authenticated()
+                .antMatchers(HttpMethod.POST, "/api/persons/panel").hasAnyAuthority("WRITE_ALL_USERS")
                 .and().exceptionHandling().authenticationEntryPoint(new UnauthorizedEntryPoint());
 
         http.authorizeRequests().anyRequest().permitAll().and().sessionManagement()

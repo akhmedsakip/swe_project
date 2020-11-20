@@ -13,11 +13,11 @@ public class ReservationDetailsRequest {
     @JsonProperty
     private ReservationRequest reservationRequest;
 
-    public Person getGuest() {
+    public Person getPerson() {
         return person;
     }
 
-    public void setGuest(Person person) {
+    public void setPerson(Person person) {
         this.person = person;
     }
 

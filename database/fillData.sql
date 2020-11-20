@@ -393,11 +393,17 @@ VALUES ('READ_ALL_ORDERS');
 INSERT INTO privilege
 VALUES ('WRITE_ALL_ORDERS');
 
+INSERT INTO privilege
+VALUES ('WRITE_ALL_USERS');
+
 INSERT INTO role_has_privilege
 VALUES ('ROLE_ADMIN', 'READ_ALL_ORDERS');
 
 INSERT INTO role_has_privilege
 VALUES ('ROLE_ADMIN', 'WRITE_ALL_ORDERS');
+
+INSERT INTO role_has_privilege
+VALUES ('ROLE_ADMIN', 'WRITE_ALL_USERS');
 
 INSERT INTO administrative_position
 VALUES ('Manager');

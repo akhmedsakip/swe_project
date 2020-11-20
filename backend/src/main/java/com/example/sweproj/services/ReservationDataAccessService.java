@@ -46,8 +46,8 @@ public class ReservationDataAccessService {
 
         int roomTotalPrice = roomTypeService.getTotalPrice(info.getReservationRequest()); // TODO transfer to controller
 
-        return jdbcTemplate.update(sql, info.getGuest().getGender(), info.getGuest().getFirstName(),
-                info.getGuest().getLastName(), info.getGuest().getPhoneNumber(), info.getReservationRequest().getHotelId(),
+        return jdbcTemplate.update(sql, info.getPerson().getGender(), info.getPerson().getFirstName(),
+                info.getPerson().getLastName(), info.getPerson().getPhoneNumber(), info.getReservationRequest().getHotelId(),
                 roomTotalPrice, info.getReservationRequest().getCheckInDate(),
                 info.getReservationRequest().getCheckOutDate(), "Cash", info.getReservationRequest().getRoomTypeName(),
                 userEmail);

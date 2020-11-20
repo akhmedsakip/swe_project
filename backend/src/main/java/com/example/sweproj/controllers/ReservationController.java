@@ -38,13 +38,13 @@ public class ReservationController {
     @PostMapping("/reserve")
     ResponseEntity<String> reserveRoom(@RequestBody ReservationDetailsRequest reservationDetailsRequest) {
         List<Message> serverErrors = new ArrayList<>();
-        Person person = reservationDetailsRequest.getGuest();
+        Person person = reservationDetailsRequest.getPerson();
         ReservationRequest reservationRequest = reservationDetailsRequest.getReservationRequest();
         if(person == null || reservationRequest == null) {
             serverErrors.add(new Message("Guest and reservation detail should not be empty"));
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
-        serverErrors.addAll(validationUtil.validate(reservationDetailsRequest.getGuest()));
+        serverErrors.addAll(validationUtil.validate(reservationDetailsRequest.getPerson()));
         serverErrors.addAll(validationUtil.validate(reservationDetailsRequest.getReservationRequest(), ReservationDetailsGroup.class));
         if(serverErrors.size() > 0) {
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
