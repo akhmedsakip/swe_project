@@ -19,3 +19,15 @@ WHERE user.Email = 'akhmed.sakip@nu.edu.kz';
 
 SELECT * FROM `user` WHERE Email = 'akhmed.sakip@nu.edu.kz';
 
+UPDATE user
+SET Role = 'ROLE_ADMIN'
+WHERE Email = 'a.a@nu.edu.kz';
+
+INSERT INTO person (Gender, FirstName, LastName, PhoneNumber)
+VALUES ('Male', 'a', 'a', '+70000000000');
+
+INSERT INTO employee (EmployeeID, EmploymentDate, HotelID, UserEmail)
+VALUES ((SELECT PersonID FROM person WHERE PhoneNumber = '+70000000000'), CURDATE(), 1, 'a@a.a');
+
+INSERT INTO administrative_staff (AdministrativeStaffID, AdministrativePosition)
+VALUES ((SELECT EmployeeID FROM employee WHERE UserEmail = 'a@a.a'), 'Desk Clerk');

@@ -410,3 +410,6 @@ VALUES ('Manager');
 
 INSERT INTO administrative_position
 VALUES ('Desk Clerk');
+
+INSERT INTO cleaning_position
+VALUES ('Cleaner');
