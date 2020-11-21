@@ -39,10 +39,12 @@ const rows = [
     },
 ];
 
-const SeasonalRatesTable = () => {
+const SeasonalRatesTable = ({ searchTerm }) => {
 
     const data = rows;
     const loading = false;
+
+    searchTerm = searchTerm.toLocaleLowerCase();
 
     return (
         <TableBody>
@@ -55,7 +57,9 @@ const SeasonalRatesTable = () => {
             }
             {
                 data.length && !loading ? data.map((row, i) => (
-                    <SeasonalRatesRow row={row} key={row.orderId} />
+                    row.Name.toLocaleLowerCase().includes(searchTerm) ?
+                        <SeasonalRatesRow row={row} key={row.orderId} />
+                        : null
                 )) : null
             }
             {

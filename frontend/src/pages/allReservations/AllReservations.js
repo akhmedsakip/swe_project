@@ -11,19 +11,18 @@ function AllReservations() {
   const [deletion, setDeletion] = useState(false);
   const [changeReservation, setChangeReservation] = useState(false);
   const [addReservation, setAddReservation] = useState(false);
-  // useEffect(() => {
-  //     (async function () {
-  //         dispatch({ type: RESERVATIONS_SET_LOADING });
-  //         await fetchReservationsAction(dispatch);
-  //         setTimeout(() => dispatch({ type: RESERVATIONS_UNSET_LOADING }), 300);
-  //     })()
-  // }, []);
+  const [row, setRow] = useState({});
 
-  return <AllReservationsContext.Provider style={{ width: '100%' }} value={{ deletion, setDeletion, changeReservation, setChangeReservation, addReservation, setAddReservation }}>
+  const handleEdit = (rowObject) => {
+    setRow(rowObject);
+    setChangeReservation(true);
+  }
+
+  return <AllReservationsContext.Provider style={{ width: '100%' }} value={{  setDeletion, setChangeReservation, setAddReservation, handleEdit }}>
     <div className={classes.root}>
       <AllReservationsTable />
       <DeleteDialog onClose={() => setDeletion(false)} open={deletion} questionText={'Do you confirm cancellation of this order? It cannot be restored.'}/>
-      <EditDialog onClose={() => setChangeReservation(false)} open={changeReservation} name={'Edit Reservation'} labels={['First Name', 'Last Name', 'Phone Number']}/>
+      <EditDialog onClose={() => setChangeReservation(false)} open={changeReservation} name={'Edit Reservation'} labels={['First Name', 'Last Name', 'Phone Number']} row={row}/>
       <EditDialog onClose={() => setAddReservation(false)} open={addReservation} name={'Add a Reservation'} labels={['Email', 'First Name', 'Last Name', 'Hotel', 'Room Type', 'Check In', 'Check Out', 'Reservation Date', 'Status']}/>
     </div>
   </AllReservationsContext.Provider>

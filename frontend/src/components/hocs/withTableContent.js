@@ -1,5 +1,6 @@
 import { makeStyles, Paper, Table, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@material-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
+import SearchBar from '../SearchBar';
 
 const useStyles = makeStyles({
   table: {
@@ -23,12 +24,20 @@ const withTableContent = (TableComponent, tableName, columnNames) => {
 
     const classes = useStyles();
 
+    const [search, setSearch] = useState('');
+    const handleChange = (ev) => {
+      setSearch(ev);
+    }
+
     return (
       <TableContainer component={Paper} variant="outlined" className={classes.table}>
         <Toolbar className={classes.topBar}>
           <Typography variant="h5" id="tableTitle" component="div" className={classes.title}>
             {tableName}
           </Typography>
+          
+          <SearchBar search={search} handleChange={handleChange} />
+
         </Toolbar>
 
         <Table>
@@ -41,7 +50,7 @@ const withTableContent = (TableComponent, tableName, columnNames) => {
           </TableHead>
 
           {/* This is prop component */}
-          <TableComponent />
+          <TableComponent searchTerm={search} />
 
         </Table>
       </TableContainer>

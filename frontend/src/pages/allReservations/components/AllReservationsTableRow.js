@@ -8,13 +8,13 @@ import EditIcon from "@material-ui/icons/Edit";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 
 const AllReservationsTableRow = ({ row }) => {
-  const {setDeletion, setChangeReservation, setAddReservation
+  const {setDeletion, setChangeReservation, setAddReservation, handleEdit
     // , editing, setEditing, formik, loading
   } = useContext(AllReservationsContext);
 
   return <TableRow>
     {Object.keys(row).map((cell)=>
-      <TableCell align="center">{row[cell]}</TableCell>
+      <TableCell key={row[cell].OrderID} align="center">{row[cell]}</TableCell>
     )}
     <TableCell align="center">
       <IconButton onClick={() => {
@@ -22,11 +22,13 @@ const AllReservationsTableRow = ({ row }) => {
       }}>
         <AddBoxIcon />
       </IconButton>
+
       <IconButton onClick={() => {
-        setChangeReservation(true);
+        handleEdit(row);
       }}>
         <EditIcon />
       </IconButton>
+
       <IconButton onClick={() => setDeletion(true)}>
         <DeleteIcon />
       </IconButton>
