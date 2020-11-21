@@ -32,6 +32,8 @@ const nextDay = (date) => {
     return dateObject.toISOString().split("T")[0];
 }
 
+
+
 export const editInfoSchema = yup.object().shape({
     firstName: yup.string().required("First name is empty"),
     lastName: yup.string().required("Second name is empty"),
@@ -39,6 +41,8 @@ export const editInfoSchema = yup.object().shape({
     dateOfBirth: yup.date("Date of birth is invalid").max(new Date()).required("Date of birth is empty"),
     gender: yup.string().required("Gender is empty"),
 });
+
+
 
 export const changePasswordSchema = yup.object().shape({
     oldPassword: yup.string().required("Password is empty").min(6, "Minimum length of password is 6"),
@@ -48,6 +52,11 @@ export const changePasswordSchema = yup.object().shape({
 const phoneRegExp = /^\+[0-9]?()[0-9](\s|\S)(\d[0-9]{7})$/
 // Taken from https://www.regextester.com/94816
 
+export const editFormLineSchema = yup.object().shape({
+    FirstName: yup.string().required("First name is empty").nullable(),
+    LastName: yup.string().required("Second name is empty").min(6, "Minimum length of Last Name is 6"),
+    PhoneNumber: yup.string().required("Phone number is empty").matches(phoneRegExp, "Invalid phone"),
+});
 export const reservationSchema = yup.object().shape({
     phoneNumber: yup.string().required("Phone number is empty").matches(phoneRegExp, "Invalid phone"),
     firstName: yup.string().required("First name is empty"),
