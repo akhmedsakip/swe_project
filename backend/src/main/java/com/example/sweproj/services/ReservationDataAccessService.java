@@ -94,4 +94,9 @@ public class ReservationDataAccessService {
             return hotelReservationDetailsResponse;
         }, user.getEmail());
     }
+
+    int deleteHotelReservation(int orderId, String email) {
+        String sql = "CALL deleteHotelReservation(?, ?);";
+        return jdbcTemplate.update(sql, orderId, email);
+    }
 }
