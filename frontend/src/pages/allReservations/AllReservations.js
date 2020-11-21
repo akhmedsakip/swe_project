@@ -13,7 +13,6 @@ function AllReservations() {
   const classes = useStyles();
   const [deletion, setDeletion] = useState(false);
   const [changeReservation, setChangeReservation] = useState(false);
-  const [addReservation, setAddReservation] = useState(false);
   const [row, setRow] = useState({});
   const { state, dispatch } = useContext(AppContext);
 
@@ -30,12 +29,11 @@ function AllReservations() {
     setChangeReservation(true);
   }
 
-  return <AllReservationsContext.Provider style={{ width: '100%' }} value={{ setDeletion, setChangeReservation, setAddReservation, handleEdit }}>
+  return <AllReservationsContext.Provider style={{ width: '100%' }} value={{ setDeletion, setChangeReservation, handleEdit }}>
     <div className={classes.root}>
       <AllReservationsTable />
       <DeleteDialog onClose={() => setDeletion(false)} open={deletion} questionText={'Do you confirm cancellation of this order? It cannot be restored.'} />
       <EditDialog onClose={() => setChangeReservation(false)} open={changeReservation} name={'Edit Reservation'} labels={['First Name', 'Last Name', 'Phone Number']} row={row} />
-      <EditDialog onClose={() => setAddReservation(false)} open={addReservation} name={'Add a Reservation'} labels={['Email', 'First Name', 'Last Name', 'Hotel', 'Room Type', 'Check In', 'Check Out', 'Reservation Date', 'Status']} />
     </div>
   </AllReservationsContext.Provider>
 }

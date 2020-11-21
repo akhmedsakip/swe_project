@@ -1,8 +1,8 @@
 import { InputAdornment, TextField } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import React, { useState } from 'react';
+import React from 'react';
 
-const SearchBar = ({search, handleChange}) => {
+const SearchBar = ({search, setSearch}) => {
 
   return (
     <TextField
@@ -18,7 +18,7 @@ const SearchBar = ({search, handleChange}) => {
         ),
       }}
       value={search}
-      onChange={e => handleChange(e.target.value)}
+      onChange={e => setSearch(e.target.value)}
     />
   )
 }

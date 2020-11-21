@@ -6,36 +6,35 @@ import React, { useContext } from "react";
 import AllReservationsContext from "../../../contexts/AllReservationsContext";
 import EditIcon from "@material-ui/icons/Edit";
 import AddBoxIcon from "@material-ui/icons/AddBox";
+import AppContext from "../../../store/AppContext";
+import { WRITE_ALL_USERS } from "../../../store/user/userPrivelegesTypes";
 
 const AllReservationsTableRow = ({ row }) => {
-  const { setDeletion, setChangeReservation, setAddReservation, handleEdit } = useContext(AllReservationsContext);
+  const { setDeletion, setChangeReservation, handleEdit } = useContext(AllReservationsContext);
+  const { state, dispatch } = useContext(AppContext);
+  const { userInfo } = state.user;
 
   return <TableRow>
     {Object.keys(row).map((cell) =>
       <TableCell key={row[cell]} align="center">{row[cell]}</TableCell>
     )}
     <TableCell align="center">
-      <IconButton onClick={() => {
-        setAddReservation(true);
-      }}>
-        <AddBoxIcon />
-      </IconButton>
 
-      <IconButton onClick={() => {
-        handleEdit(row);
-      }}>
-        <EditIcon />
-      </IconButton>
+      {userInfo.privileges.includes(WRITE_ALL_USERS)
+        && <>
+          <IconButton onClick={() => {
+            handleEdit(row);
+          }}>
+            <EditIcon />
+          </IconButton>
 
-      <IconButton onClick={() => setDeletion(true)}>
-        <DeleteIcon />
-      </IconButton>
-      {/*<Button variant="outlined" color="secondary" className={`${classes.button} ${classes.marginBottom12}`}*/}
-      {/*        onClick={() => {*/}
-      {/*          setChangePassword(true);*/}
-      {/*        }}>*/}
-      {/*  <EditIcon fontSize={"inherit"}/>*/}
-      {/*</Button>*/}
+          <IconButton onClick={() => setDeletion(true)}>
+            <DeleteIcon />
+          </IconButton>
+        </>
+
+      }
+
     </TableCell>
   </TableRow>
 }

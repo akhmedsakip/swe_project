@@ -28,9 +28,7 @@ const DesktopMenu = () => {
     const { loggedIn, userInfo, isAdmin } = state.user;
     const anchorEl = useRef(null);
     const [open, setOpen] = useState(false);
-    // useEffect(() => {
-    //     console.log(identicon);
-    // }, [identicon]);
+
     return <div>
         <Link to="/" className={classes.link}>
             <Button color="inherit">Home</Button>
@@ -57,7 +55,7 @@ const DesktopMenu = () => {
             </Button> : null
         }
         {
-            loggedIn && <>
+            (loggedIn && userInfo.privileges.length) ? <>
                 <Button
                     edge="start" ref={anchorEl}
                     color="inherit" aria-label="menu" onClick={() => setOpen(true)}>
@@ -83,7 +81,7 @@ const DesktopMenu = () => {
                     </Link>
                     </MenuItem>
                 </Menu>
-            </>
+            </> : null
         }
         {
             (!loggedIn

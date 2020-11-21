@@ -25,9 +25,6 @@ const withTableContent = (TableComponent, tableName, columnNames) => {
     const classes = useStyles();
 
     const [search, setSearch] = useState('');
-    const handleChange = (ev) => {
-      setSearch(ev);
-    }
 
     return (
       <TableContainer component={Paper} variant="outlined" className={classes.table}>
@@ -36,7 +33,7 @@ const withTableContent = (TableComponent, tableName, columnNames) => {
             {tableName}
           </Typography>
           
-          <SearchBar search={search} handleChange={handleChange} />
+          <SearchBar search={search} setSearch={setSearch} />
 
         </Toolbar>
 
