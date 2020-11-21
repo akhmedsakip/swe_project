@@ -64,3 +64,8 @@ SELECT E.EmployeeID FROM employee E
 INNER JOIN employee EM ON EM.UserEmail = 'akhmed.sakip@nu.edu.kz' AND EM.HotelID = E.HotelID
 WHERE E.EmployeeID = 1;
 # ------
+
+UPDATE employee E
+    INNER JOIN employee EM ON EM.HotelID = E.HotelID
+SET E.BaseSalaryPerHour = 200
+WHERE E.EmployeeID = 5 AND EM.UserEmail = 'akhmed.sakip@nu.edu.kz';

@@ -228,7 +228,7 @@ public class ProcedureInitializer {
                 "    DELETE\n" +
                 "    FROM employee_works_on_day_of_week\n" +
                 "    WHERE EmployeeID = _employeeId\n" +
-                "      AND DayOfWeek = 'Monday';\n" +
+                "      AND DayOfWeek = _dayOfWeek;\n" +
                 "    COMMIT;\n" +
                 "END;";
         jdbcTemplate.execute(dropProcedureSql);

@@ -50,4 +50,12 @@ public class WorkingDayDataAccessService {
         return jdbcTemplate.update(sql, info.getEmployeeId(), user.getEmail(), info.getWorkingDay().getDayOfWeek(),
                 info.getWorkingDay().getStartTime(), info.getWorkingDay().getEndTime());
     }
+
+    int deleteSchedule(WorkingDayRequest info) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String sql = "CALL deleteWorkingDay(?, ?, ?);";
+
+        return jdbcTemplate.update(sql, info.getEmployeeId(), user.getEmail(), info.getDayOfWeek());
+    }
 }

@@ -78,4 +78,23 @@ public class WorkingDayController {
         }
         return ResponseEntity.ok().body(gson.toJson(new Message("Successfully changed the schedule")));
     }
+
+    @DeleteMapping
+    ResponseEntity<String> deleteSchedule(@RequestBody WorkingDayRequest info) {
+        List<Message> serverErrors = new ArrayList<>(validationUtil.validate(info));
+        if(serverErrors.size() > 0) {
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+        try {
+            workingDayService.deleteSchedule(info);
+        } catch(UncategorizedSQLException error) {
+            serverErrors.add(new Message("Trying to delete schedule of an employee from another hotel"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        } catch(Exception error) {
+            error.printStackTrace();
+            serverErrors.add(new Message("Server error"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+        return ResponseEntity.ok().body(gson.toJson(new Message("Successfully deleted the schedule on specified day")));
+    }
 }
