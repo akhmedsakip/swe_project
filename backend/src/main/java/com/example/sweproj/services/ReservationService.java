@@ -1,5 +1,6 @@
 package com.example.sweproj.services;
 
+import com.example.sweproj.dto.HotelReservationDetailsResponse;
 import com.example.sweproj.dto.ReservationDetailsRequest;
 import com.example.sweproj.models.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +23,9 @@ public class ReservationService {
 
     public int deleteReservation(int orderId, String email) {
         return this.reservationDataAccessService.deleteReservation(orderId, email);
+    }
+
+    public List<HotelReservationDetailsResponse> getHotelReservations() {
+        return this.reservationDataAccessService.getHotelReservations();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.sweproj.controllers;
 
+import com.example.sweproj.dto.HotelReservationDetailsResponse;
 import com.example.sweproj.dto.ReservationDetailsRequest;
 import com.example.sweproj.dto.ReservationRequest;
 import com.example.sweproj.models.*;
@@ -15,7 +16,6 @@ import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,13 +38,13 @@ public class ReservationController {
     @PostMapping("/reserve")
     ResponseEntity<String> reserveRoom(@RequestBody ReservationDetailsRequest reservationDetailsRequest) {
         List<Message> serverErrors = new ArrayList<>();
-        Guest guest = reservationDetailsRequest.getGuest();
+        Person person = reservationDetailsRequest.getPerson();
         ReservationRequest reservationRequest = reservationDetailsRequest.getReservationRequest();
-        if(guest == null || reservationRequest == null) {
+        if(person == null || reservationRequest == null) {
             serverErrors.add(new Message("Guest and reservation detail should not be empty"));
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
-        serverErrors.addAll(validationUtil.validate(reservationDetailsRequest.getGuest()));
+        serverErrors.addAll(validationUtil.validate(reservationDetailsRequest.getPerson()));
         serverErrors.addAll(validationUtil.validate(reservationDetailsRequest.getReservationRequest(), ReservationDetailsGroup.class));
         if(serverErrors.size() > 0) {
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
@@ -69,7 +69,7 @@ public class ReservationController {
     }
 
     @DeleteMapping
-    ResponseEntity<String> deleteReservations(@RequestBody Map<String, Integer> requestBody) {
+    ResponseEntity<String> deleteReservation(@RequestBody Map<String, Integer> requestBody) {
         List<Message> serverErrors = new ArrayList<>();
         Integer orderId = requestBody.get("orderId");
 
@@ -93,5 +93,11 @@ public class ReservationController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Reservation> reservations = this.reservationService.getReservations(user.getEmail());
         return ResponseEntity.ok().body(reservations);
+    }
+
+    @GetMapping("/panel")
+    ResponseEntity<List<HotelReservationDetailsResponse>> getHotelReservations() {
+        List<HotelReservationDetailsResponse>  hotelReservationDetailsResponses= this.reservationService.getHotelReservations();
+        return ResponseEntity.ok().body(hotelReservationDetailsResponses);
     }
 }

@@ -246,6 +246,12 @@ INSERT INTO room_type (HotelID,
 INSERT INTO order_status (Name)
 VALUE ('Reserved');
 
+INSERT INTO order_status (Name)
+VALUE ('Active');
+
+INSERT INTO order_status (Name)
+VALUE ('Past');
+
 INSERT INTO payment_method (Name)
 VALUE ('Card');
 
@@ -374,3 +380,54 @@ VALUES (
         1,
         1.15
        );
+
+INSERT INTO role
+VALUES ('ROLE_ADMIN');
+
+INSERT INTO role
+VALUES ('ROLE_MODERATOR');
+
+INSERT INTO privilege
+VALUES ('READ_ALL_ORDERS');
+
+INSERT INTO privilege
+VALUES ('WRITE_ALL_ORDERS');
+
+INSERT INTO privilege
+VALUES ('WRITE_ALL_USERS');
+
+INSERT INTO privilege
+VALUES ('READ_ALL_EMPLOYEES');
+
+INSERT INTO privilege
+VALUES ('READ_ALL_SCHEDULES');
+
+INSERT INTO privilege
+VALUES ('WRITE_ALL_SCHEDULES');
+
+INSERT INTO role_has_privilege
+VALUES ('ROLE_ADMIN', 'READ_ALL_ORDERS');
+
+INSERT INTO role_has_privilege
+VALUES ('ROLE_ADMIN', 'WRITE_ALL_ORDERS');
+
+INSERT INTO role_has_privilege
+VALUES ('ROLE_ADMIN', 'WRITE_ALL_USERS');
+
+INSERT INTO role_has_privilege
+VALUES ('ROLE_ADMIN', 'READ_ALL_EMPLOYEES');
+
+INSERT INTO role_has_privilege
+VALUES ('ROLE_ADMIN', 'READ_ALL_SCHEDULES');
+
+INSERT INTO role_has_privilege
+VALUES ('ROLE_ADMIN', 'WRITE_ALL_SCHEDULES');
+
+INSERT INTO administrative_position
+VALUES ('Manager');
+
+INSERT INTO administrative_position
+VALUES ('Desk Clerk');
+
+INSERT INTO cleaning_position
+VALUES ('Cleaner');

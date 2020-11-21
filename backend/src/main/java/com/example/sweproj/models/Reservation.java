@@ -24,6 +24,9 @@ public class Reservation {
     @JsonProperty
     private String status;
 
+    @JsonProperty
+    private int orderPrice;
+
     public int getOrderId() {
         return orderId;
     }
@@ -78,5 +81,13 @@ public class Reservation {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getOrderPrice() {
+        return orderPrice;
+    }
+
+    public void setOrderPrice(int orderPrice) {
+        this.orderPrice = orderPrice;
     }
 }

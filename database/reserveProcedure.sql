@@ -139,3 +139,4 @@ WHERE (O.OrderID IS NULL
     AND hotel.HotelID = 1
     AND room_type.Capacity >= 1
 GROUP BY RoomTypeName, room.HotelID;
+
