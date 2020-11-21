@@ -20,26 +20,29 @@ const EditForm = () => {
         },
         validationSchema: editFormLineSchema
       });
-    
+
     return (
             <form onSubmit={formik.handleSubmit}>
-                <TextFieldWithError label="First Name"
+                <TextField label="First Name"
                         name="FirstName"
                         id="FirstName"
                         onChange={formik.handleChange} 
                         value={formik.values.FirstName}
+                        error={!!formik.errors.FirstName}
                         fullWidth/>
-                <TextFieldWithError label="Last Name"
+                <TextField label="Last Name"
                         name="LastName"
                         id="LastName"
                         onChange={formik.handleChange} 
                         value={formik.values.LastName}
+                        error={!!formik.errors.LastName}
                         fullWidth/>
-                <TextFieldWithError label="Phone Number"
+                <TextField label="Phone Number"
                         name="PhoneNumber"
                         id="PhoneNumber"
                         onChange={formik.handleChange} 
                         value={formik.values.PhoneNumber}
+                        error={!!formik.errors.PhoneNumber}
                         fullWidth/>
                 <Button color="primary" type={'submit'}
                             variant={'outlined'} >
