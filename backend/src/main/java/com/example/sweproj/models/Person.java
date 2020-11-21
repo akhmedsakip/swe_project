@@ -28,7 +28,10 @@ public class Person {
 
     @JsonProperty
 //    @Min(value = 1, message = "IdentificationTypeID should be at least 1")
-    private int identificationTypeID;
+    private int identificationTypeId;
+
+    @JsonProperty
+    private String identificationTypeName;
 
     @JsonProperty
     @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Date is not in valid form (should be yyyy-MM-dd)")
@@ -138,12 +141,20 @@ public class Person {
         this.identificationID = identificationID;
     }
 
-    public int getIdentificationTypeID() {
-        return identificationTypeID;
+    public int getIdentificationTypeId() {
+        return identificationTypeId;
     }
 
-    public void setIdentificationTypeID(int identificationTypeID) {
-        this.identificationTypeID = identificationTypeID;
+    public void setIdentificationTypeId(int identificationTypeId) {
+        this.identificationTypeId = identificationTypeId;
+    }
+
+    public String getIdentificationTypeName() {
+        return identificationTypeName;
+    }
+
+    public void setIdentificationTypeName(String identificationTypeName) {
+        this.identificationTypeName = identificationTypeName;
     }
 }
 

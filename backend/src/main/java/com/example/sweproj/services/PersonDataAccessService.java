@@ -24,7 +24,7 @@ public class PersonDataAccessService {
         person.setLastName(rs.getString("LastName"));
         person.setPhoneNumber(rs.getString("PhoneNumber"));
         person.setIdentificationID(rs.getString("IdentificationID"));
-        person.setIdentificationTypeID(rs.getInt("IdentificationTypeID"));
+        person.setIdentificationTypeId(rs.getInt("IdentificationTypeID"));
         person.setGender(rs.getString("Gender"));
         person.setDateOfBirth(rs.getString("DateOfBirth"));
         person.setCountryCode(rs.getString("CountryCode"));

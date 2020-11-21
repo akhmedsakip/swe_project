@@ -53,7 +53,7 @@ LEFT OUTER JOIN administrative_staff `as` ON e.EmployeeID = `as`.AdministrativeS
 LEFT OUTER JOIN cleaning_staff cs on e.EmployeeID = cs.CleaningStaffID
 WHERE e.HotelID = em.HotelID;
 
-SELECT ewodow.StartTime, ewodow.EndTime
+SELECT MAX(ewodow.StartTime) StartTime, MAX(ewodow.EndTime) EndTime
 FROM employee e
 INNER JOIN employee em ON em.UserEmail = 'akhmed.sakip@nu.edu.kz'
 LEFT OUTER JOIN employee_works_on_day_of_week ewodow on e.EmployeeID = ewodow.EmployeeID
@@ -64,21 +64,3 @@ SELECT E.EmployeeID FROM employee E
 INNER JOIN employee EM ON EM.UserEmail = 'akhmed.sakip@nu.edu.kz' AND EM.HotelID = E.HotelID
 WHERE E.EmployeeID = 1;
 # ------
-
-INSERT INTO employee_works_on_day_of_week
-    (EmployeeID, DayOfWeek, StartTime, EndTime)
-VALUES ((SELECT E.EmployeeID
-         FROM employee E
-                  INNER JOIN employee EM ON EM.UserEmail = 'akhmed.sakip@nu.edu.kz'
-         WHERE E.EmployeeID = 1), 'Monday', '10:00', '18:00')
-ON DUPLICATE KEY UPDATE EmployeeID = (SELECT EmployeeID FROM employee WHERE UserEmail = 'akhmed.sakip@nu.edu.kz'),
-                        DayOfWeek  = 'Monday',
-                        StartTime  = '10:00',
-                        EndTime    = '18:00';
-
-DELETE FROM employee_works_on_day_of_week
-WHERE EmployeeID = (SELECT E.EmployeeID
-         FROM employee E
-                  INNER JOIN employee EM ON EM.UserEmail = 'akhmed.sakip@nu.edu.kz'
-         WHERE E.EmployeeID = 1)
-AND DayOfWeek = 'Monday';

@@ -15,6 +15,8 @@ public class ProcedureInitializer {
     void initializeProcedures() {
         this.createPriceProcedure();
         this.createReservationProcedure();
+        this.insertWorkingDayProcedure();
+        this.deleteWorkingDayProcedure();
     }
 
     void createPriceProcedure() {
@@ -153,6 +155,80 @@ public class ProcedureInitializer {
                 "            _hotelId,\n" +
                 "            _roomNumber,\n" +
                 "            _personId);\n" +
+                "    COMMIT;\n" +
+                "END;";
+        jdbcTemplate.execute(dropProcedureSql);
+        jdbcTemplate.execute(createProcedureSql);
+    }
+
+    void insertWorkingDayProcedure() {
+        String dropProcedureSql = "DROP PROCEDURE IF EXISTS insertWorkingDay;";
+        String createProcedureSql = "CREATE PROCEDURE insertWorkingDay(IN _employeeId INT, IN _userEmail VARCHAR(45), IN _dayOfWeek VARCHAR(15),\n" +
+                "                                  IN _startTime TIME,\n" +
+                "                                  IN _endTime TIME)\n" +
+                "BEGIN\n" +
+                "    DECLARE EXIT HANDLER FOR SQLEXCEPTION\n" +
+                "        BEGIN\n" +
+                "            ROLLBACK;\n" +
+                "            RESIGNAL;\n" +
+                "        END;\n" +
+                "\n" +
+                "    START TRANSACTION;\n" +
+                "    SELECT MAX(E.EmployeeID)\n" +
+                "    INTO _employeeId\n" +
+                "    FROM employee E\n" +
+                "             INNER JOIN employee EM ON EM.UserEmail = _userEmail AND EM.HotelID = E.HotelID\n" +
+                "    WHERE E.EmployeeID = _employeeId;\n" +
+                "\n" +
+                "    IF _employeeId IS NULL THEN\n" +
+                "        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Access error, trying to edit someone from another hotel';\n" +
+                "    end if;\n" +
+                "\n" +
+                "    IF _endTime <= _startTime THEN\n" +
+                "        SIGNAL SQLSTATE '42000' SET MESSAGE_TEXT = 'End time should be later than start time';\n" +
+                "    end if;\n" +
+                "\n" +
+                "\n" +
+                "    INSERT INTO employee_works_on_day_of_week\n" +
+                "        (EmployeeID, DayOfWeek, StartTime, EndTime)\n" +
+                "    VALUES (_employeeId, _dayOfWeek, _startTime, _endTime)\n" +
+                "    ON DUPLICATE KEY UPDATE EmployeeID = _employeeId,\n" +
+                "                            DayOfWeek  = _dayOfWeek,\n" +
+                "                            StartTime  = _startTime,\n" +
+                "                            EndTime    = _endTime;\n" +
+                "\n" +
+                "    COMMIT;\n" +
+                "END;";
+        jdbcTemplate.execute(dropProcedureSql);
+        jdbcTemplate.execute(createProcedureSql);
+    }
+
+    void deleteWorkingDayProcedure() {
+        String dropProcedureSql = "DROP PROCEDURE IF EXISTS deleteWorkingDay;";
+        String createProcedureSql = "CREATE PROCEDURE deleteWorkingDay(IN _employeeId INT, IN _userEmail VARCHAR(45), IN _dayOfWeek VARCHAR(15))\n" +
+                "BEGIN\n" +
+                "    DECLARE EXIT HANDLER FOR SQLEXCEPTION\n" +
+                "        BEGIN\n" +
+                "            ROLLBACK;\n" +
+                "            RESIGNAL;\n" +
+                "        END;\n" +
+                "\n" +
+                "    START TRANSACTION;\n" +
+                "    SELECT MAX(E.EmployeeID)\n" +
+                "    INTO _employeeId\n" +
+                "    FROM employee E\n" +
+                "             INNER JOIN employee EM ON EM.UserEmail = _userEmail AND EM.HotelID = E.HotelID\n" +
+                "    WHERE E.EmployeeID = _employeeId;\n" +
+                "\n" +
+                "    IF _employeeId IS NULL THEN\n" +
+                "        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Access error, trying to edit someone from another hotel';\n" +
+                "    END IF;\n" +
+                "\n" +
+                "\n" +
+                "    DELETE\n" +
+                "    FROM employee_works_on_day_of_week\n" +
+                "    WHERE EmployeeID = _employeeId\n" +
+                "      AND DayOfWeek = 'Monday';\n" +
                 "    COMMIT;\n" +
                 "END;";
         jdbcTemplate.execute(dropProcedureSql);
