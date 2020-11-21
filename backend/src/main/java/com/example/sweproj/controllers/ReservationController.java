@@ -9,6 +9,7 @@ import com.example.sweproj.utils.Message;
 import com.example.sweproj.utils.ValidationUtil;
 import com.example.sweproj.validation.groups.ReservationDetailsGroup;
 import com.google.gson.Gson;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -99,5 +100,25 @@ public class ReservationController {
     ResponseEntity<List<HotelReservationDetailsResponse>> getHotelReservations() {
         List<HotelReservationDetailsResponse>  hotelReservationDetailsResponses= this.reservationService.getHotelReservations();
         return ResponseEntity.ok().body(hotelReservationDetailsResponses);
+    }
+
+    @DeleteMapping("/panel")
+    ResponseEntity<String> deleteHotelReservation(@RequestBody Map<String, Integer> requestBody) {
+        List<Message> serverErrors = new ArrayList<>();
+        Integer orderId = requestBody.get("orderId");
+
+        if(orderId <= 0) {
+            serverErrors.add(new Message("Invalid format of order id"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        int deletedCount = this.reservationService.deleteHotelReservation(orderId, user.getEmail());
+        if(deletedCount == 0) {
+            serverErrors.add(new Message("Error deleting reservation"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+        return ResponseEntity.ok().body(gson.toJson(new Message("Successfully deleted room")));
     }
 }

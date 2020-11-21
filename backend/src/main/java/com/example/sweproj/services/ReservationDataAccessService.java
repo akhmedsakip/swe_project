@@ -94,4 +94,12 @@ public class ReservationDataAccessService {
             return hotelReservationDetailsResponse;
         }, user.getEmail());
     }
+
+    public int deleteHotelReservation(int orderId, String email) {
+        String sql1 = "DELETE O, OD FROM order_details OD\n" +
+                "INNER JOIN `order` O on O.OrderID = OD.OrderID and O.HotelID = OD.OrderHotelID\n" +
+                "INNER JOIN employee E ON E.HotelID = O.HotelID\n" +
+                "WHERE O.OrderID = ? AND E.UserEmail = ?";
+        return jdbcTemplate.update(sql1, orderId, email);
+    }
 }

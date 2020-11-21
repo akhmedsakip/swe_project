@@ -28,4 +28,8 @@ public class ReservationService {
     public List<HotelReservationDetailsResponse> getHotelReservations() {
         return this.reservationDataAccessService.getHotelReservations();
     }
+
+    public int deleteHotelReservation(int orderId, String email) {
+        return this.reservationDataAccessService.deleteReservation(orderId, email);
+    }
 }
