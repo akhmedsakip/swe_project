@@ -55,4 +55,8 @@ public class EmployeeDataAccessService {
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> mapFromDB(rs), user.getEmail());
     }
+
+    int setBaseSalaryPerHour() {
+
+    }
 }
