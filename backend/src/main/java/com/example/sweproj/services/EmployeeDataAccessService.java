@@ -57,6 +57,6 @@ public class EmployeeDataAccessService {
     }
 
     int setBaseSalaryPerHour() {
-
+        return 0;
     }
 }

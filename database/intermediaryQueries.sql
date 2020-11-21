@@ -69,3 +69,10 @@ UPDATE employee E
     INNER JOIN employee EM ON EM.HotelID = E.HotelID
 SET E.BaseSalaryPerHour = 200
 WHERE E.EmployeeID = 5 AND EM.UserEmail = 'akhmed.sakip@nu.edu.kz';
+
+
+SELECT rhp.Privilege
+FROM user
+INNER JOIN role r ON user.Role = r.Role
+INNER JOIN role_has_privilege rhp on r.Role = rhp.Role
+WHERE user.Email = 'akhmed.sakip@nu.edu.kz';
