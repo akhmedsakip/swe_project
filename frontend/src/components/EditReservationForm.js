@@ -1,15 +1,16 @@
 import React, {useContext, useState} from 'react';
 import PropTypes from 'prop-types';
 import {useFormik} from "formik";
-import {editFormLineSchema} from "../utils/validationSchemas";
+import {editReservationFormSchema} from "../utils/validationSchemas";
 import AllReservationsContext from "../contexts/AllReservationsContext";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import Select from "@material-ui/core/Select";
 import TextFieldWithError from '../shared/TextFieldWithError';
+import {makeStyles} from "@material-ui/core/styles";
 
-
-const EditForm = () => {
-    let userInfo = { FirstName: '', LastName: '', PhoneNumber: '' }
+const EditReservationForm = () => {
+    let userInfo = { FirstName: '', LastName: '', PhoneNumber: '', Gender: ''}
     const formik = useFormik({
         initialValues: {
             userInfo            
@@ -18,7 +19,7 @@ const EditForm = () => {
         onSubmit: values => {
             console.log("Form info", values);
         },
-        validationSchema: editFormLineSchema
+        validationSchema: editReservationFormSchema
       });
 
     return (
@@ -44,17 +45,19 @@ const EditForm = () => {
                         value={formik.values.PhoneNumber}
                         error={!!formik.errors.PhoneNumber}
                         fullWidth/>
-                <Button color="primary" type={'submit'}
-                            variant={'outlined'} >
-                            Submit
-                </Button>
+                <Select fullWidth native onChange={formik.handleChange.Gender} value={formik.values.Gender}
+                                  inputProps={{dir:'rtl'}} error={!!formik.errors.Gender}>
+                    <option aria-label="None" value="" />
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </Select>
+
+                {/* <Button color="primary" type={'submit'}>
+                    Submit
+                </Button> */}
             </form>  
         
     );
 };
 
-EditForm.propTypes = {
-    closeDialog: PropTypes.func.isRequired,
-};
-
-export default EditForm;
+export default EditReservationForm;

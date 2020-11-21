@@ -52,11 +52,27 @@ export const changePasswordSchema = yup.object().shape({
 const phoneRegExp = /^\+[0-9]?()[0-9](\s|\S)(\d[0-9]{7})$/
 // Taken from https://www.regextester.com/94816
 
-export const editFormLineSchema = yup.object().shape({
+export const editReservationFormSchema = yup.object().shape({
     FirstName: yup.string().required("First name is empty").nullable(),
     LastName: yup.string().required("Second name is empty").min(6, "Minimum length of Last Name is 6"),
     PhoneNumber: yup.string().required("Phone number is empty").matches(phoneRegExp, "Invalid phone"),
+    Gender: yup.string().required("Gender is empty"),
 });
+
+
+const salaryRegExp = /^[0-9]*$/
+
+export const editEmployeeFormSchema = yup.object().shape({
+    From: yup.string().required("From time is empty"),
+    To: yup.string().required("To time is empty"),
+    Salary: yup.string().required("Salary is empty").matches(salaryRegExp, "Salary should contain only numbers"),
+});
+
+const CoeffRegExp = /^[0-9]*([,.][0-9]*)?$/
+export const editSeasonFormSchema = yup.object().shape({
+    Coeff: yup.string().required("Coefficient is empty").matches(CoeffRegExp, "Invalid Coefficient"),
+});
+
 export const reservationSchema = yup.object().shape({
     phoneNumber: yup.string().required("Phone number is empty").matches(phoneRegExp, "Invalid phone"),
     firstName: yup.string().required("First name is empty"),
