@@ -30,6 +30,6 @@ public class ReservationService {
     }
 
     public int deleteHotelReservation(int orderId, String email) {
-        return this.reservationDataAccessService.deleteReservation(orderId, email);
+        return this.reservationDataAccessService.deleteHotelReservation(orderId, email);
     }
 }
