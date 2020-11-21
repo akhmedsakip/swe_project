@@ -14,10 +14,22 @@ const AllReservationsTableRow = ({ row }) => {
   const { state, dispatch } = useContext(AppContext);
   const { userInfo } = state.user;
 
+  console.log(row);
+
   return <TableRow>
-    {Object.keys(row).map((cell) =>
-      <TableCell key={row[cell]} align="center">{row[cell]}</TableCell>
-    )}
+    <TableCell align="center">{row.reservation.orderId}</TableCell>
+    <TableCell align="center">{row.person.firstName}</TableCell>
+    <TableCell align="center">{row.person.lastName}</TableCell>
+    <TableCell align="center">{row.person.phoneNumber}</TableCell>
+    <TableCell align="center">{row.person.gender}</TableCell>
+    <TableCell align="center">{row.reservation.hotel}</TableCell>
+    <TableCell align="center">{row.reservation.roomType}</TableCell>
+    <TableCell align="center">{row.reservation.checkInDate}</TableCell>
+    <TableCell align="center">{row.reservation.checkOutDate}</TableCell>
+    <TableCell align="center">{row.reservation.orderDateTime}</TableCell>
+    <TableCell align="center">{row.reservation.orderPrice}</TableCell>
+    <TableCell align="center">{row.reservation.status}</TableCell>
+
     <TableCell align="center">
 
       {userInfo.privileges.includes(WRITE_ALL_USERS)

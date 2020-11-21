@@ -8,7 +8,7 @@ import AppContext from '../../../store/AppContext';
 import AllReservationsTableRow from './AllReservationsTableRow';
 
 const tableName = 'Manager: All reservations';
-const columnNames = ['Order ID', 'Email', 'First Name', 'Last Name', 'Hotel', 'Room Type', 'Check In', 'Check Out', 'Reservation Date', 'Status', 'Action']
+const columnNames = ['Order ID', 'First Name', 'Last Name', 'Phone Number', 'Gender','Hotel', 'Room Type', 'Check In', 'Check Out', 'Reservation Date', 'Price', 'Status', 'Action']
 
 const AllDataTable = ({ searchTerm }) => {
 
@@ -28,9 +28,9 @@ const AllDataTable = ({ searchTerm }) => {
       }
       {
         allReservations.length && !loading ? allReservations.map((row, i) => (
-          row.FirstName.toLocaleLowerCase().includes(searchTerm)
-            || row.LastName.toLocaleLowerCase().includes(searchTerm)
-            || row.Email.toLocaleLowerCase().includes(searchTerm) ?
+          row.person.firstName.toLocaleLowerCase().includes(searchTerm)
+            || row.person.lastName.toLocaleLowerCase().includes(searchTerm)
+            || row.reservation.orderId.toString().toLocaleLowerCase().includes(searchTerm) ?
             <AllReservationsTableRow row={row} key={row.orderId} />
             : null
         )) : null
