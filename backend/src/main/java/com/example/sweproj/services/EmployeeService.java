@@ -15,4 +15,8 @@ public class EmployeeService {
     public List<Employee> getHotelEmployees() {
         return this.employeeDataAccessService.getHotelEmployees();
     }
+
+    public int setBaseSalaryPerHour(int employeeId, int baseSalaryPerHour) {
+        return this.employeeDataAccessService.setBaseSalaryPerHour(employeeId, baseSalaryPerHour);
+    }
 }
