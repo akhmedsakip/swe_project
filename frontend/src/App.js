@@ -12,9 +12,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import PrivateAdminRoute from "./components/PrivateAdminRoute";
 import StoreProvider from "./store/store";
 import Reservations from "./pages/reservations/Reservations";
-import EmployeeSchedule from "./pages/employeeSchedule/EmployeeSchedule";
 import AdminTableInstance from "./pages/admin-table/Instance";
-import AllReservations from "./pages/allReservations/AllReservations";
 import SeasonalRates from "./pages/seasonal-rates/SeasonalRates";
 import SeasonWeekDays from "./pages/seasonal-rates/season-weekdays/SeasonWeekDays";
 import Employees from "./pages/employees/Employees";
@@ -33,8 +31,6 @@ function App() {
             <Route path="/availability" component={AvailabilityPage} />
             <PrivateRoute path="/reservations" component={Reservations} />
             <PrivateRoute path="/profile" component={ProfilePage} />
-            <PrivateRoute path="/all-reservations" component={AllReservations} />
-            <PrivateRoute path="/employee-schedules" component={EmployeeSchedule} />
             <Route path="/seasonal-rates" component={SeasonalRates} />
             <Route path="/seasonal-rates-weekdays/:id" component={SeasonWeekDays} />
             <Route path="/employees" component={Employees} />

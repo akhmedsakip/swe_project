@@ -8,4 +8,4 @@ function EmployeesSchedules() {
     )
 }
 
-export default EmployeesSchedules
+export default EmployeesSchedules;
