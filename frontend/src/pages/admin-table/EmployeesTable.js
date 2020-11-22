@@ -6,6 +6,8 @@ import { EMPLOYEES_SET_LOADING, EMPLOYEES_UNSET_LOADING } from '../../store/mana
 import fetchEmployeesAction from '../../actions/employees/fetchEmployeesAction';
 import AppContext from '../../store/AppContext';
 import { useHistory } from 'react-router-dom';
+import Axios from 'axios';
+import editEmployeeAction from '../../actions/employees/editEmployeeAction';
 
 const mapping = {
     "employeeId": "Employee ID",
@@ -43,27 +45,29 @@ const AdminEmployeesTable = () => {
         (async function () {
             dispatch({ type: EMPLOYEES_SET_LOADING });
             await fetchEmployeesAction(dispatch);
-
-            const employees = state.employees.employees.map((employee) => {
-                return {
-                    employeeId: employee.employeeId,
-                    firstName: employee.person.firstName,
-                    lastName: employee.person.lastName,
-                    phoneNumber: employee.person.phoneNumber,
-                    gender: employee.person.gender,
-                    userEmail: employee.userEmail,
-                    employmentDate: employee.employmentDate,
-                    dismissalDate: employee.dismissalDate ? employee.dismissalDate : "",
-                    position: employee.position,
-                    baseSalaryPerHour: employee.baseSalaryPerHour
-                }
-            });
-
-            setObjects(employees);
-
             setTimeout(() => dispatch({ type: EMPLOYEES_UNSET_LOADING }), 300);
         })()
-    }, [state.employees.employees]);
+    }, []);
+
+    const employees = state.employees.employees.map((employee) => {
+        return {
+            employeeId: employee.employeeId,
+            firstName: employee.person.firstName,
+            lastName: employee.person.lastName,
+            phoneNumber: employee.person.phoneNumber,
+            gender: employee.person.gender,
+            userEmail: employee.userEmail,
+            employmentDate: employee.employmentDate,
+            dismissalDate: employee.dismissalDate ? employee.dismissalDate : "",
+            position: employee.position,
+            baseSalaryPerHour: employee.baseSalaryPerHour
+        }
+    });
+
+    const onEditSubmit = async (values) => {
+        await editEmployeeAction(values, dispatch);
+        console.log(values);
+    }
 
     return (
         <AdminTable editableColumns={editableColumns}
@@ -71,16 +75,17 @@ const AdminEmployeesTable = () => {
             mapping={mapping}
             mappingInput={mappingInput}
             tableName={'Employees'}
-            onEditSubmit={(values) => console.log('edit', values)}
+            onEditSubmit={(values) => onEditSubmit(values)}
             onEditSuccess={() => console.log('success edit')}
             onDelete={(values) => console.log('delete', values)}
             onDeleteSuccess={() => console.log('delete')}
-            // onRowClick={(employeeId) => history.push(`/${employeeId}`)}
+            onRowClick={(employeeId) => console.log(employeeId)}
             hasWritePrivilege={true}
             editValidationSchema={schema}
             searchableColumns={Object.keys(mapping)}
-            objects={objects}
+            objects={employees}
             isAddable={false}
+            isDeletable={false}
         />
     )
 }
