@@ -72,7 +72,7 @@ const DesktopMenu = () => {
                     </MenuItem>
                     <MenuItem onClick={() => setOpen(false)}>
                         <Link to="/employee-schedules" className={classes.link}>
-                            Employee Schedules
+                            Employees
                     </Link>
                     </MenuItem>
                     <MenuItem onClick={() => setOpen(false)}>
