@@ -6,6 +6,7 @@ import fetchAllReservationsAction from '../../actions/allReservations/fetchAllRe
 import AppContext from '../../store/AppContext';
 import AdminTable from "../admin-table/AdminTable";
 import {editReservationFormSchema} from "../../utils/validationSchemas";
+import editReservationAction from "../../actions/reservations/editReservationAction";
 
 function AllReservations() {
   const mapping = {
@@ -31,15 +32,10 @@ function AllReservations() {
     "firstName": "text",
     "lastName": "text",
     "phoneNumber": "text",
-    "gender": "tex"
+    "gender": "text"
   }
 
-  const classes = useStyles();
-  const [deletion, setDeletion] = useState(false);
-  const [changeReservation, setChangeReservation] = useState(false);
-  const [row, setRow] = useState({});
   const { state, dispatch } = useContext(AppContext);
-
   useEffect(() => {
     (async function () {
       dispatch({ type: ALL_RESERVATIONS_SET_LOADING });
@@ -47,11 +43,6 @@ function AllReservations() {
       setTimeout(() => dispatch({ type: ALL_RESERVATIONS_UNSET_LOADING }), 300);
     })()
   }, []);
-
-  const handleEdit = (rowObject) => {
-    setRow(rowObject);
-    setChangeReservation(true);
-  }
 
   const allReservations = state.allReservations.allReservations.map((reservation) => {
     return {
@@ -70,6 +61,12 @@ function AllReservations() {
     }
   });
 
+  const onEditSubmit = (values, row)=>{
+    return editReservationAction(values, dispatch);
+  }
+
+  // editReservationAction(allReservations[0]).then(r => {});
+
   return <AdminTable
       objects={allReservations}
       showableColumns={Object.keys(mapping)}
@@ -77,12 +74,15 @@ function AllReservations() {
       editableColumns={editableColumns}
       mapping={mapping}
       mappingInput={mappingInput}
-      onEditSubmit={(row) => handleEdit(row)}
-      onEditSuccess={() => console.log('success add')}
+      onEditSubmit={(values, row) => onEditSubmit(values, row)}
+      onEditSuccess={() => console.log('success edit')}
+      onDelete={(values) => console.log('delete', values)}
+      onDeleteSuccess={() => console.log('delete')}
       isAddable={false}
       hasWritePrivilege={true}
       editValidationSchema={editReservationFormSchema}
       tableName={'Manager: All reservations'}
+      isDeletable={true}
   />
   // <AllReservationsContext.Provider style={{ width: '100%' }} value={{ setDeletion, setChangeReservation, handleEdit }}>
     {/*<div className={classes.root}>*/}
