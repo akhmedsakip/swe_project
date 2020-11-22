@@ -14,7 +14,7 @@ const AdminTableRows = ({}) => {
     return <>
         {
             rows.map((row, i) => {
-                return <TableRow key={i} className={classes.row} onClick={onRowClick}>
+                return <TableRow key={i} className={classes.row} onClick={() => {onRowClick ? onRowClick(row) : console.log('')}}>
                     {
                         showableColumns.map((column, j) => {
                             return <AdminTableCell key={`${i} ${j}`} value={row[column].toString()} searchValue={searchValue} column={column}/>
