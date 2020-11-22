@@ -8,7 +8,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import {makeStyles} from "@material-ui/core/styles";
 
 const AdminTableRows = ({}) => {
-    const {rows, showableColumns, searchValue, setEditRow, hasWritePrivilege, setDeleteRow, onRowClick} = useContext(AdminTableContext);
+    const {rows, showableColumns, searchValue, setEditRow, hasWritePrivilege, setDeleteRow, onRowClick, isDeletable} = useContext(AdminTableContext);
 
     const classes = useStyles({clickable: !!onRowClick})
     return <>
@@ -27,9 +27,11 @@ const AdminTableRows = ({}) => {
                             }}>
                                 <EditIcon />
                             </IconButton>
-                            <IconButton onClick={() => setDeleteRow(row)} >
-                                <DeleteIcon/>
-                            </IconButton>
+                            {
+                                isDeletable ? <IconButton onClick={() => setDeleteRow(row)} >
+                                    <DeleteIcon/>
+                                </IconButton> : null
+                            }
                         </TableCell> : null
                     }
 

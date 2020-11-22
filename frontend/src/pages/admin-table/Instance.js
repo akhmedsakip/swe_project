@@ -74,6 +74,7 @@ const AdminTableInstance = () => {
                        editValidationSchema={schema}
                        searchableColumns={Object.keys(objects[0])} objects={objects}
                        isAddable={true}
+                       isDeletable={false}
     />
 }
 

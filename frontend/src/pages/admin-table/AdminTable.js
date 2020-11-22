@@ -22,7 +22,7 @@ import AddDialog from "./components/add-dialog/AddDialog";
 import DeleteDialog from "./components/delete-dialog/DeleteDialog";
 
 const AdminTable = (props) => {
-    const {objects, tableName, hasWritePrivilege, isAddable} = props
+    const {objects, tableName, hasWritePrivilege, isAddable, isDeletable} = props
     const classes = useStyles();
 
     const [searchColumn, setSearchColumn] = useState('all');
@@ -77,7 +77,7 @@ const AdminTable = (props) => {
             </TableContainer>
         <EditDialog />
         {isAddable ? <AddDialog /> : null}
-        <DeleteDialog />
+        {isDeletable ? <DeleteDialog /> : null}
         </AdminTableContext.Provider>
     )
 }
@@ -94,8 +94,9 @@ AdminTable.propTypes = {
     mappingInput: PropTypes.object.isRequired,
     onEditSubmit: PropTypes.func.isRequired,
     onEditSuccess: PropTypes.func.isRequired,
-    onDelete: PropTypes.func.isRequired,
-    onDeleteSuccess: PropTypes.func.isRequired,
+    isDeletable: PropTypes.bool.isRequired,
+    onDelete: PropTypes.func,
+    onDeleteSuccess: PropTypes.func,
     onRowClick: PropTypes.func,
     onAddSubmit: PropTypes.func,
     onAddSuccess: PropTypes.func,
