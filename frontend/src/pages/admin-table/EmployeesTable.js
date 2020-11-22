@@ -38,7 +38,6 @@ const AdminEmployeesTable = () => {
 
     // const {loading, onSubmit, result, error} = useFetch();
     const { state, dispatch } = useContext(AppContext);
-    const [objects, setObjects] = useState([]);
     const history = useHistory();
 
     useEffect(() => {
@@ -51,22 +50,26 @@ const AdminEmployeesTable = () => {
 
     const employees = state.employees.employees.map((employee) => {
         return {
-            employeeId: employee.employeeId,
-            firstName: employee.person.firstName,
-            lastName: employee.person.lastName,
-            phoneNumber: employee.person.phoneNumber,
-            gender: employee.person.gender,
-            userEmail: employee.userEmail,
-            employmentDate: employee.employmentDate,
+            employeeId: employee.employeeId ? employee.employeeId : "",
+            firstName: employee.person.firstName ? employee.person.firstName : "",
+            lastName: employee.person.lastName ? employee.person.lastName : "",
+            phoneNumber: employee.person.phoneNumber ? employee.person.phoneNumber : "",
+            gender: employee.person.gender ? employee.person.gender : "",
+            userEmail: employee.userEmail ? employee.userEmail : "",
+            employmentDate: employee.employmentDate ? employee.employmentDate : "",
             dismissalDate: employee.dismissalDate ? employee.dismissalDate : "",
-            position: employee.position,
-            baseSalaryPerHour: employee.baseSalaryPerHour
+            position: employee.position ? employee.position : "",
+            baseSalaryPerHour: employee.baseSalaryPerHour ? employee.baseSalaryPerHour : ""
         }
     });
 
-    const onEditSubmit = async (values) => {
-        await editEmployeeAction(values, dispatch);
-        console.log(values);
+    const onEditSubmit = (values, row) => {
+        return editEmployeeAction(
+            {
+                employeeId: row.employeeId,
+                baseSalaryPerHour: parseInt(values.baseSalaryPerHour)
+            },
+            dispatch);
     }
 
     return (
@@ -75,11 +78,9 @@ const AdminEmployeesTable = () => {
             mapping={mapping}
             mappingInput={mappingInput}
             tableName={'Employees'}
-            onEditSubmit={(values) => onEditSubmit(values)}
+            onEditSubmit={(values, row) => onEditSubmit(values, row)}
             onEditSuccess={() => console.log('success edit')}
-            onDelete={(values) => console.log('delete', values)}
-            onDeleteSuccess={() => console.log('delete')}
-            onRowClick={(employeeId) => console.log(employeeId)}
+            onRowClick={(employee) => history.push(`${history.location.pathname}?employeeId=${employee.employeeId}`)}
             hasWritePrivilege={true}
             editValidationSchema={schema}
             searchableColumns={Object.keys(mapping)}

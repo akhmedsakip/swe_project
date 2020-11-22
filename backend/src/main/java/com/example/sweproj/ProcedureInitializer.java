@@ -44,7 +44,6 @@ public class ProcedureInitializer {
                 admin.setPassword("123123");
                 admin.encodePassword(passwordEncoder.encode(admin.getPassword()));
                 admin.setEmail("admin_" + i + "@amita.kz");
-                System.out.println("Hello");
                 userService.addUser(admin);
                 User moderator = new User();
                 moderator.setFirstName("Test");
