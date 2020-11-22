@@ -1,7 +1,6 @@
-DROP PROCEDURE IF EXISTS insertSeasonWeekDay;
+DROP PROCEDURE IF EXISTS deleteSeason;
 
-CREATE PROCEDURE insertSeasonWeekDay(IN _seasonId INT, IN _userEmail VARCHAR(45), IN _dayOfWeek VARCHAR(15),
-                                  IN _coefficient FLOAT)
+CREATE PROCEDURE deleteSeason(IN _seasonId INT, IN _userEmail VARCHAR(45))
 BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
         BEGIN
@@ -19,22 +18,19 @@ BEGIN
     WHERE S.SeasonID = _seasonId;
 
     IF _seasonId IS NULL THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Access error, trying to edit season from another hotel';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Access error, trying to delete season from another hotel';
     end if;
 
-    IF _coefficient <= 0.01 THEN
-        SIGNAL SQLSTATE '42000' SET MESSAGE_TEXT = 'Coefficient should be at least 0.01';
-    end if;
+    DELETE hwds, shdow
+    FROM hotel_works_during_season hwds
+             INNER JOIN season_has_day_of_week shdow ON hwds.SeasonID = shdow.SeasonID
+    WHERE hwds.SeasonID = _seasonId;
 
-
-    INSERT INTO season_has_day_of_week
-        (SeasonID, DayOfWeek, Coefficient)
-    VALUES (_seasonId, _dayOfWeek, _coefficient)
-    ON DUPLICATE KEY UPDATE SeasonID = _seasonId,
-                            DayOfWeek  = _dayOfWeek,
-                            Coefficient  = _coefficient;
+    DELETE
+    FROM season
+    WHERE SeasonID = _seasonId;
 
     COMMIT;
 END;
 
-CALL insertSeasonWeekDay(1, 'akhmed.sakip@nu.edu.kz', 'Monday', 1.9);
+CALL deleteSeason(1, 'akhmed.sakip@nu.edu.kz');

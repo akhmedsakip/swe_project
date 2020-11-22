@@ -2,7 +2,6 @@ package com.example.sweproj;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 @Repository
 public class ProcedureInitializer {
@@ -19,6 +18,7 @@ public class ProcedureInitializer {
         this.deleteWorkingDayProcedure();
         this.deleteHotelReservationProcedure();
         this.insertSeasonWeekDayProcedure();
+        this.deleteSeasonProcedure();
     }
 
     void createPriceProcedure() {
@@ -304,6 +304,44 @@ public class ProcedureInitializer {
                 "    ON DUPLICATE KEY UPDATE SeasonID = _seasonId,\n" +
                 "                            DayOfWeek  = _dayOfWeek,\n" +
                 "                            Coefficient  = _coefficient;\n" +
+                "\n" +
+                "    COMMIT;\n" +
+                "END;";
+        jdbcTemplate.execute(dropProcedureSql);
+        jdbcTemplate.execute(createProcedureSql);
+    }
+
+    void deleteSeasonProcedure() {
+        String dropProcedureSql = "DROP PROCEDURE IF EXISTS deleteSeason;";
+        String createProcedureSql = "CREATE PROCEDURE deleteSeason(IN _seasonId INT, IN _userEmail VARCHAR(45))\n" +
+                "BEGIN\n" +
+                "    DECLARE EXIT HANDLER FOR SQLEXCEPTION\n" +
+                "        BEGIN\n" +
+                "            ROLLBACK;\n" +
+                "            RESIGNAL;\n" +
+                "        END;\n" +
+                "\n" +
+                "    START TRANSACTION;\n" +
+                "\n" +
+                "    SELECT MAX(S.SeasonID)\n" +
+                "    INTO _seasonId\n" +
+                "    FROM season S\n" +
+                "             INNER JOIN hotel_works_during_season hwds ON S.SeasonID = hwds.SeasonID\n" +
+                "             INNER JOIN employee e ON e.HotelID = hwds.HotelID AND e.UserEmail = _userEmail\n" +
+                "    WHERE S.SeasonID = _seasonId;\n" +
+                "\n" +
+                "    IF _seasonId IS NULL THEN\n" +
+                "        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Access error, trying to delete season from another hotel';\n" +
+                "    end if;\n" +
+                "\n" +
+                "    DELETE hwds, shdow\n" +
+                "    FROM hotel_works_during_season hwds\n" +
+                "             INNER JOIN season_has_day_of_week shdow ON hwds.SeasonID = shdow.SeasonID\n" +
+                "    WHERE hwds.SeasonID = _seasonId;\n" +
+                "\n" +
+                "    DELETE\n" +
+                "    FROM season\n" +
+                "    WHERE SeasonID = _seasonId;\n" +
                 "\n" +
                 "    COMMIT;\n" +
                 "END;";

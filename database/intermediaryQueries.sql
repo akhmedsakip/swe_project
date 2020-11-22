@@ -1,16 +1,3 @@
-UPDATE user
-SET Role = 'ROLE_ADMIN'
-WHERE Email = 'akhmed.sakip@nu.edu.kz';
-
-INSERT INTO person (Gender, FirstName, LastName, PhoneNumber, UserEmail)
-VALUES ('Male', 'Akhmed', 'Sakip', '+77776666642', 'akhmed.sakip@nu.edu.kz');
-
-INSERT INTO employee (EmployeeID, EmploymentDate, HotelID)
-VALUES ((SELECT PersonID FROM person WHERE UserEmail = 'akhmed.sakip@nu.edu.kz'), CURDATE(), 1);
-
-INSERT INTO administrative_staff (AdministrativeStaffID, AdministrativePosition)
-VALUES ((SELECT EmployeeID FROM employee WHERE UserEmail = 'akhmed.sakip@nu.edu.kz'), 'Manager');
-
 SELECT RHP.Privilege
 FROM user
 INNER JOIN role ON role.Role = user.Role
@@ -90,10 +77,10 @@ INNER JOIN hotel_works_during_season hwds ON s.SeasonID = hwds.SeasonID
 INNER JOIN employee e on hwds.HotelID = e.HotelID
 WHERE e.UserEmail = 'akhmed.sakip@nu.edu.kz';
 
-SELECT hwds.Coefficient
+SELECT hwds.DayOfWeek, hwds.Coefficient
 FROM season_has_day_of_week hwds
 INNER JOIN season s ON s.SeasonID = hwds.SeasonID
 INNER JOIN hotel_works_during_season h on s.SeasonID = h.SeasonID
 INNER JOIN employee e ON e.HotelID = h.HotelID
-WHERE e.UserEmail = 'akhmed.sakip@nu.edu.kz' AND hwds.DayOfWeek = 'Monday' AND s.SeasonID = 1 LIMIT 1;
+WHERE e.UserEmail = 'akhmed.sakip@nu.edu.kz' AND s.SeasonID = 1;
 
