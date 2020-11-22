@@ -370,18 +370,17 @@ public class ProcedureInitializer {
                 "             INNER JOIN employee e ON e.HotelID = hwds.HotelID AND e.UserEmail = _userEmail\n" +
                 "    WHERE S.SeasonID = _seasonId;\n" +
                 "\n" +
-                "    IF _seasonId IS NULL THEN\n" +
+                "   IF _seasonId IS NULL THEN\n" +
                 "        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Access error, trying to delete season from another hotel';\n" +
                 "    end if;\n" +
                 "\n" +
-                "    DELETE hwds, shdow\n" +
-                "    FROM hotel_works_during_season hwds\n" +
-                "             INNER JOIN season_has_day_of_week shdow ON hwds.SeasonID = shdow.SeasonID\n" +
-                "    WHERE hwds.SeasonID = _seasonId;\n" +
+                "    DELETE FROM hotel_works_during_season hwds WHERE hwds.SeasonID = _seasonId;\n" +
+                "\n" +
+                "    DELETE FROM season_has_day_of_week shdow WHERE shdow.SeasonID = _seasonId;\n" +
                 "\n" +
                 "    DELETE\n" +
                 "    FROM season\n" +
-                "    WHERE SeasonID = _seasonId;\n" +
+                "    WHERE SeasonID = _seasonId;" +
                 "\n" +
                 "    COMMIT;\n" +
                 "END;";

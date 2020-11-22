@@ -21,10 +21,9 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Access error, trying to delete season from another hotel';
     end if;
 
-    DELETE hwds, shdow
-    FROM hotel_works_during_season hwds
-             INNER JOIN season_has_day_of_week shdow ON hwds.SeasonID = shdow.SeasonID
-    WHERE hwds.SeasonID = _seasonId;
+    DELETE FROM hotel_works_during_season hwds WHERE hwds.SeasonID = _seasonId;
+
+    DELETE FROM season_has_day_of_week shdow WHERE shdow.SeasonID = _seasonId;
 
     DELETE
     FROM season
@@ -33,4 +32,4 @@ BEGIN
     COMMIT;
 END;
 
-CALL deleteSeason(1, 'akhmed.sakip@nu.edu.kz');
+CALL deleteSeason(19, 'admin_1@amita.kz');
