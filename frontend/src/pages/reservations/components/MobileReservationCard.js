@@ -9,6 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import ReservationsContext from '../../../contexts/ReservationsContext';
 import PropTypes from "prop-types";
 import DesktopTableRow from "./DesktopTableRow";
+import AppContext from "../../../store/AppContext";
+import {RESERVATIONS_SET_DELETE} from "../../../store/reservations/reservationActionTypes";
 
 const useStyles = makeStyles({
   root: {
@@ -33,7 +35,13 @@ const useStyles = makeStyles({
 const MobileReservationCard = ({ row }) => {
 
   const {setDeletion} = useContext(ReservationsContext);
+  const {state, dispatch} = useContext(AppContext);
   const classes = useStyles();
+
+  const onDeleteClick = () => {
+    setDeletion(true);
+    dispatch({type: RESERVATIONS_SET_DELETE, payload: row.orderId});
+  }
 
   return (
     <Card className={classes.root} variant="outlined">
@@ -62,6 +70,14 @@ const MobileReservationCard = ({ row }) => {
             {row.roomType}
           </Typography>
         </div>
+        <div className={classes.mainInfo}>
+          <Typography className={`${classes.font20} ${classes.marginRight12}`} gutterBottom color="primary">
+            Order Price:
+          </Typography>
+          <Typography className={classes.font20}>
+            {row.orderPrice}
+          </Typography>
+        </div>
         <Typography color="textSecondary">
           Check In: {row.checkInDate}
         </Typography>
@@ -74,7 +90,7 @@ const MobileReservationCard = ({ row }) => {
       </CardContent>
 
       <CardActions>
-        <Button color="secondary" onClick={() => setDeletion(true)}>Delete Order</Button>
+        <Button color="secondary" onClick={onDeleteClick}>Delete Order</Button>
       </CardActions>
     </Card>
   );
@@ -90,6 +106,7 @@ MobileReservationCard.propTypes = {
     checkInDate: PropTypes.string.isRequired,
     checkOutDate: PropTypes.string.isRequired,
     orderDateTime: PropTypes.string.isRequired,
+    orderPrice: PropTypes.number.isRequired,
     status: PropTypes.string.isRequired,
   })
 }

@@ -8,10 +8,18 @@ import TableRow from "@material-ui/core/TableRow";
 import React, {useContext, useRef} from "react";
 import ReservationsContext from "../../../contexts/ReservationsContext";
 import PropTypes from 'prop-types';
+import {RESERVATIONS_SET_DELETE} from "../../../store/reservations/reservationActionTypes";
+import AppContext from "../../../store/AppContext";
 
 const DesktopTableRow = ({row}) => {
     const {setDeletion} = useContext(ReservationsContext);
+    const {state, dispatch} = useContext(AppContext);
     const componentRef = useRef([]);
+
+    const onDeleteClick = () => {
+        setDeletion(true);
+        dispatch({type: RESERVATIONS_SET_DELETE, payload: row.orderId});
+    }
 
     return <TableRow>
         <TableCell align="center">{row.orderId}</TableCell>
@@ -20,9 +28,10 @@ const DesktopTableRow = ({row}) => {
         <TableCell align="center">{row.checkInDate}</TableCell>
         <TableCell align="center">{row.checkOutDate}</TableCell>
         <TableCell align="center">{row.orderDateTime}</TableCell>
+        <TableCell align="center">{row.orderPrice}</TableCell>
         <TableCell align="center">{row.status}</TableCell>
         <TableCell align="center">
-            <IconButton onClick={() => setDeletion(true)}>
+            <IconButton onClick={onDeleteClick}>
                 <DeleteIcon />
             </IconButton>
             <ReactToPrint
@@ -48,6 +57,7 @@ DesktopTableRow.propTypes = {
         checkInDate: PropTypes.string.isRequired,
         checkOutDate: PropTypes.string.isRequired,
         orderDateTime: PropTypes.string.isRequired,
+        orderPrice: PropTypes.number.isRequired,
         status: PropTypes.string.isRequired,
     })
 }

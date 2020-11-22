@@ -1,9 +1,10 @@
-import { useMediaQuery, useTheme } from '@material-ui/core';
-import React, { useState } from 'react';
-import MyOrdersContext from "../../../contexts/ReservationsContext";
-import DeleteReservationDialog from '../../../components/DeleteDialog';
-import DesktopTable from './DesktopTable';
+import React, { useContext, useState } from 'react';
+import AppContext from '../../../store/AppContext';
 import MobileTable from './MobileTable';
+import DesktopTable from './DesktopTable';
+import { useMediaQuery, useTheme } from '@material-ui/core';
+import DeleteReservationDialog from './DeleteReservationDialog';
+import MyOrdersContext from "../../../contexts/ReservationsContext";
 
 const ReservationsTable = () => {
 
@@ -13,11 +14,11 @@ const ReservationsTable = () => {
   const isMobileScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <MyOrdersContext.Provider style={{ width: '100%' }} value={{ deletion, setDeletion }}>
+    <MyOrdersContext.Provider style={{ width: '100%' }} value={{deletion, setDeletion}}>
       {isMobileScreen ? <MobileTable />
         : <DesktopTable />
       }
-      <DeleteReservationDialog onClose={() => setDeletion(false)} open={deletion} questionText={'Do you confirm cancellation of your room order? It cannot be restored.'}/>
+      <DeleteReservationDialog onClose={() => setDeletion(false)} open={deletion} />
     </MyOrdersContext.Provider>
   );
 }
