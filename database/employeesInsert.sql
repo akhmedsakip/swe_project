@@ -1,23 +1,23 @@
 UPDATE user
 SET Role = 'ROLE_ADMIN'
-WHERE Email = 'akhmed.sakip@nu.edu.kz';
+WHERE Email = 'watson@gmail.com';
 
 INSERT INTO person (Gender, FirstName, LastName, PhoneNumber)
-VALUES ('Male', 'Akhmed', 'Sakip', '+77776666642');
+VALUES ('Male', 'Madi', 'Karsybekov', '+77776666642');
 
 INSERT INTO employee (EmployeeID, EmploymentDate, HotelID, UserEmail)
-VALUES ((SELECT PersonID FROM person WHERE PhoneNumber = '+77776666642'), CURDATE(), 1, 'akhmed.sakip@nu.edu.kz');
+VALUES ((SELECT PersonID FROM person WHERE PhoneNumber = '+77776666642'), CURDATE(), 1, 'watson@gmail.com');
 
 INSERT INTO administrative_staff (AdministrativeStaffID, AdministrativePosition)
-VALUES ((SELECT EmployeeID FROM employee WHERE UserEmail = 'akhmed.sakip@nu.edu.kz'), 'Manager');
+VALUES ((SELECT EmployeeID FROM employee WHERE UserEmail = 'watson@gmail.com'), 'Manager');
 
 SELECT RHP.Privilege
 FROM user
 INNER JOIN role ON role.Role = user.Role
 INNER JOIN role_has_privilege RHP ON RHP.Role = role.Role
-WHERE user.Email = 'akhmed.sakip@nu.edu.kz';
+WHERE user.Email = 'watson@gmail.com';
 
-SELECT * FROM `user` WHERE Email = 'akhmed.sakip@nu.edu.kz';
+SELECT * FROM `user` WHERE Email = 'watson@gmail.com';
 
 UPDATE user
 SET Role = 'ROLE_ADMIN'

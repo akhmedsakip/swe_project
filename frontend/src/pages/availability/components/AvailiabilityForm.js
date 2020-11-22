@@ -18,6 +18,7 @@ import {
     AVAILABILITY_SET_LOADING,
     AVAILABILITY_UNSET_LOADING
 } from "../../../store/availability/availabilityActionTypes";
+import TextField from "@material-ui/core/TextField";
 
 
 function AvailiabilityForm() {
@@ -70,12 +71,18 @@ function AvailiabilityForm() {
             <Spinner size={'big'} />
         </div>
     }
+
+    console.log(errors)
+    console.log(errors.numberOfPeople)
+
     return (
         <form onChange={handleChange} onBlur={handleBlur} onSubmit={handleSubmit} className={classes.root}>
             <div className={`${classes.row} ${classes.marginBottom12}`}>
                 <TextFieldWithError name="numberOfPeople" label="Number of people"
-                                    errorMessage={errors.numPeople} fullWidth
-                                    error={touched.numPeople && !!errors.numPeople}
+                                    helperText={!!errors.numberOfPeople ? errors.numberOfPeople : null}
+                                    // errorMessage={errors.numberOfPeople}
+                                    fullWidth
+                                    error={!!errors.numberOfPeople}
                                     className={classes.marginRight16}
                 />
                 <FormControl fullWidth className={classes.marginRight16} error={touched.city && !!errors.city}>
@@ -93,16 +100,28 @@ function AvailiabilityForm() {
                 </FormControl>
             </div>
             <div className={`${classes.row} ${classes.marginBottom12}`}>
-                <TextFieldWithError label="From" type="date" name="checkInDate" fullWidth
-                                    className={classes.marginRight16}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }} errorMessage={errors.fromDate} error={touched.fromDate && !!errors.fromDate} />
-                <TextFieldWithError label="To" type="date" name="checkOutDate" fullWidth
-                                    className={classes.marginRight16}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }} errorMessage={errors.toDate} error={touched.toDate && !!errors.toDate}/>
+                <TextField
+                    label="From"
+                    type="date"
+                    name="checkInDate"
+                    fullWidth
+                    className={classes.marginRight16}
+                    InputLabelProps={{shrink: true}}
+                    helperText={!!errors.checkInDate ? errors.checkInDate : null}
+                    // errorMessage={errors.checkInDate}
+                    error={!!errors.checkInDate}
+                />
+                <TextField
+                    label="To"
+                    type="date"
+                    name="checkOutDate"
+                    fullWidth
+                    className={classes.marginRight16}
+                    InputLabelProps={{shrink: true}}
+                    helperText={!!errors.checkOutDate ? errors.checkOutDate : null}
+                    // errorMessage={errors.checkOutDate}
+                    error={!!errors.checkOutDate}
+                />
             </div>
             <LoadingButton loading={loading} disabled={!isValid} variant="contained"
                            color="primary" type={'submit'} className={classes.button}>
