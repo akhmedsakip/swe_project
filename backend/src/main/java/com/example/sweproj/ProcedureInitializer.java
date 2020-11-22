@@ -17,6 +17,7 @@ public class ProcedureInitializer {
         this.createReservationProcedure();
         this.insertWorkingDayProcedure();
         this.deleteWorkingDayProcedure();
+        this.deleteHotelReservationProcedure();
     }
 
     void createPriceProcedure() {
@@ -229,6 +230,38 @@ public class ProcedureInitializer {
                 "    FROM employee_works_on_day_of_week\n" +
                 "    WHERE EmployeeID = _employeeId\n" +
                 "      AND DayOfWeek = _dayOfWeek;\n" +
+                "    COMMIT;\n" +
+                "END;";
+        jdbcTemplate.execute(dropProcedureSql);
+        jdbcTemplate.execute(createProcedureSql);
+    }
+
+    void deleteHotelReservationProcedure() {
+        String dropProcedureSql = "DROP PROCEDURE IF EXISTS deleteHotelReservation;";
+        String createProcedureSql = "CREATE PROCEDURE deleteHotelReservation(IN _orderId INT, IN _userEmail VARCHAR(45))\n" +
+                "BEGIN\n" +
+                "    DECLARE EXIT HANDLER FOR SQLEXCEPTION\n" +
+                "        BEGIN\n" +
+                "            ROLLBACK;\n" +
+                "            RESIGNAL;\n" +
+                "        END;\n" +
+                "\n" +
+                "    START TRANSACTION;\n" +
+                "    SELECT MAX(O.OrderID)\n" +
+                "    INTO _orderId\n" +
+                "    FROM `order` O\n" +
+                "             INNER JOIN employee EM ON EM.UserEmail = _userEmail AND EM.HotelID = O.HotelID\n" +
+                "    WHERE O.OrderID = _orderId;\n" +
+                "\n" +
+                "    IF _orderId IS NULL THEN\n" +
+                "        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Access error, trying to delete reservation from another hotel';\n" +
+                "    END IF;\n" +
+                "\n" +
+                "    DELETE O, OD\n" +
+                "    FROM order_details OD\n" +
+                "             INNER JOIN `order` O on O.OrderID = OD.OrderID and O.HotelID = OD.OrderHotelID\n" +
+                "    WHERE O.OrderID = _orderId;\n" +
+                "\n" +
                 "    COMMIT;\n" +
                 "END;";
         jdbcTemplate.execute(dropProcedureSql);

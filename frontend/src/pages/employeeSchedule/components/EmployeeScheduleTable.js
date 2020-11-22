@@ -75,10 +75,12 @@ const rows = [
     },
 ];
 
-const EmployeeScheduleTable = () => {
+const EmployeeScheduleTable = ({ searchTerm }) => {
 
     const data = rows;
     const loading = false;
+
+    searchTerm = searchTerm.toLocaleLowerCase();
 
     return (
         <TableBody>
@@ -91,7 +93,11 @@ const EmployeeScheduleTable = () => {
             }
             {
                 data.length && !loading ? data.map((row, i) => (
-                    <EmployeeScheduleRow row={row} key={row.orderId} />
+                    row.Email.toLocaleLowerCase().includes(searchTerm)
+                        || row.FirstName.toLocaleLowerCase().includes(searchTerm)
+                        || row.LastName.toLocaleLowerCase().includes(searchTerm) ?
+                        <EmployeeScheduleRow row={row} key={row.orderId} />
+                        : null
                 )) : null
             }
             {

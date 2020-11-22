@@ -38,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/logout").authenticated()
                 .antMatchers("/api/reservations").authenticated()
                 .antMatchers(HttpMethod.GET, "/api/reservations/panel").hasAnyAuthority("READ_ALL_ORDERS")
+                .antMatchers(HttpMethod.DELETE, "/api/reservations/panel").hasAnyAuthority("WRITE_ALL_ORDERS")
                 .antMatchers("/api/reservations/**").authenticated()
                 .antMatchers("/api/persons/").authenticated()
                 .antMatchers(HttpMethod.POST, "/api/persons/panel").hasAnyAuthority("WRITE_ALL_USERS")

@@ -79,3 +79,14 @@ export const reservationSchema = yup.object().shape({
     lastName: yup.string().required("Second name is empty"),
     gender: yup.string().required("Gender is empty"),
 });
+
+export const allReservationSchema = yup.object().shape({
+    email: yup.string().required("Email is empty").email("Email is invalid"),
+    phoneNumber: yup.string().required("Phone number is empty").matches(phoneRegExp, "Invalid phone"),
+    firstName: yup.string().required("First name is empty"),
+    lastName: yup.string().required("Second name is empty"),
+    gender: yup.string().required("Gender is empty"),
+    roomType: yup.string().required("Room type is empty"),
+    checkInDate: yup.date().required("Check in date is empty"),
+    checkOutDate: yup.date().required("Check out date is empty"),
+})

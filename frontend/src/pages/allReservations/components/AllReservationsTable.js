@@ -1,19 +1,21 @@
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import React from 'react';
+import React, { useContext } from 'react';
 import withTableContent from '../../../components/hocs/withTableContent';
 import Spinner from "../../../components/Spinner";
+import AppContext from '../../../store/AppContext';
 import AllReservationsTableRow from './AllReservationsTableRow';
 
 const tableName = 'Manager: All reservations';
-const columnNames = ['Order ID', 'Email', 'First Name', 'Last Name', 'Hotel', 'Room Type', 'Check In', 'Check Out', 'Reservation Date', 'Status', 'Action']
-const rows = [{HotelId: "1", Email: 'watson@gmail.com', FirstName: 'Emma', LastName: 'Watson', hotel: "Rixos Almaty", roomType: "Standard", checkInDate: "21-10-2020", checkOutDate: "30-10-2020", orderDateTime: "20-10-2020", status: 'Good',}, { HotelId: "2", Email: 'watson1@gmail.com', FirstName: 'Emma1', LastName: 'Watson1', hotel: "Rixos Borovoe", roomType: "Luxe", checkInDate: "21-10-2020", checkOutDate: "30-10-2020", orderDateTime: "20-10-2020", status: 'bad idk', }];
+const columnNames = ['Order ID', 'First Name', 'Last Name', 'Phone Number', 'Gender','Hotel', 'Room Type', 'Check In', 'Check Out', 'Reservation Date', 'Price', 'Status', 'Action']
 
-const AllDataTable = () => {
+const AllDataTable = ({ searchTerm }) => {
 
-  const data = rows;
-  const loading = false;
+  searchTerm = searchTerm.toLocaleLowerCase();
+
+  const { state } = useContext(AppContext)
+  const { allReservations, loading } = state.allReservations;
 
   return (
     <TableBody>
@@ -25,19 +27,22 @@ const AllDataTable = () => {
         </TableRow> : null
       }
       {
-        data.length && !loading ? data.map((row, i) => (
-          <AllReservationsTableRow row={row} key={row.orderId} />
+        allReservations.length && !loading ? allReservations.map((row, i) => (
+          row.person.firstName.toLocaleLowerCase().includes(searchTerm)
+            || row.person.lastName.toLocaleLowerCase().includes(searchTerm)
+            || row.reservation.orderId.toString().toLocaleLowerCase().includes(searchTerm) ?
+            <AllReservationsTableRow row={row} key={row.orderId} />
+            : null
         )) : null
       }
       {
-        !data.length && !loading ? <TableRow>
+        !allReservations.length && !loading ? <TableRow>
           <TableCell colSpan={8} align={'center'}>
             No data made yet
       </TableCell>
         </TableRow> : null
       }
     </TableBody>
-
   );
 }
 

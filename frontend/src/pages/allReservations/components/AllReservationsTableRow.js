@@ -2,40 +2,51 @@ import IconButton from "@material-ui/core/IconButton";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import DeleteIcon from "@material-ui/icons/Delete";
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import AllReservationsContext from "../../../contexts/AllReservationsContext";
 import EditIcon from "@material-ui/icons/Edit";
 import AddBoxIcon from "@material-ui/icons/AddBox";
+import AppContext from "../../../store/AppContext";
+import { WRITE_ALL_USERS } from "../../../store/user/userPrivelegesTypes";
 
 const AllReservationsTableRow = ({ row }) => {
-  const {setDeletion, setChangeReservation, setAddReservation
-    // , editing, setEditing, formik, loading
-  } = useContext(AllReservationsContext);
+  const { setDeletion, setChangeReservation, handleEdit } = useContext(AllReservationsContext);
+  const { state, dispatch } = useContext(AppContext);
+  const { userInfo } = state.user;
+
+  console.log(row);
 
   return <TableRow>
-    {Object.keys(row).map((cell)=>
-      <TableCell align="center">{row[cell]}</TableCell>
-    )}
+    <TableCell align="center">{row.reservation.orderId}</TableCell>
+    <TableCell align="center">{row.person.firstName}</TableCell>
+    <TableCell align="center">{row.person.lastName}</TableCell>
+    <TableCell align="center">{row.person.phoneNumber}</TableCell>
+    <TableCell align="center">{row.person.gender}</TableCell>
+    <TableCell align="center">{row.reservation.hotel}</TableCell>
+    <TableCell align="center">{row.reservation.roomType}</TableCell>
+    <TableCell align="center">{row.reservation.checkInDate}</TableCell>
+    <TableCell align="center">{row.reservation.checkOutDate}</TableCell>
+    <TableCell align="center">{row.reservation.orderDateTime}</TableCell>
+    <TableCell align="center">{row.reservation.orderPrice}</TableCell>
+    <TableCell align="center">{row.reservation.status}</TableCell>
+
     <TableCell align="center">
-      <IconButton onClick={() => {
-        setAddReservation(true);
-      }}>
-        <AddBoxIcon />
-      </IconButton>
-      <IconButton onClick={() => {
-        setChangeReservation(true);
-      }}>
-        <EditIcon />
-      </IconButton>
-      <IconButton onClick={() => setDeletion(true)}>
-        <DeleteIcon />
-      </IconButton>
-      {/*<Button variant="outlined" color="secondary" className={`${classes.button} ${classes.marginBottom12}`}*/}
-      {/*        onClick={() => {*/}
-      {/*          setChangePassword(true);*/}
-      {/*        }}>*/}
-      {/*  <EditIcon fontSize={"inherit"}/>*/}
-      {/*</Button>*/}
+
+      {userInfo.privileges.includes(WRITE_ALL_USERS)
+        && <>
+          <IconButton onClick={() => {
+            handleEdit(row);
+          }}>
+            <EditIcon />
+          </IconButton>
+
+          <IconButton onClick={() => setDeletion(true)}>
+            <DeleteIcon />
+          </IconButton>
+        </>
+
+      }
+
     </TableCell>
   </TableRow>
 }
