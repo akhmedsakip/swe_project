@@ -11,6 +11,7 @@ const useStyles = makeStyles({
     fontFamily: 'Staatliches',
   },
   rowName: {
+    minWidth: 100,
     fontWeight: 700,
   },
   topBar: {

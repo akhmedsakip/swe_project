@@ -23,6 +23,7 @@ import TextField from "@material-ui/core/TextField";
 
 function AvailiabilityForm() {
     const classes = useStyles();
+    const timeout = useRef(setTimeout(() => {}));
     const {state, dispatch} = useContext(AppContext);
     const {cities} = state.availability;
     const [citiesLoading, setCitiesLoading] = useState(true);
@@ -56,8 +57,9 @@ function AvailiabilityForm() {
 
     useEffect(() => {
         if(cities.length) {
-            setTimeout(() => setCitiesLoading(false), 500);
+            timeout.current = setTimeout(() => setCitiesLoading(false), 500);
         }
+        return () => clearTimeout(timeout.current);
     }, [cities]);
 
     const {handleBlur, handleChange, values, handleSubmit, errors, touched, isValid, setFieldError} = useFormik({
