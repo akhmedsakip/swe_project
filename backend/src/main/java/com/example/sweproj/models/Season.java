@@ -15,7 +15,7 @@ import javax.validation.constraints.Pattern;
 @Valid
 public class Season {
     @JsonProperty @NotNull(message = "Season ID is not specified", groups = {EditSeasonGroup.class})
-    @Min(value = 1, message = "Season ID is less than 1")
+    @Min(value = 1, message = "Season ID is less than 1", groups = {EditSeasonGroup.class})
     private int seasonId;
 
     @JsonProperty @NotNull(message = "Room type name is empty")
