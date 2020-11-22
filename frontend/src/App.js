@@ -16,8 +16,9 @@ import EmployeeSchedule from "./pages/employeeSchedule/EmployeeSchedule";
 import AdminTableInstance from "./pages/admin-table/Instance";
 import AllReservations from "./pages/allReservations/AllReservations";
 import SeasonalRates from "./pages/seasonal-rates/SeasonalRates";
-import AdminEmployeesTable from "./pages/admin-table/EmployeesTable";
 import SeasonWeekDays from "./pages/seasonal-rates/season-weekdays/SeasonWeekDays";
+import Employees from "./pages/employees/Employees";
+import EmployeesSchedules from "./pages/employees/employeesSchedules/EmployeesSchedules";
 
 function App() {
   return (
@@ -36,9 +37,10 @@ function App() {
             <PrivateRoute path="/employee-schedules" component={EmployeeSchedule} />
             <Route path="/seasonal-rates" component={SeasonalRates} />
             <Route path="/seasonal-rates-weekdays/:id" component={SeasonWeekDays} />
+            <Route path="/employees" component={Employees} />
+            <Route path="/employees/:id" component={EmployeesSchedules} />
             <PrivateAdminRoute path="/admin" component={AdminPage} />
             <Route path="/admin-table-example" component={AdminTableInstance} />
-            <Route path="/admin-employees-table" component={AdminEmployeesTable} />
             <Route path="*" render={() => (<Redirect to="/" />)} />
 
           </Switch>
