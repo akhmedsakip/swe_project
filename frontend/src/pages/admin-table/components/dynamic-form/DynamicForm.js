@@ -37,8 +37,7 @@ const DynamicForm = ({row, onSubmitAction, onSuccess, columns, initialValues, in
             return;
         }
         if(error.length) {
-            error.forEach((serverError) =>
-                    setFieldError(serverError.field || columns[0], serverError.message));
+            setServerError(error[0].message || 'Server error');
         } else {
             setServerError(error || 'Server error');
         }

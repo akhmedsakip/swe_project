@@ -8,6 +8,9 @@ import {ADMIN_TABLE_SET_LOADING, ADMIN_TABLE_UNSET_LOADING} from "../../store/ad
 import fetchSeasonsAction from "../../actions/seasonal-rates/fetchSeasonsAction";
 import addSeasonAction from "../../actions/seasonal-rates/addSeasonAction";
 import deleteSeasonAction from "../../actions/seasonal-rates/deleteSeasonAction";
+import {useHistory} from 'react-router-dom';
+import editWeekdayAction from "../../actions/seasonal-rates/editWeekdayAction";
+
 
 const objects = [
     {
@@ -31,6 +34,7 @@ const objects = [
 ]
 
 const showableColumns = ['seasonId', 'name', 'startDate', 'endDate', 'advisory'];
+const addableColumns = ['name', 'startDate', 'endDate', 'advisory'];
 const editableColumns = ['name', 'startDate', 'endDate', 'advisory'];
 const mapping = {
     'name': 'Name',
@@ -50,6 +54,7 @@ const SeasonalRates = () => {
     const classes = useStyles();
     const {state, dispatch} = useContext(AppContext);
     const timeout = useRef(setTimeout(() => {}));
+    const history = useHistory();
 
     const {seasons} = state.seasonalRates;
 
@@ -58,15 +63,18 @@ const SeasonalRates = () => {
             dispatch({type: ADMIN_TABLE_SET_LOADING});
             fetchSeasons();
         }
-        return () => clearTimeout(timeout.current);
     }, [seasons]);
+
+    useEffect(() => {
+        return () => clearTimeout(timeout.current);
+    }, [])
 
     const onAddSubmit = async ({name, startDate, endDate, advisory}) => {
         await addSeasonAction({name, startDate, endDate, advisory});
     }
     const fetchSeasons = async () => {
         await fetchSeasonsAction(dispatch);
-        let a = setTimeout(() => {
+        timeout.current = setTimeout(() => {
             dispatch({type: ADMIN_TABLE_UNSET_LOADING})
         }, 500);
     }
@@ -77,7 +85,7 @@ const SeasonalRates = () => {
     return <Box className={classes.root} display={'flex'} flexDirection={'column'} alignItems='center'>
         <AdminTable objects={seasons}
                     showableColumns={showableColumns} searchableColumns={showableColumns}
-                    editableColumns={editableColumns} addableColumns={showableColumns}
+                    editableColumns={editableColumns} addableColumns={addableColumns}
                     mapping={mapping}
                     mappingInput={mappingInputs}
                     onEditSubmit={(values, row) => console.log('edit', values, row)}
@@ -89,7 +97,7 @@ const SeasonalRates = () => {
                     hasWritePrivilege={true}
                     onAddSubmit={onAddSubmit}
                     onAddSuccess={fetchSeasons}
-                    onRowClick={() => console.log('row clicked')}
+                    onRowClick={(row) => history.push('/seasonal-rates-weekdays/' + row.seasonId)}
                     editValidationSchema={seasonValidationSchema}
                     addValidationSchema={seasonValidationSchema}
                     tableName={'Seasonal rates'} />

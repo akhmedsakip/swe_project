@@ -86,11 +86,15 @@ const AdminTable = (props) => {
                             }
                             {
                                 !loading && objects.length ?
-                                    <AdminTableRows /> : <TableRow>
+                                    <AdminTableRows /> : null
+                            }
+                            {
+                                !loading && !objects.length ?
+                                    <TableRow>
                                         <TableCell align={'center'} colSpan={colSpan}>
                                             Table is empty
                                         </TableCell>
-                                    </TableRow>
+                                    </TableRow> : null
                             }
                         </TableHead>
                     </Table>
