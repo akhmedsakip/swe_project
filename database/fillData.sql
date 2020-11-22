@@ -409,25 +409,34 @@ INSERT INTO privilege
 VALUES ('WRITE_ALL_SCHEDULES');
 
 INSERT INTO role_has_privilege
-VALUES ('ROLE_ADMIN', 'READ_ALL_ORDERS');
+VALUES ('ROLE_ADMIN', (SELECT * FROM privilege));
 
 INSERT INTO role_has_privilege
-VALUES ('ROLE_ADMIN', 'WRITE_ALL_ORDERS');
+    (Role, Privilege)
+SELECT 'ROLE_ADMIN',
+       Privilege
+FROM privilege;
 
-INSERT INTO role_has_privilege
-VALUES ('ROLE_ADMIN', 'WRITE_ALL_USERS');
-
-INSERT INTO role_has_privilege
-VALUES ('ROLE_ADMIN', 'READ_ALL_EMPLOYEES');
-
-INSERT INTO role_has_privilege
-VALUES ('ROLE_ADMIN', 'WRITE_ALL_EMPLOYEES');
-
-INSERT INTO role_has_privilege
-VALUES ('ROLE_ADMIN', 'READ_ALL_SCHEDULES');
-
-INSERT INTO role_has_privilege
-VALUES ('ROLE_ADMIN', 'WRITE_ALL_SCHEDULES');
+# INSERT INTO role_has_privilege
+# VALUES ('ROLE_ADMIN', 'READ_ALL_ORDERS');
+#
+# INSERT INTO role_has_privilege
+# VALUES ('ROLE_ADMIN', 'WRITE_ALL_ORDERS');
+#
+# INSERT INTO role_has_privilege
+# VALUES ('ROLE_ADMIN', 'WRITE_ALL_USERS');
+#
+# INSERT INTO role_has_privilege
+# VALUES ('ROLE_ADMIN', 'READ_ALL_EMPLOYEES');
+#
+# INSERT INTO role_has_privilege
+# VALUES ('ROLE_ADMIN', 'WRITE_ALL_EMPLOYEES');
+#
+# INSERT INTO role_has_privilege
+# VALUES ('ROLE_ADMIN', 'READ_ALL_SCHEDULES');
+#
+# INSERT INTO role_has_privilege
+# VALUES ('ROLE_ADMIN', 'WRITE_ALL_SCHEDULES');
 
 INSERT INTO administrative_position
 VALUES ('Manager');
