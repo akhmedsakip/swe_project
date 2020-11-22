@@ -67,7 +67,7 @@ WHERE E.EmployeeID = 1;
 
 UPDATE employee E
     INNER JOIN employee EM ON EM.HotelID = E.HotelID
-SET E.BaseSalaryPerHour = 200
+SET E.BaseSalaryPerHour = 250
 WHERE E.EmployeeID = 5 AND EM.UserEmail = 'akhmed.sakip@nu.edu.kz';
 
 
