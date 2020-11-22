@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class WorkingDayService {
     @Autowired
@@ -15,6 +17,10 @@ public class WorkingDayService {
 
     public WorkingDay getWorkingDay(WorkingDayRequest info) {
         return this.workingDayDataAccessService.getWorkingDay(info);
+    }
+
+    public List<WorkingDay> getWorkingDays(int employeeId) {
+        return this.workingDayDataAccessService.getWorkingDays(employeeId);
     }
 
     public int changeSchedule(InsertWorkingDayRequest info) {

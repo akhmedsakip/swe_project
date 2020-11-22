@@ -42,7 +42,7 @@ public class EmployeeController {
         }
     }
 
-    @PostMapping("/salary")
+    @PatchMapping("/salary")
     ResponseEntity<String> setBaseSalaryPerHour(@RequestBody SetSalaryRequest setSalaryRequest) {
         List<Message> serverErrors = new ArrayList<>(validationUtil.validate(setSalaryRequest));
         if(serverErrors.size() > 0) {

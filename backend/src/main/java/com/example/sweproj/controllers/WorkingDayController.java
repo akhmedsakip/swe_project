@@ -5,6 +5,7 @@ import com.example.sweproj.dto.ReservationDetailsRequest;
 import com.example.sweproj.dto.ReservationRequest;
 import com.example.sweproj.dto.WorkingDayRequest;
 import com.example.sweproj.models.Person;
+import com.example.sweproj.models.RoomType;
 import com.example.sweproj.models.User;
 import com.example.sweproj.models.WorkingDay;
 import com.example.sweproj.services.WorkingDayService;
@@ -50,7 +51,21 @@ public class WorkingDayController {
         }
     }
 
-    @PostMapping
+    @GetMapping("/{employeeId}")
+    ResponseEntity<String> getWorkingDays(@PathVariable(value = "employeeId") Integer employeeId) {
+        List<Message> serverErrors = new ArrayList<>();
+        ArrayList<WorkingDay> workingDays;
+        try {
+            workingDays = new ArrayList<>(this.workingDayService.getWorkingDays(employeeId));
+        } catch(Exception error) {
+            serverErrors.add(new Message("No schedule for specified employee. Probably an internal server error"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+        return ResponseEntity.ok().body(gson.toJson(workingDays));
+    }
+
+
+    @PutMapping
     ResponseEntity<String> changeSchedule(@RequestBody InsertWorkingDayRequest info) {
         List<Message> serverErrors = new ArrayList<>();
         WorkingDay workingDay = info.getWorkingDay();

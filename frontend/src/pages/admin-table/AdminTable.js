@@ -19,10 +19,10 @@ import AdminTableRows from "./components/table/AdminTableRows";
 import EditDialog from "./components/edit-dialog/EditDialog";
 import Button from "@material-ui/core/Button";
 import AddDialog from "./components/add-dialog/AddDialog";
-import * as yup from 'yup';
+import DeleteDialog from "./components/delete-dialog/DeleteDialog";
 
 const AdminTable = (props) => {
-    const {objects, tableName, hasWritePrivilege} = props
+    const {objects, tableName, hasWritePrivilege, isAddable, isDeletable} = props
     const classes = useStyles();
 
     const [searchColumn, setSearchColumn] = useState('all');
@@ -30,6 +30,7 @@ const AdminTable = (props) => {
     const [rows, setRows] = useState([]);
 
     const [editRow, setEditRow] = useState(null);
+    const [deleteRow, setDeleteRow] = useState(null);
     const [isAddingRow, setIsAddingRow] = useState(false);
 
     useEffect(() => {
@@ -48,7 +49,8 @@ const AdminTable = (props) => {
     return (
         <AdminTableContext.Provider value={{searchColumn,
             setSearchColumn, searchValue, setSearchValue, rows,
-            editRow, setEditRow, isAddingRow, setIsAddingRow, ...props}}>
+            editRow, setEditRow, isAddingRow, setIsAddingRow,
+            deleteRow, setDeleteRow, ...props}}>
             <Toolbar className={classes.topBar}>
                 <Typography variant="h5" id="tableTitle" component="div" className={classes.title}>
                     {tableName}
@@ -56,7 +58,7 @@ const AdminTable = (props) => {
                 <Box display={'flex'}>
                     <SearchToolbar />
                     {
-                        hasWritePrivilege ? <Box ml={'10px'}>
+                        hasWritePrivilege && isAddable ? <Box ml={'10px'}>
                             <Button variant={'outlined'} onClick={() => setIsAddingRow(true)}>
                                 Add new row
                             </Button>
@@ -74,7 +76,8 @@ const AdminTable = (props) => {
                 </Table>
             </TableContainer>
         <EditDialog />
-        <AddDialog />
+        {isAddable ? <AddDialog /> : null}
+        {isDeletable ? <DeleteDialog /> : null}
         </AdminTableContext.Provider>
     )
 }
@@ -91,8 +94,13 @@ AdminTable.propTypes = {
     mappingInput: PropTypes.object.isRequired,
     onEditSubmit: PropTypes.func.isRequired,
     onEditSuccess: PropTypes.func.isRequired,
+    isDeletable: PropTypes.bool.isRequired,
+    onDelete: PropTypes.func,
+    onDeleteSuccess: PropTypes.func,
+    onRowClick: PropTypes.func,
     onAddSubmit: PropTypes.func,
     onAddSuccess: PropTypes.func,
+    isAddable: PropTypes.bool.isRequired,
     hasWritePrivilege: PropTypes.bool.isRequired,
     editValidationSchema: PropTypes.object.isRequired,
     addValidationSchema: PropTypes.object,
