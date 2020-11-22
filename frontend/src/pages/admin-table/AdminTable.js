@@ -1,4 +1,5 @@
 import {
+    IconButton,
     makeStyles,
     Paper,
     Table,
@@ -22,10 +23,13 @@ import AddDialog from "./components/add-dialog/AddDialog";
 import DeleteDialog from "./components/delete-dialog/DeleteDialog";
 import Spinner from "../../components/Spinner";
 import AppContext from "../../store/AppContext";
+import {ArrowBackOutlined} from "@material-ui/icons";
+import {useHistory} from 'react-router-dom';
 
 const AdminTable = (props) => {
-    const {objects, tableName, hasWritePrivilege, isAddable, isDeletable, showableColumns} = props
-    const classes = useStyles();
+    const history = useHistory();
+    const {objects, tableName, hasWritePrivilege, isAddable, isDeletable, showableColumns, showBackButton} = props
+    const classes = useStyles({showBackButton});
     const {state} = useContext(AppContext);
     const {searchColumn, searchValue, loading} = state.adminTable;
     const [rows, setRows] = useState([]);
@@ -58,9 +62,21 @@ const AdminTable = (props) => {
             ...props}}>
             <TableContainer component={Paper} variant="outlined" className={classes.tableContainer}>
                 <Toolbar className={classes.topBar}>
-                    <Typography variant="h5" id="tableTitle" component="div" className={classes.title}>
-                        {tableName}
-                    </Typography>
+                    <Box display={'flex'} alignItems={'center'}>
+                        {
+                            showBackButton ?
+                                <IconButton className={classes.icon} onClick={() => history.goBack()}>
+                                    <ArrowBackOutlined />
+                                </IconButton> : null
+                        }
+
+                        <Box ml={showBackButton ? '12px' : 0}>
+                            <Typography variant="h5" id="tableTitle" component="div" className={classes.title}>
+                                {tableName}
+                            </Typography>
+                        </Box>
+
+                    </Box>
                     <Box display={'flex'}>
                         <SearchToolbar />
                         {
@@ -131,6 +147,7 @@ AdminTable.propTypes = {
     editValidationSchema: PropTypes.object.isRequired,
     addValidationSchema: PropTypes.object,
     tableName: PropTypes.string.isRequired,
+    showBackButton: PropTypes.bool,
 }
 
 const useStyles = makeStyles({
@@ -145,11 +162,13 @@ const useStyles = makeStyles({
         overflowX: 'scroll',
     },
     topBar: {
+        paddingLeft: ({showBackButton}) => showBackButton ? 0 : 'auto',
         background: 'white',
         justifyContent: 'space-between',
         borderBottom: '1px solid black'
     },
     searchBar: {
         width: 100,
-    }
+    },
+
 });

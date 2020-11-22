@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export default async function editSeasonsAction({seasonId, dayOfWeek, coefficient}) {
+export default async function editSeasonAction({seasonId, name, startDate, endDate, advisory}) {
     try {
-        await axios.put('/api/seasons', {seasonId, dayOfWeek, coefficient});
+        await axios.put('/api/seasons', {seasonId, name, startDate, endDate, advisory});
     } catch(error) {
         throw error;
     }

@@ -8,6 +8,7 @@ import fetchWeekdaysAction from "../../../actions/seasonal-rates/fetchWeekdaysAc
 import {ADMIN_TABLE_SET_LOADING, ADMIN_TABLE_UNSET_LOADING} from "../../../store/admin-table/adminTableActionTypes";
 import { useParams } from 'react-router-dom';
 import editWeekdayAction from "../../../actions/seasonal-rates/editWeekdayAction";
+import {WRITE_ALL_SCHEDULES} from "../../../store/user/userPrivelegesTypes";
 
 // const objects = [
 //     {"dayOfWeek":"Monday","startTime":"11:00:00","endTime":"12:00:00"},
@@ -42,6 +43,7 @@ const SeasonWeekDays = () => {
     // const timeout = useRef(0);
     const {state, dispatch} = useContext(AppContext);
     const { weekdays } = state.seasonalRates;
+    const {userInfo} = state.user;
     const [seasonWeekDays, setSeasonWeekDays] = useState([])
 
     useEffect(() => {
@@ -81,7 +83,8 @@ const SeasonWeekDays = () => {
                     onDelete={onDelete}
                     onDeleteSuccess={fetchWeekDays}
                     isAddable={false}
-                    hasWritePrivilege={true}
+                    hasWritePrivilege={userInfo?.privileges?.includes(WRITE_ALL_SCHEDULES)}
+                    showBackButton={true}
                     editValidationSchema={weekdayValidationSchema}
                     addValidationSchema={weekdayValidationSchema}
                     tableName={'Season weekdays'} />

@@ -10,6 +10,7 @@ import addSeasonAction from "../../actions/seasonal-rates/addSeasonAction";
 import deleteSeasonAction from "../../actions/seasonal-rates/deleteSeasonAction";
 import {useHistory} from 'react-router-dom';
 import editWeekdayAction from "../../actions/seasonal-rates/editWeekdayAction";
+import editSeasonAction from "../../actions/seasonal-rates/editSeasonAction";
 
 
 const objects = [
@@ -82,14 +83,18 @@ const SeasonalRates = () => {
         await deleteSeasonAction(seasonId);
     }
 
+    const onEditSubmit = async({name, startDate, endDate, advisory}, {seasonId}) => {
+        await editSeasonAction({seasonId, name, startDate, endDate, advisory});
+    }
+
     return <Box className={classes.root} display={'flex'} flexDirection={'column'} alignItems='center'>
         <AdminTable objects={seasons}
                     showableColumns={showableColumns} searchableColumns={showableColumns}
                     editableColumns={editableColumns} addableColumns={addableColumns}
                     mapping={mapping}
                     mappingInput={mappingInputs}
-                    onEditSubmit={(values, row) => console.log('edit', values, row)}
-                    onEditSuccess={() => console.log('hi edit')}
+                    onEditSubmit={onEditSubmit}
+                    onEditSuccess={fetchSeasons}
                     isDeletable={true}
                     onDelete={onDeleteSubmit}
                     onDeleteSuccess={fetchSeasons}
