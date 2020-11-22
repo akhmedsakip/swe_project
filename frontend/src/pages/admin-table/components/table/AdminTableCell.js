@@ -2,12 +2,10 @@ import {TableCell} from "@material-ui/core";
 import React, {useContext} from "react";
 import PropTypes from 'prop-types';
 import {makeStyles} from "@material-ui/core/styles";
-import AdminTableContext from "../../../../contexts/AdminTableContext";
-import ReactToPrint from "react-to-print";
 import AppContext from "../../../../store/AppContext";
 
 const AdminTableCell = ({value, column}) => {
-    const {state, dispatch} = useContext(AppContext);
+    const {state} = useContext(AppContext);
     const {searchColumn, searchValue} = state.adminTable;
     const classes = useStyles();
 

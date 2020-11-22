@@ -38,10 +38,8 @@ const mappingInputs = {
     'name': 'text',
     'startDate': 'date',
     'endDate': 'date',
-    'advisory': 'big-text'
+    'advisory': 'multiline'
 }
-
-
 
 const SeasonalRates = () => {
     const classes = useStyles();
@@ -59,6 +57,7 @@ const SeasonalRates = () => {
                     isAddable={true} hasWritePrivilege={true}
                     onAddSubmit={(values) => console.log('add', values)}
                     onAddSuccess={() => console.log('hi add')}
+                    onRowClick={() => console.log('row clicked')}
                     editValidationSchema={seasonValidationSchema}
                     addValidationSchema={seasonValidationSchema}
                     tableName={'Seasonal rates'} />

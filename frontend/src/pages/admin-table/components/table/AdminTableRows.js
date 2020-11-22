@@ -14,7 +14,7 @@ const AdminTableRows = ({}) => {
     return <>
         {
             rows.map((row, i) => {
-                return <TableRow key={i} className={classes.row} >
+                return <TableRow key={i} className={classes.row} onClick={onRowClick}>
                     {
                         showableColumns.map((column, j) => {
                             return <AdminTableCell key={`${i} ${j}`} value={row[column].toString()} searchValue={searchValue} column={column}/>
@@ -22,13 +22,17 @@ const AdminTableRows = ({}) => {
                     }
                     {
                         hasWritePrivilege ? <TableCell align="center">
-                            <IconButton onClick={() => {
+                            <IconButton onClick={(event) => {
+                                event.stopPropagation();
                                 setEditRow(row)
                             }}>
                                 <EditIcon />
                             </IconButton>
                             {
-                                isDeletable ? <IconButton onClick={() => setDeleteRow(row)} >
+                                isDeletable ? <IconButton onClick={(event) => {
+                                    event.stopPropagation();
+                                    setDeleteRow(row)
+                                }} >
                                     <DeleteIcon/>
                                 </IconButton> : null
                             }
