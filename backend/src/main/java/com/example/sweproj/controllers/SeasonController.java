@@ -1,5 +1,6 @@
 package com.example.sweproj.controllers;
 
+import com.example.sweproj.dto.SetSalaryRequest;
 import com.example.sweproj.dto.WorkingDayRequest;
 import com.example.sweproj.models.Employee;
 import com.example.sweproj.models.Season;
@@ -10,6 +11,7 @@ import com.example.sweproj.services.SeasonService;
 import com.example.sweproj.services.SeasonWeekDayService;
 import com.example.sweproj.utils.Message;
 import com.example.sweproj.utils.ValidationUtil;
+import com.example.sweproj.validation.groups.EditSeasonGroup;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -90,5 +92,26 @@ public class SeasonController {
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
         }
         return ResponseEntity.ok().body(gson.toJson(new Message("Successfully created season")));
+    }
+
+    @PutMapping
+    ResponseEntity<String> editHotelSeason(@RequestBody Season season) {
+        List<Message> serverErrors = new ArrayList<>(validationUtil.validate(season));
+        serverErrors.addAll(validationUtil.validate(season, EditSeasonGroup.class));
+        if(serverErrors.size() > 0) {
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+        try {
+            if (this.seasonService.editHotelSeason(season) < 1) {
+                serverErrors.add(new Message("Error editing the season. Most probably, you are trying to edit" +
+                        " season of another hotel or non-existing season."));
+                return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+            }
+        } catch(Exception error) {
+            error.printStackTrace();
+            serverErrors.add(new Message("Server error"));
+            return ResponseEntity.status(400).body(gson.toJson(serverErrors));
+        }
+        return ResponseEntity.ok().body(gson.toJson(new Message("Successfully edited selected season of the hotel")));
     }
 }

@@ -2,17 +2,20 @@ package com.example.sweproj.models;
 
 import com.example.sweproj.validation.groups.AvailableHotelsGroup;
 import com.example.sweproj.validation.groups.AvailableRoomTypesGroup;
+import com.example.sweproj.validation.groups.EditSeasonGroup;
 import com.example.sweproj.validation.groups.ReservationDetailsGroup;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Valid
 public class Season {
-    @JsonProperty
+    @JsonProperty @NotNull(message = "Season ID is not specified", groups = {EditSeasonGroup.class})
+    @Min(value = 1, message = "Season ID is less than 1")
     private int seasonId;
 
     @JsonProperty @NotNull(message = "Room type name is empty")
