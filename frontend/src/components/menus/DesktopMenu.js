@@ -80,6 +80,11 @@ const DesktopMenu = () => {
                             Seasonal Rates
                     </Link>
                     </MenuItem>
+                    <MenuItem onClick={() => setOpen(false)}>
+                        <Link to="/employee-working-days" className={classes.link}>
+                            Working Days
+                    </Link>
+                    </MenuItem>
                 </Menu>
             </> : null
         }
