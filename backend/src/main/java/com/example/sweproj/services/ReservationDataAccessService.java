@@ -44,7 +44,7 @@ public class ReservationDataAccessService {
     public int reserveRoom(ReservationDetailsRequest info, String userEmail) {
         String sql = "CALL reserve(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
-        int roomTotalPrice = roomTypeService.getTotalPrice(info.getReservationRequest()); // TODO transfer to controller
+        int roomTotalPrice = roomTypeService.getTotalPrice(info.getReservationRequest());
 
         return jdbcTemplate.update(sql, info.getPerson().getGender(), info.getPerson().getFirstName(),
                 info.getPerson().getLastName(), info.getPerson().getPhoneNumber(), info.getReservationRequest().getHotelId(),
