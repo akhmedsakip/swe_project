@@ -72,7 +72,8 @@ const DynamicForm = ({row, onSubmitAction, onSuccess, columns, initialValues, in
             </FormControl>
         })}
         <Box mt={'12px'}>
-            <LoadingButton loading={loading} disabled={!isValid}
+            <LoadingButton loading={loading}
+                           disabled={!isValid}
                            type={'submit'} variant={'outlined'} color={'primary'}>
                 Submit
             </LoadingButton>
