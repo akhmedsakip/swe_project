@@ -5,12 +5,15 @@ import userReducer, {initialUserState} from "./user/userReducer";
 import authReducer, {initialAuthState} from "./auth/authReducer";
 import availabilityReducer, {initialRoomTypeState} from "./availability/availavilityReducer";
 import reservationReducer, {initialReservationsState} from "./reservations/reservationReducer";
+import allReservationReducer, {initialAllReservationsState} from "./manager/allReservations/allReservationsReducer";
+
 
 const initialState = {
     user: initialUserState,
     auth: initialAuthState,
     availability: initialRoomTypeState,
-    reservations: initialReservationsState
+    reservations: initialReservationsState,
+    allReservations: initialAllReservationsState
 };
 
 const combineReducers = (slices) => (state, action) =>
@@ -26,6 +29,7 @@ const reducer = combineReducers({
     auth: authReducer,
     availability: availabilityReducer,
     reservations: reservationReducer,
+    allReservations: allReservationReducer
 });
 
 const StoreProvider = ({children}) => {

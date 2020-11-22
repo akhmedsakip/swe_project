@@ -14,7 +14,7 @@ public class Datasource {
     @Bean
     public DataSource mysqlDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/sweproj");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/sweproj?serverTimezone=UTC");
         dataSource.setUsername("university");
         dataSource.setPassword("password");
         return dataSource;
