@@ -26,7 +26,7 @@ export const searchSchema = yup.object().shape({
     }).required("From date is empty"),
     checkOutDate: yup.date("To date is invalid").when(
         'checkInDate',
-        (checkInDate, schema) => (checkInDate && schema.min(nextDay(checkInDate)))
+        (checkInDate, schema) => (checkInDate && schema.min(nextDay(checkInDate), 'To date cannot be earlier than From date'))
     )
     .required("To date is empty"),
     city: yup.string().required("City is empty"),
