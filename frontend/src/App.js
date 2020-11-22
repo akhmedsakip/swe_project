@@ -12,7 +12,6 @@ import PrivateRoute from "./components/PrivateRoute";
 import PrivateAdminRoute from "./components/PrivateAdminRoute";
 import StoreProvider from "./store/store";
 import Reservations from "./pages/reservations/Reservations";
-import AdminTable from "./pages/admin-table/AdminTable";
 import EmployeeSchedule from "./pages/employeeSchedule/EmployeeSchedule";
 import SeasonalRates from "./pages/seasonalRates/SeasonalRates";
 import AdminTableInstance from "./pages/admin-table/Instance";
@@ -37,7 +36,7 @@ function App() {
             <PrivateAdminRoute path="/admin" component={AdminPage} />
             <Route path="/admin-table-example" component={AdminTableInstance} />
             <Route path="*" render={() => (<Redirect to="/" />)} />
-
+            
           </Switch>
         </Root>
       </BrowserRouter>

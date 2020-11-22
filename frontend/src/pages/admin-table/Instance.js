@@ -69,7 +69,9 @@ const AdminTableInstance = () => {
                        onAddSuccess={() => console.log('success add')}
                        hasWritePrivilege={true}
                        editValidationSchema={schema}
-                       searchableColumns={Object.keys(objects[0])} objects={objects}/>
+                       searchableColumns={Object.keys(objects[0])} objects={objects}
+                       isAddable={true}
+    />
 }
 
 export default AdminTableInstance;
