@@ -18,7 +18,7 @@ import AllReservations from "./pages/allReservations/AllReservations";
 import SeasonalRates from "./pages/seasonal-rates/SeasonalRates";
 import SeasonWeekDays from "./pages/seasonal-rates/season-weekdays/SeasonWeekDays";
 import Employees from "./pages/employees/Employees";
-import EmployeesSchedules from "./pages/employees/employeesSchedules/EmployeesSchedules";
+import EmployeesWorkingDays from "./pages/employees/employeesSchedules/EmployeeWorkingDays";
 
 function App() {
   return (
@@ -38,7 +38,7 @@ function App() {
             <Route path="/seasonal-rates" component={SeasonalRates} />
             <Route path="/seasonal-rates-weekdays/:id" component={SeasonWeekDays} />
             <Route path="/employees" component={Employees} />
-            <Route path="/employees/:id" component={EmployeesSchedules} />
+            <Route path="/employees/:id" component={EmployeesWorkingDays} />
             <PrivateAdminRoute path="/admin" component={AdminPage} />
             <Route path="/admin-table-example" component={AdminTableInstance} />
             <Route path="*" render={() => (<Redirect to="/" />)} />
