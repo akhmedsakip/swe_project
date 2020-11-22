@@ -7,10 +7,17 @@ import {makeStyles} from "@material-ui/core/styles";
 import AdminTableContext from "../../../contexts/AdminTableContext";
 import SearchIcon from "@material-ui/icons/Search";
 import MenuItem from "@material-ui/core/MenuItem";
+import AppContext from "../../../store/AppContext";
+import {
+    ADMIN_TABLE_SET_SEARCH_COLUMN,
+    ADMIN_TABLE_SET_SEARCH_VALUE
+} from "../../../store/admin-table/adminTableActionTypes";
 
 const SearchToolbar = () => {
     const classes = useStyles();
-    const {searchableColumns, searchColumn, setSearchColumn, searchValue, setSearchValue, mapping} = useContext(AdminTableContext);
+    const {searchableColumns, mapping} = useContext(AdminTableContext);
+    const {state, dispatch} = useContext(AppContext);
+    const {searchValue, searchColumn} = state.adminTable;
     return <Box display={'flex'} alignItems={'center'}>
         <Box mr={'10px'}>
             <Typography>
@@ -18,7 +25,7 @@ const SearchToolbar = () => {
             </Typography>
         </Box>
         <Box mr={'10px'} className={classes.columnSelect}>
-            <Select value={searchColumn} fullWidth onChange={event => setSearchColumn(event.target.value)}>
+            <Select value={searchColumn} fullWidth onChange={e => dispatch({type: ADMIN_TABLE_SET_SEARCH_COLUMN ,payload: e.target.value})}>
                 <MenuItem value="all">All</MenuItem>
                 {searchableColumns.map((searchableColumn) =>
                     <MenuItem key={searchableColumn}
@@ -38,7 +45,7 @@ const SearchToolbar = () => {
                     ),
                 }}
                 value={searchValue}
-                onChange={e => setSearchValue(e.target.value)}
+                onChange={e => dispatch({type: ADMIN_TABLE_SET_SEARCH_VALUE ,payload: e.target.value})}
             />
         </Box>
     </Box>

@@ -7,6 +7,7 @@ import availabilityReducer, {initialRoomTypeState} from "./availability/availavi
 import reservationReducer, {initialReservationsState} from "./reservations/reservationReducer";
 import allReservationReducer, {initialAllReservationsState} from "./manager/allReservations/allReservationsReducer";
 import employeesReducer, {initialEmployeesState} from './manager/employees/employeesReducer';
+import adminTableReducer, {initialAdminTableState} from "./admin-table/adminTableReducers";
 
 
 const initialState = {
@@ -15,7 +16,8 @@ const initialState = {
     availability: initialRoomTypeState,
     reservations: initialReservationsState,
     allReservations: initialAllReservationsState,
-    employees: initialEmployeesState
+    employees: initialEmployeesState,
+    adminTable: initialAdminTableState,
 };
 
 const combineReducers = (slices) => (state, action) =>
@@ -32,7 +34,8 @@ const reducer = combineReducers({
     availability: availabilityReducer,
     reservations: reservationReducer,
     allReservations: allReservationReducer,
-    employees: employeesReducer
+    employees: employeesReducer,
+    adminTable: adminTableReducer,
 });
 
 const StoreProvider = ({children}) => {
