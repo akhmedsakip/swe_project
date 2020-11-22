@@ -56,7 +56,14 @@ public class EmployeeDataAccessService {
         return jdbcTemplate.query(sql, (rs, rowNum) -> mapFromDB(rs), user.getEmail());
     }
 
-    int setBaseSalaryPerHour() {
-        return 0;
+    int setBaseSalaryPerHour(int employeeId, int baseSalaryPerHour) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String sql = "UPDATE employee E\n" +
+                "    INNER JOIN employee EM ON EM.HotelID = E.HotelID\n" +
+                "SET E.BaseSalaryPerHour = ?\n" +
+                "WHERE E.EmployeeID = ? AND EM.UserEmail = ?;";
+
+        return jdbcTemplate.update(sql, baseSalaryPerHour, employeeId, user.getEmail());
     }
 }
