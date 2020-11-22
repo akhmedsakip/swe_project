@@ -12,6 +12,8 @@ import * as yup from "yup";
 import editSeasonAction from "../../actions/seasonal-rates/editSeasonAction";
 import deleteSeasonAction from "../../actions/seasonal-rates/deleteSeasonAction";
 import deleteReservationAction from "../../actions/reservations/deleteReservationAction";
+import fetchSeasonsAction from "../../actions/seasonal-rates/fetchSeasonsAction";
+import {ADMIN_TABLE_UNSET_LOADING} from "../../store/admin-table/adminTableActionTypes";
 
 function AllReservations() {
   const mapping = {
@@ -73,6 +75,10 @@ function AllReservations() {
     await deleteReservationAction(orderId);
   }
 
+  const fetchReservation = async () => {
+    await fetchAllReservationsAction(dispatch);
+  }
+
   return <AdminTable
       objects={allReservations}
       showableColumns={Object.keys(mapping)}
@@ -83,7 +89,7 @@ function AllReservations() {
       onEditSubmit={onEditSubmit}
       onEditSuccess={() => console.log('success edit')}
       onDelete={onDeleteSubmit}
-      onDeleteSuccess={() => console.log('delete')}
+      onDeleteSuccess={fetchReservation}
       isAddable={false}
       hasWritePrivilege={true}
       editValidationSchema={editReservationFormSchemaa}

@@ -1,9 +1,8 @@
 import axios from "axios";
-import {RESERVATIONS_SET_RESERVATIONS} from "../../store/reservations/reservationActionTypes";
 
-async function deleteReservationAction(dispatch, values) {
+async function deleteReservationAction(orderId) {
     try {
-        const {data} = (await axios.delete('/api/reservations',{data: {orderId: values.orderId}}));
+        await axios.delete('/api/reservations/admin', {data: {orderId}});
     } catch (error) {
         throw error;
     }
