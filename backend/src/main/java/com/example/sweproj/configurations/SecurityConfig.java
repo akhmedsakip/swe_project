@@ -48,6 +48,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/schedules/**").hasAnyAuthority("READ_ALL_SCHEDULES")
                 .antMatchers(HttpMethod.POST, "/api/schedules").hasAnyAuthority("WRITE_ALL_SCHEDULES")
                 .antMatchers(HttpMethod.DELETE, "/api/schedules").hasAnyAuthority("WRITE_ALL_SCHEDULES")
+                .antMatchers(HttpMethod.GET, "/api/seasons").hasAnyAuthority("READ_ALL_SEASONS")
+                .antMatchers(HttpMethod.GET, "/api/seasons/**").hasAnyAuthority("READ_ALL_SEASONS")
+                .antMatchers(HttpMethod.POST, "/api/seasons").hasAnyAuthority("WRITE_ALL_SEASONS")
+                .antMatchers(HttpMethod.POST, "/api/seasons/**").hasAnyAuthority("WRITE_ALL_SEASONS")
+                .antMatchers(HttpMethod.DELETE, "/api/seasons").hasAnyAuthority("WRITE_ALL_SEASONS")
+                .antMatchers(HttpMethod.DELETE, "/api/seasons/**").hasAnyAuthority("WRITE_ALL_SEASONS")
                 .and().exceptionHandling().authenticationEntryPoint(new UnauthorizedEntryPoint());
 
         http.authorizeRequests().anyRequest().permitAll().and().sessionManagement()

@@ -82,5 +82,5 @@ FROM season_has_day_of_week hwds
 INNER JOIN season s ON s.SeasonID = hwds.SeasonID
 INNER JOIN hotel_works_during_season h on s.SeasonID = h.SeasonID
 INNER JOIN employee e ON e.HotelID = h.HotelID
-WHERE e.UserEmail = 'akhmed.sakip@nu.edu.kz' AND s.SeasonID = 1;
+WHERE e.UserEmail = 'akhmed.sakip@nu.edu.kz' AND s.SeasonID = 2;
 

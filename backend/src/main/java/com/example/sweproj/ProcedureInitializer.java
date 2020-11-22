@@ -19,6 +19,7 @@ public class ProcedureInitializer {
         this.deleteHotelReservationProcedure();
         this.insertSeasonWeekDayProcedure();
         this.deleteSeasonProcedure();
+        this.insertSeasonProcedure();
     }
 
     void createPriceProcedure() {
@@ -343,6 +344,47 @@ public class ProcedureInitializer {
                 "    FROM season\n" +
                 "    WHERE SeasonID = _seasonId;\n" +
                 "\n" +
+                "    COMMIT;\n" +
+                "END;";
+        jdbcTemplate.execute(dropProcedureSql);
+        jdbcTemplate.execute(createProcedureSql);
+    }
+
+    void insertSeasonProcedure() {
+        String dropProcedureSql = "DROP PROCEDURE IF EXISTS insertSeason;";
+        String createProcedureSql = "CREATE PROCEDURE insertSeason(IN _name VARCHAR(45), IN _startDate DATE, IN _endDate DATE,\n" +
+                "                                  IN _advisory TEXT, IN _userEmail VARCHAR(45))\n" +
+                "BEGIN\n" +
+                "    DECLARE _hotelId INT;\n" +
+                "\n" +
+                "    DECLARE EXIT HANDLER FOR SQLEXCEPTION\n" +
+                "        BEGIN\n" +
+                "            ROLLBACK;\n" +
+                "            RESIGNAL;\n" +
+                "        END;\n" +
+                "\n" +
+                "    START TRANSACTION;\n" +
+                "\n" +
+                "    SELECT MAX(e.HotelID)\n" +
+                "    INTO _hotelId\n" +
+                "    FROM employee e\n" +
+                "    WHERE e.UserEmail = _userEmail;\n" +
+                "\n" +
+                "    IF _hotelId IS NULL THEN\n" +
+                "        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Access error, you do not work in any hotel';\n" +
+                "    end if;\n" +
+                "\n" +
+                "    IF _endDate <= _startDate THEN\n" +
+                "        SIGNAL SQLSTATE '42000' SET MESSAGE_TEXT = 'End date should be later than start date';\n" +
+                "    end if;\n" +
+                "\n" +
+                "    INSERT INTO season\n" +
+                "        (Name, StartDate, EndDate)\n" +
+                "    VALUES (_name, _startDate, _endDate);\n" +
+                "\n" +
+                "    INSERT INTO hotel_works_during_season\n" +
+                "        (HotelID, SeasonID, Advisory)\n" +
+                "    VALUES (_hotelId, LAST_INSERT_ID(), _advisory);\n" +
                 "    COMMIT;\n" +
                 "END;";
         jdbcTemplate.execute(dropProcedureSql);

@@ -415,9 +415,6 @@ INSERT INTO privilege
 VALUES ('WRITE_ALL_SEASONS');
 
 INSERT INTO role_has_privilege
-VALUES ('ROLE_ADMIN', (SELECT * FROM privilege));
-
-INSERT INTO role_has_privilege
     (Role, Privilege)
 SELECT 'ROLE_ADMIN',
        Privilege
