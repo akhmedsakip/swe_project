@@ -7,6 +7,8 @@ import AppContext from '../../store/AppContext';
 import AdminTable from "../admin-table/AdminTable";
 import {editReservationFormSchema} from "../../utils/validationSchemas";
 import editReservationAction from "../../actions/reservations/editReservationAction";
+import editEmployeeAction from "../../actions/employees/editEmployeeAction";
+import * as yup from "yup";
 
 function AllReservations() {
   const mapping = {
@@ -61,11 +63,24 @@ function AllReservations() {
     }
   });
 
-  const onEditSubmit = (values, row)=>{
+
+  const onEditSubmit = (values, row) => {
+    console.log(values)
+    console.log(row)
     return editReservationAction(values, dispatch);
   }
+  // const onEditSubmit = (values, row)=>{
+  //   return editReservationAction(values, dispatch);
+  // }
 
   // editReservationAction(allReservations[0]).then(r => {});
+
+  const editReservationFormSchema1 = yup.object().shape({
+    FirstName: yup.string().required("First name is empty"),
+    LastName: yup.string().required("Second name is empty"),
+    PhoneNumber: yup.string().required("Phone number is empty"),
+    Gender: yup.string().required("Gender is empty"),
+  });
 
   return <AdminTable
       objects={allReservations}
@@ -80,7 +95,7 @@ function AllReservations() {
       onDeleteSuccess={() => console.log('delete')}
       isAddable={false}
       hasWritePrivilege={true}
-      editValidationSchema={editReservationFormSchema}
+      editValidationSchema={editReservationFormSchema1}
       tableName={'Manager: All reservations'}
       isDeletable={true}
   />
