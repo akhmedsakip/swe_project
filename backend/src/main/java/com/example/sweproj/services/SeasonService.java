@@ -22,4 +22,8 @@ public class SeasonService {
     public int createHotelSeason(Season season) {
         return this.seasonDataAccessService.createHotelSeason(season);
     }
+
+    public int editHotelSeason(Season season) {
+        return this.seasonDataAccessService.editHotelSeason(season);
+    }
 }
