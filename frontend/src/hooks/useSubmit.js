@@ -1,12 +1,12 @@
-import {useState} from "react";
+import {useRef, useState} from "react";
 
 const useSubmit = (action, onSuccess, onErrorArray, onError) => {
     const [loading, setLoading] = useState(false);
-    async function onSubmit() {
+    async function onSubmit(values) {
         let serverErrors;
         try {
             setLoading(true);
-            await action();
+            await action(values);
         } catch(error) {
             serverErrors = error.response.data;
         } finally {
