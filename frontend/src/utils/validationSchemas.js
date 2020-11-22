@@ -64,6 +64,13 @@ export const editReservationFormSchema = yup.object().shape({
 });
 
 
+export const editReservationFormSchemaa = yup.object().shape({
+    firstName: yup.string().required("First name is empty").nullable(),
+    lastName: yup.string().required("Second name is empty"),
+    phoneNumber: yup.string().required("Phone number is empty").matches(phoneRegExp, "Invalid phone"),
+});
+
+
 const salaryRegExp = /^[0-9]*$/
 
 export const editEmployeeFormSchema = yup.object().shape({

@@ -5,10 +5,13 @@ import { ALL_RESERVATIONS_SET_LOADING, ALL_RESERVATIONS_UNSET_LOADING } from '..
 import fetchAllReservationsAction from '../../actions/allReservations/fetchAllReservationsAction';
 import AppContext from '../../store/AppContext';
 import AdminTable from "../admin-table/AdminTable";
-import {editReservationFormSchema} from "../../utils/validationSchemas";
+import {editReservationFormSchemaa} from "../../utils/validationSchemas";
 import editReservationAction from "../../actions/reservations/editReservationAction";
 import editEmployeeAction from "../../actions/employees/editEmployeeAction";
 import * as yup from "yup";
+import editSeasonAction from "../../actions/seasonal-rates/editSeasonAction";
+import deleteSeasonAction from "../../actions/seasonal-rates/deleteSeasonAction";
+import deleteReservationAction from "../../actions/reservations/deleteReservationAction";
 
 function AllReservations() {
   const mapping = {
@@ -27,14 +30,13 @@ function AllReservations() {
   }
 
   const editableColumns = [
-    'firstName', 'lastName', 'phoneNumber', 'gender'
+    'firstName', 'lastName', 'phoneNumber'
   ];
 
   const mappingInput = {
     "firstName": "text",
     "lastName": "text",
-    "phoneNumber": "text",
-    "gender": "text"
+    "phoneNumber": "text"
   }
 
   const { state, dispatch } = useContext(AppContext);
@@ -63,24 +65,13 @@ function AllReservations() {
     }
   });
 
-
-  const onEditSubmit = (values, row) => {
-    console.log(values)
-    console.log(row)
-    return editReservationAction(values, dispatch);
+  const onEditSubmit = async ({firstName, lastName, phoneNumber}, {orderId, gender}) => {
+    await editReservationAction({firstName, lastName, phoneNumber, gender, orderId}, dispatch);
   }
-  // const onEditSubmit = (values, row)=>{
-  //   return editReservationAction(values, dispatch);
-  // }
 
-  // editReservationAction(allReservations[0]).then(r => {});
-
-  const editReservationFormSchema1 = yup.object().shape({
-    FirstName: yup.string().required("First name is empty"),
-    LastName: yup.string().required("Second name is empty"),
-    PhoneNumber: yup.string().required("Phone number is empty"),
-    Gender: yup.string().required("Gender is empty"),
-  });
+  const onDeleteSubmit = async ({orderId}) => {
+    await deleteReservationAction(orderId);
+  }
 
   return <AdminTable
       objects={allReservations}
@@ -89,13 +80,13 @@ function AllReservations() {
       editableColumns={editableColumns}
       mapping={mapping}
       mappingInput={mappingInput}
-      onEditSubmit={(values, row) => onEditSubmit(values, row)}
+      onEditSubmit={onEditSubmit}
       onEditSuccess={() => console.log('success edit')}
-      onDelete={(values) => console.log('delete', values)}
+      onDelete={onDeleteSubmit}
       onDeleteSuccess={() => console.log('delete')}
       isAddable={false}
       hasWritePrivilege={true}
-      editValidationSchema={editReservationFormSchema1}
+      editValidationSchema={editReservationFormSchemaa}
       tableName={'Manager: All reservations'}
       isDeletable={true}
   />
