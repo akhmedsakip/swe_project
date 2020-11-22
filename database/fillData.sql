@@ -266,83 +266,83 @@ INSERT INTO day_of_week(Day) VALUE ('Thursday');
 INSERT INTO day_of_week(Day) VALUE ('Friday');
 INSERT INTO day_of_week(Day) VALUE ('Saturday');
 
-INSERT INTO season (Name, StartDate, EndDate)
-VALUES (
-        'New Year',
-        '2021-01-01',
-        '2021-01-07'
-       );
+# INSERT INTO season (Name, StartDate, EndDate)
+# VALUES (
+#         'New Year',
+#         '2021-01-01',
+#         '2021-01-07'
+#        );
 
-INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Sunday', 1.1);
-INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Monday', 1.12);
-INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Tuesday', 1.13);
-INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Wednesday', 1.14);
-INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Thursday', 1.08);
-INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Friday', 1.15);
-INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Saturday', 1.16);
+# INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Sunday', 1.1);
+# INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Monday', 1.12);
+# INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Tuesday', 1.13);
+# INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Wednesday', 1.14);
+# INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Thursday', 1.08);
+# INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Friday', 1.15);
+# INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Saturday', 1.16);
 
-INSERT INTO season (Name, StartDate, EndDate)
-VALUES (
-        'Summer',
-        '2021-06-01',
-        '2021-08-31'
-       );
+# INSERT INTO season (Name, StartDate, EndDate)
+# VALUES (
+#         'Summer',
+#         '2021-06-01',
+#         '2021-08-31'
+#        );
 
-INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Sunday', 1.01);
-INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Monday', 1.02);
-INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Tuesday', 1.03);
-INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Wednesday', 1.04);
-INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Thursday', 1.08);
-INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Friday', 1.1);
-INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Saturday', 1.11);
+# INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Sunday', 1.01);
+# INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Monday', 1.02);
+# INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Tuesday', 1.03);
+# INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Wednesday', 1.04);
+# INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Thursday', 1.08);
+# INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Friday', 1.1);
+# INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (2, 'Saturday', 1.11);
 
-INSERT INTO hotel_works_during_season (HotelID, SeasonID)
-VALUES (
-        1,
-        1
-       );
-
-INSERT INTO hotel_works_during_season (HotelID, SeasonID)
-VALUES (
-        1,
-        2
-       );
-
-INSERT INTO hotel_works_during_season (HotelID, SeasonID)
-VALUES (
-        2,
-        1
-       );
-
-INSERT INTO hotel_works_during_season (HotelID, SeasonID)
-VALUES (
-        2,
-        2
-       );
-
-INSERT INTO hotel_works_during_season (HotelID, SeasonID)
-VALUES (
-        3,
-        1
-       );
-
-INSERT INTO hotel_works_during_season (HotelID, SeasonID)
-VALUES (
-        3,
-        2
-       );
-
-INSERT INTO hotel_works_during_season (HotelID, SeasonID)
-VALUES (
-        4,
-        1
-       );
-
-INSERT INTO hotel_works_during_season (HotelID, SeasonID)
-VALUES (
-        4,
-        2
-       );
+# INSERT INTO hotel_works_during_season (HotelID, SeasonID)
+# VALUES (
+#         1,
+#         1
+#        );
+#
+# INSERT INTO hotel_works_during_season (HotelID, SeasonID)
+# VALUES (
+#         1,
+#         2
+#        );
+#
+# INSERT INTO hotel_works_during_season (HotelID, SeasonID)
+# VALUES (
+#         2,
+#         1
+#        );
+#
+# INSERT INTO hotel_works_during_season (HotelID, SeasonID)
+# VALUES (
+#         2,
+#         2
+#        );
+#
+# INSERT INTO hotel_works_during_season (HotelID, SeasonID)
+# VALUES (
+#         3,
+#         1
+#        );
+#
+# INSERT INTO hotel_works_during_season (HotelID, SeasonID)
+# VALUES (
+#         3,
+#         2
+#        );
+#
+# INSERT INTO hotel_works_during_season (HotelID, SeasonID)
+# VALUES (
+#         4,
+#         1
+#        );
+#
+# INSERT INTO hotel_works_during_season (HotelID, SeasonID)
+# VALUES (
+#         4,
+#         2
+#        );
 
 INSERT INTO holiday (Name, CountryCode, StartDate, EndDate, IsEveryYear)
 VALUES (

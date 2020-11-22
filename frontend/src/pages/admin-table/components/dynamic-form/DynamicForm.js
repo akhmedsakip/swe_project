@@ -29,6 +29,7 @@ const DynamicForm = ({row, onSubmitAction, onSuccess, columns, initialValues, in
         if(result === null) {
             return;
         }
+        setServerError('');
         Promise.resolve(onSuccess()).then(() => setSuccess('Success'))
     }, [result])
 
@@ -36,21 +37,21 @@ const DynamicForm = ({row, onSubmitAction, onSuccess, columns, initialValues, in
         if(error === null) {
             return;
         }
+        setSuccess('')
         if(error.length) {
-            error.forEach((serverError) =>
-                    setFieldError(serverError.field || columns[0], serverError.message));
+            setServerError(error[0].message || 'Server error');
         } else {
             setServerError(error || 'Server error');
         }
     }, [error])
 
-    return <form  onSubmit={handleSubmit} onBlur={handleBlur}>
+    return <form onSubmit={handleSubmit} onBlur={handleBlur}>
         {success ? <Box mb={'10px'}>
             <FormHelperText className={classes.success}>
                 {success}
             </FormHelperText>
         </Box> : null}
-        {success ? <Box mb={'10px'}>
+        {serverError ? <Box mb={'10px'}>
             <FormHelperText error>
                 {serverError}
             </FormHelperText>
