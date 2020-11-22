@@ -4,7 +4,6 @@ import {SEASONAL_RATES_SET_SEASONS} from "../../store/seasonal-rates/seasonalRat
 export default async function fetchSeasonsAction(dispatch) {
     try {
         const res = await axios.get('/api/seasons');
-        console.log(res.data);
         dispatch({type: SEASONAL_RATES_SET_SEASONS, payload: res.data});
     } catch(error) {
         throw error;

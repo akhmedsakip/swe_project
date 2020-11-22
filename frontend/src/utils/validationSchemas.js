@@ -96,4 +96,13 @@ export const seasonValidationSchema = yup.object().shape({
     startDate: yup.string().required("Season start date is empty"),
     endDate: yup.string().required("Season end date is empty"),
     advisory: yup.string().required("Advisory is empty")
-})
+});
+
+export const weekdayValidationSchema = yup.object().shape({
+    coefficient: yup.string().required("Coefficient is empty").test('coeff', 'Coefficient is invalid', (val) => {
+        if(isNaN(parseInt(val))) {
+            return false
+        }
+        return val >= 0.01 && val <= 3;
+    })
+});
