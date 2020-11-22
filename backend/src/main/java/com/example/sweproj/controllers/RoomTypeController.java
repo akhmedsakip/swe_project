@@ -25,6 +25,9 @@ public class RoomTypeController {
     @Autowired
     private ValidationUtil validationUtil;
 
+    @Autowired
+    private Gson gson;
+
 
     RoomTypeController(RoomTypeService roomTypeService) {
         this.roomTypeService = roomTypeService;
@@ -32,7 +35,6 @@ public class RoomTypeController {
 
     @GetMapping
     ResponseEntity<String> getRoomTypes(@RequestParam(value = "hotelId") Integer hotelId) {
-        Gson gson = new Gson();
         List<Message> serverErrors = new ArrayList<>();
         ArrayList<RoomType> roomTypes;
         try {
@@ -47,7 +49,6 @@ public class RoomTypeController {
     @RequestMapping("/{roomTypeName}")
     @GetMapping
     ResponseEntity<String> getRoomType(@RequestParam(value = "hotelId") Integer hotelId, @PathVariable(value = "roomTypeName") String roomTypeName) {
-        Gson gson = new Gson();
         List<Message> serverErrors = new ArrayList<>();
         RoomType roomType;
         try {
@@ -61,7 +62,6 @@ public class RoomTypeController {
 
     @GetMapping("/availableRoomTypes")
     ResponseEntity<String> getAvailableRooms(ReservationRequest info) {
-        Gson gson = new Gson();
         List<Message> serverErrors = validationUtil.validate(info, AvailableRoomTypesGroup.class);
         if(serverErrors.size() > 0) {
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));
@@ -78,7 +78,6 @@ public class RoomTypeController {
 
     @GetMapping("/calculatePrice")
     ResponseEntity<String> getTotalPrice(ReservationRequest info) {
-        Gson gson = new Gson();
         List<Message> serverErrors = validationUtil.validate(info, ReservationDetailsGroup.class);
         if(serverErrors.size() > 0) {
             return ResponseEntity.status(400).body(gson.toJson(serverErrors));

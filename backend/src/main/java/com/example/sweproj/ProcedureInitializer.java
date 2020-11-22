@@ -18,6 +18,7 @@ public class ProcedureInitializer {
         this.insertWorkingDayProcedure();
         this.deleteWorkingDayProcedure();
         this.deleteHotelReservationProcedure();
+        this.insertSeasonWeekDayProcedure();
     }
 
     void createPriceProcedure() {
@@ -261,6 +262,48 @@ public class ProcedureInitializer {
                 "    FROM order_details OD\n" +
                 "             INNER JOIN `order` O on O.OrderID = OD.OrderID and O.HotelID = OD.OrderHotelID\n" +
                 "    WHERE O.OrderID = _orderId;\n" +
+                "\n" +
+                "    COMMIT;\n" +
+                "END;";
+        jdbcTemplate.execute(dropProcedureSql);
+        jdbcTemplate.execute(createProcedureSql);
+    }
+
+    void insertSeasonWeekDayProcedure() {
+        String dropProcedureSql = "DROP PROCEDURE IF EXISTS insertSeasonWeekDay;";
+        String createProcedureSql = "CREATE PROCEDURE insertSeasonWeekDay(IN _seasonId INT, IN _userEmail VARCHAR(45), IN _dayOfWeek VARCHAR(15),\n" +
+                "                                  IN _coefficient FLOAT)\n" +
+                "BEGIN\n" +
+                "    DECLARE EXIT HANDLER FOR SQLEXCEPTION\n" +
+                "        BEGIN\n" +
+                "            ROLLBACK;\n" +
+                "            RESIGNAL;\n" +
+                "        END;\n" +
+                "\n" +
+                "    START TRANSACTION;\n" +
+                "\n" +
+                "    SELECT MAX(S.SeasonID)\n" +
+                "    INTO _seasonId\n" +
+                "    FROM season S\n" +
+                "             INNER JOIN hotel_works_during_season hwds ON S.SeasonID = hwds.SeasonID\n" +
+                "             INNER JOIN employee e ON e.HotelID = hwds.HotelID AND e.UserEmail = _userEmail\n" +
+                "    WHERE S.SeasonID = _seasonId;\n" +
+                "\n" +
+                "    IF _seasonId IS NULL THEN\n" +
+                "        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Access error, trying to edit season from another hotel';\n" +
+                "    end if;\n" +
+                "\n" +
+                "    IF _coefficient <= 0.01 THEN\n" +
+                "        SIGNAL SQLSTATE '42000' SET MESSAGE_TEXT = 'Coefficient should be at least 0.01';\n" +
+                "    end if;\n" +
+                "\n" +
+                "\n" +
+                "    INSERT INTO season_has_day_of_week\n" +
+                "        (SeasonID, DayOfWeek, Coefficient)\n" +
+                "    VALUES (_seasonId, _dayOfWeek, _coefficient)\n" +
+                "    ON DUPLICATE KEY UPDATE SeasonID = _seasonId,\n" +
+                "                            DayOfWeek  = _dayOfWeek,\n" +
+                "                            Coefficient  = _coefficient;\n" +
                 "\n" +
                 "    COMMIT;\n" +
                 "END;";
