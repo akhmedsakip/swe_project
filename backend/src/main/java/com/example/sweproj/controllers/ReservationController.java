@@ -97,13 +97,13 @@ public class ReservationController {
         return ResponseEntity.ok().body(reservations);
     }
 
-    @GetMapping("/panel")
+    @GetMapping("/all")
     ResponseEntity<List<HotelReservationDetailsResponse>> getHotelReservations() {
         List<HotelReservationDetailsResponse>  hotelReservationDetailsResponses= this.reservationService.getHotelReservations();
         return ResponseEntity.ok().body(hotelReservationDetailsResponses);
     }
 
-    @DeleteMapping("/panel")
+    @DeleteMapping("/admin")
     ResponseEntity<String> deleteHotelReservation(@RequestBody Map<String, Integer> requestBody) {
         List<Message> serverErrors = new ArrayList<>();
         Integer orderId = requestBody.get("orderId");

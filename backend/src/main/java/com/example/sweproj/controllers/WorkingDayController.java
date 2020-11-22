@@ -65,7 +65,7 @@ public class WorkingDayController {
     }
 
 
-    @PostMapping
+    @PutMapping
     ResponseEntity<String> changeSchedule(@RequestBody InsertWorkingDayRequest info) {
         List<Message> serverErrors = new ArrayList<>();
         WorkingDay workingDay = info.getWorkingDay();

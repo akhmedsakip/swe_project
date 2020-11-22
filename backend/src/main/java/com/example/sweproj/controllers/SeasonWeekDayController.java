@@ -42,7 +42,7 @@ public class SeasonWeekDayController {
         }
     }
 
-    @PostMapping
+    @PutMapping
     ResponseEntity<String> setSeasonWeekDay(@RequestBody SeasonWeekDay seasonWeekDay) {
         List<Message> serverErrors = new ArrayList<>(validationUtil.validate(seasonWeekDay));
         if(serverErrors.size() > 0) {
