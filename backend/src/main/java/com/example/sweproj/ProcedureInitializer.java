@@ -1,6 +1,10 @@
 package com.example.sweproj;
 
+import com.example.sweproj.models.User;
+import com.example.sweproj.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -20,7 +24,42 @@ public class ProcedureInitializer {
         this.insertSeasonWeekDayProcedure();
         this.deleteSeasonProcedure();
         this.insertSeasonProcedure();
+        this.createAdminAccounts();
     }
+    // CREATION OF TEST ADMINS AND MODERATORS
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    void createAdminAccounts() {
+        try {
+            for (int i = 1; i <= 4; i++) {
+                User admin = new User();
+                admin.setFirstName("Test");
+                admin.setLastName("Admin");
+                admin.setDateOfBirth("2000-01-01");
+                admin.setGender("Male");
+                admin.setPassword("123123");
+                admin.encodePassword(passwordEncoder.encode(admin.getPassword()));
+                admin.setEmail("admin_" + i + "@amita.kz");
+                System.out.println("Hello");
+                userService.addUser(admin);
+                User moderator = new User();
+                moderator.setFirstName("Test");
+                moderator.setLastName("Moderator");
+                moderator.setDateOfBirth("2000-01-01");
+                moderator.setGender("Male");
+                moderator.setPassword("123123");
+                moderator.setEmail("moderator_" + i + "@amita.kz");
+                moderator.encodePassword(passwordEncoder.encode(moderator.getPassword()));
+                userService.addUser(moderator);
+            }
+        } catch(Exception e) {
+        }
+    }
+    // --------------------------------------
 
     void createPriceProcedure() {
         String dropProcedureSql = "DROP FUNCTION IF EXISTS getPrice;";
