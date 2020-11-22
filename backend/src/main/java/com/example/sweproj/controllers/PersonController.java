@@ -54,7 +54,7 @@ public class PersonController {
 //        return ResponseEntity.ok().body(gson.toJson(new Message("Successfully added")));
 //    }
 
-    @PostMapping("/panel")
+    @PutMapping("/edit")
     ResponseEntity<String> editPersonByOrder(@RequestBody EditPersonByOrderRequest editPersonByOrderRequest) {
         List<Message> serverErrors = new ArrayList<>();
         Person person = editPersonByOrderRequest.getPerson();

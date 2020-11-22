@@ -9,7 +9,7 @@ import {
     Toolbar,
     Typography
 } from "@material-ui/core";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import SearchToolbar from "./components/SearchToolbar";
 import PropTypes from 'prop-types';
 import AdminTableContext from "../../contexts/AdminTableContext";
@@ -19,18 +19,22 @@ import AdminTableRows from "./components/table/AdminTableRows";
 import EditDialog from "./components/edit-dialog/EditDialog";
 import Button from "@material-ui/core/Button";
 import AddDialog from "./components/add-dialog/AddDialog";
-import * as yup from 'yup';
+import DeleteDialog from "./components/delete-dialog/DeleteDialog";
+import Spinner from "../../components/Spinner";
+import AppContext from "../../store/AppContext";
 
 const AdminTable = (props) => {
-    const {objects, tableName, hasWritePrivilege, isAddable} = props
+    const {objects, tableName, hasWritePrivilege, isAddable, isDeletable, showableColumns} = props
     const classes = useStyles();
-
-    const [searchColumn, setSearchColumn] = useState('all');
-    const [searchValue, setSearchValue] = useState('');
+    const {state} = useContext(AppContext);
+    const {searchColumn, searchValue, loading} = state.adminTable;
     const [rows, setRows] = useState([]);
 
     const [editRow, setEditRow] = useState(null);
+    const [deleteRow, setDeleteRow] = useState(null);
     const [isAddingRow, setIsAddingRow] = useState(false);
+
+    const colSpan = hasWritePrivilege ? showableColumns.length + 1 : showableColumns.length;
 
     useEffect(() => {
         const newRows = objects.filter((object) => {
@@ -46,35 +50,49 @@ const AdminTable = (props) => {
     }, [searchColumn, searchValue, objects]);
 
     return (
-        <AdminTableContext.Provider value={{searchColumn,
-            setSearchColumn, searchValue, setSearchValue, rows,
-            editRow, setEditRow, isAddingRow, setIsAddingRow, ...props}}>
-            <Toolbar className={classes.topBar}>
-                <Typography variant="h5" id="tableTitle" component="div" className={classes.title}>
-                    {tableName}
-                </Typography>
-                <Box display={'flex'}>
-                    <SearchToolbar />
-                    {
-                        hasWritePrivilege && isAddable ? <Box ml={'10px'}>
-                            <Button variant={'outlined'} onClick={() => setIsAddingRow(true)}>
-                                Add new row
-                            </Button>
-                        </Box> : null
-                    }
-
-                </Box>
-            </Toolbar>
+        <AdminTableContext.Provider value={{
+            rows,
+            editRow, setEditRow,
+            deleteRow, setDeleteRow,
+            isAddingRow, setIsAddingRow,
+            ...props}}>
             <TableContainer component={Paper} variant="outlined" className={classes.tableContainer}>
-                <Table>
-                    <TableHead>
-                        <AdminTableColumns />
-                        <AdminTableRows />
-                    </TableHead>
-                </Table>
+                <Toolbar className={classes.topBar}>
+                    <Typography variant="h5" id="tableTitle" component="div" className={classes.title}>
+                        {tableName}
+                    </Typography>
+                    <Box display={'flex'}>
+                        <SearchToolbar />
+                        {
+                            hasWritePrivilege && isAddable ? <Box ml={'10px'}>
+                                <Button variant={'outlined'} onClick={() => setIsAddingRow(true)}>
+                                    Add new row
+                                </Button>
+                            </Box> : null
+                        }
+
+                    </Box>
+                </Toolbar>
+                <Box className={classes.tableWrapper}>
+                    <Table>
+                        <TableHead>
+                            <AdminTableColumns />
+                            {
+                                loading ? <TableRow>
+                                    <TableCell align={'center'} colSpan={colSpan}>
+                                        <Spinner size={'big'} />
+                                    </TableCell>
+                                </TableRow> : <AdminTableRows />
+
+                            }
+                        </TableHead>
+                    </Table>
+                </Box>
+
             </TableContainer>
         <EditDialog />
         {isAddable ? <AddDialog /> : null}
+        {isDeletable ? <DeleteDialog /> : null}
         </AdminTableContext.Provider>
     )
 }
@@ -91,6 +109,10 @@ AdminTable.propTypes = {
     mappingInput: PropTypes.object.isRequired,
     onEditSubmit: PropTypes.func.isRequired,
     onEditSuccess: PropTypes.func.isRequired,
+    isDeletable: PropTypes.bool.isRequired,
+    onDelete: PropTypes.func,
+    onDeleteSuccess: PropTypes.func,
+    onRowClick: PropTypes.func,
     onAddSubmit: PropTypes.func,
     onAddSuccess: PropTypes.func,
     isAddable: PropTypes.bool.isRequired,
@@ -103,11 +125,16 @@ AdminTable.propTypes = {
 const useStyles = makeStyles({
     tableContainer: {
         minWidth: 650,
+        overflowX: 'hidden'
     },
     title: {
         fontFamily: 'Staatliches',
     },
+    tableWrapper: {
+        overflowX: 'scroll',
+    },
     topBar: {
+        background: 'white',
         justifyContent: 'space-between',
         borderBottom: '1px solid black'
     },

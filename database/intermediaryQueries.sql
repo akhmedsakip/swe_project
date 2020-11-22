@@ -1,16 +1,3 @@
-UPDATE user
-SET Role = 'ROLE_ADMIN'
-WHERE Email = 'akhmed.sakip@nu.edu.kz';
-
-INSERT INTO person (Gender, FirstName, LastName, PhoneNumber, UserEmail)
-VALUES ('Male', 'Akhmed', 'Sakip', '+77776666642', 'akhmed.sakip@nu.edu.kz');
-
-INSERT INTO employee (EmployeeID, EmploymentDate, HotelID)
-VALUES ((SELECT PersonID FROM person WHERE UserEmail = 'akhmed.sakip@nu.edu.kz'), CURDATE(), 1);
-
-INSERT INTO administrative_staff (AdministrativeStaffID, AdministrativePosition)
-VALUES ((SELECT EmployeeID FROM employee WHERE UserEmail = 'akhmed.sakip@nu.edu.kz'), 'Manager');
-
 SELECT RHP.Privilege
 FROM user
 INNER JOIN role ON role.Role = user.Role
@@ -53,11 +40,11 @@ LEFT OUTER JOIN administrative_staff `as` ON e.EmployeeID = `as`.AdministrativeS
 LEFT OUTER JOIN cleaning_staff cs on e.EmployeeID = cs.CleaningStaffID
 WHERE e.HotelID = em.HotelID;
 
-SELECT MAX(ewodow.StartTime) StartTime, MAX(ewodow.EndTime) EndTime
+SELECT ewodow.DayOfWeek, ewodow.StartTime, ewodow.EndTime
 FROM employee e
 INNER JOIN employee em ON em.UserEmail = 'akhmed.sakip@nu.edu.kz'
-LEFT OUTER JOIN employee_works_on_day_of_week ewodow on e.EmployeeID = ewodow.EmployeeID
-WHERE e.HotelID = em.HotelID AND e.EmployeeID = 1 AND ewodow.DayOfWeek = 'Monday' LIMIT 1;
+RIGHT OUTER JOIN employee_works_on_day_of_week ewodow on e.EmployeeID = ewodow.EmployeeID
+WHERE e.HotelID = em.HotelID AND e.EmployeeID = 1;
 
 # Checking if ID belongs to a manager
 SELECT E.EmployeeID FROM employee E
@@ -76,3 +63,24 @@ FROM user
 INNER JOIN role r ON user.Role = r.Role
 INNER JOIN role_has_privilege rhp on r.Role = rhp.Role
 WHERE user.Email = 'akhmed.sakip@nu.edu.kz';
+
+
+
+
+
+
+
+
+SELECT s.SeasonID, s.Name, s.StartDate, s.EndDate, hwds.Advisory
+FROM season s
+INNER JOIN hotel_works_during_season hwds ON s.SeasonID = hwds.SeasonID
+INNER JOIN employee e on hwds.HotelID = e.HotelID
+WHERE e.UserEmail = 'akhmed.sakip@nu.edu.kz';
+
+SELECT hwds.DayOfWeek, hwds.Coefficient
+FROM season_has_day_of_week hwds
+INNER JOIN season s ON s.SeasonID = hwds.SeasonID
+INNER JOIN hotel_works_during_season h on s.SeasonID = h.SeasonID
+INNER JOIN employee e ON e.HotelID = h.HotelID
+WHERE e.UserEmail = 'akhmed.sakip@nu.edu.kz' AND s.SeasonID = 2;
+

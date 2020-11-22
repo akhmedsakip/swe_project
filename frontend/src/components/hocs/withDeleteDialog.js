@@ -34,7 +34,7 @@ const withDeleteDialog = (DeleteDialog) => {
                     </Button>
                 </DialogActions>
             </Dialog>
-                </>
+            </>
         )
     }
     return NewDeleteDialog

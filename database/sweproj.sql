@@ -731,6 +731,7 @@ DROP TABLE IF EXISTS `sweproj`.`hotel_works_during_season` ;
 CREATE TABLE IF NOT EXISTS `sweproj`.`hotel_works_during_season` (
   `HotelID` INT NOT NULL,
   `SeasonID` INT NOT NULL,
+  `Advisory` TEXT NULL,
   PRIMARY KEY (`HotelID`, `SeasonID`),
   INDEX `fk_HOTEL_has_SEASON_SEASON1_idx` (`SeasonID` ASC) VISIBLE,
   INDEX `fk_HOTEL_has_SEASON_HOTEL1_idx` (`HotelID` ASC) VISIBLE,

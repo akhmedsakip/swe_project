@@ -2,7 +2,6 @@ package com.example.sweproj;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 @Repository
 public class ProcedureInitializer {
@@ -18,6 +17,9 @@ public class ProcedureInitializer {
         this.insertWorkingDayProcedure();
         this.deleteWorkingDayProcedure();
         this.deleteHotelReservationProcedure();
+        this.insertSeasonWeekDayProcedure();
+        this.deleteSeasonProcedure();
+        this.insertSeasonProcedure();
     }
 
     void createPriceProcedure() {
@@ -262,6 +264,127 @@ public class ProcedureInitializer {
                 "             INNER JOIN `order` O on O.OrderID = OD.OrderID and O.HotelID = OD.OrderHotelID\n" +
                 "    WHERE O.OrderID = _orderId;\n" +
                 "\n" +
+                "    COMMIT;\n" +
+                "END;";
+        jdbcTemplate.execute(dropProcedureSql);
+        jdbcTemplate.execute(createProcedureSql);
+    }
+
+    void insertSeasonWeekDayProcedure() {
+        String dropProcedureSql = "DROP PROCEDURE IF EXISTS insertSeasonWeekDay;";
+        String createProcedureSql = "CREATE PROCEDURE insertSeasonWeekDay(IN _seasonId INT, IN _userEmail VARCHAR(45), IN _dayOfWeek VARCHAR(15),\n" +
+                "                                  IN _coefficient FLOAT)\n" +
+                "BEGIN\n" +
+                "    DECLARE EXIT HANDLER FOR SQLEXCEPTION\n" +
+                "        BEGIN\n" +
+                "            ROLLBACK;\n" +
+                "            RESIGNAL;\n" +
+                "        END;\n" +
+                "\n" +
+                "    START TRANSACTION;\n" +
+                "\n" +
+                "    SELECT MAX(S.SeasonID)\n" +
+                "    INTO _seasonId\n" +
+                "    FROM season S\n" +
+                "             INNER JOIN hotel_works_during_season hwds ON S.SeasonID = hwds.SeasonID\n" +
+                "             INNER JOIN employee e ON e.HotelID = hwds.HotelID AND e.UserEmail = _userEmail\n" +
+                "    WHERE S.SeasonID = _seasonId;\n" +
+                "\n" +
+                "    IF _seasonId IS NULL THEN\n" +
+                "        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Access error, trying to edit season from another hotel';\n" +
+                "    end if;\n" +
+                "\n" +
+                "    IF _coefficient <= 0.01 THEN\n" +
+                "        SIGNAL SQLSTATE '42000' SET MESSAGE_TEXT = 'Coefficient should be at least 0.01';\n" +
+                "    end if;\n" +
+                "\n" +
+                "\n" +
+                "    INSERT INTO season_has_day_of_week\n" +
+                "        (SeasonID, DayOfWeek, Coefficient)\n" +
+                "    VALUES (_seasonId, _dayOfWeek, _coefficient)\n" +
+                "    ON DUPLICATE KEY UPDATE SeasonID = _seasonId,\n" +
+                "                            DayOfWeek  = _dayOfWeek,\n" +
+                "                            Coefficient  = _coefficient;\n" +
+                "\n" +
+                "    COMMIT;\n" +
+                "END;";
+        jdbcTemplate.execute(dropProcedureSql);
+        jdbcTemplate.execute(createProcedureSql);
+    }
+
+    void deleteSeasonProcedure() {
+        String dropProcedureSql = "DROP PROCEDURE IF EXISTS deleteSeason;";
+        String createProcedureSql = "CREATE PROCEDURE deleteSeason(IN _seasonId INT, IN _userEmail VARCHAR(45))\n" +
+                "BEGIN\n" +
+                "    DECLARE EXIT HANDLER FOR SQLEXCEPTION\n" +
+                "        BEGIN\n" +
+                "            ROLLBACK;\n" +
+                "            RESIGNAL;\n" +
+                "        END;\n" +
+                "\n" +
+                "    START TRANSACTION;\n" +
+                "\n" +
+                "    SELECT MAX(S.SeasonID)\n" +
+                "    INTO _seasonId\n" +
+                "    FROM season S\n" +
+                "             INNER JOIN hotel_works_during_season hwds ON S.SeasonID = hwds.SeasonID\n" +
+                "             INNER JOIN employee e ON e.HotelID = hwds.HotelID AND e.UserEmail = _userEmail\n" +
+                "    WHERE S.SeasonID = _seasonId;\n" +
+                "\n" +
+                "    IF _seasonId IS NULL THEN\n" +
+                "        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Access error, trying to delete season from another hotel';\n" +
+                "    end if;\n" +
+                "\n" +
+                "    DELETE hwds, shdow\n" +
+                "    FROM hotel_works_during_season hwds\n" +
+                "             INNER JOIN season_has_day_of_week shdow ON hwds.SeasonID = shdow.SeasonID\n" +
+                "    WHERE hwds.SeasonID = _seasonId;\n" +
+                "\n" +
+                "    DELETE\n" +
+                "    FROM season\n" +
+                "    WHERE SeasonID = _seasonId;\n" +
+                "\n" +
+                "    COMMIT;\n" +
+                "END;";
+        jdbcTemplate.execute(dropProcedureSql);
+        jdbcTemplate.execute(createProcedureSql);
+    }
+
+    void insertSeasonProcedure() {
+        String dropProcedureSql = "DROP PROCEDURE IF EXISTS insertSeason;";
+        String createProcedureSql = "CREATE PROCEDURE insertSeason(IN _name VARCHAR(45), IN _startDate DATE, IN _endDate DATE,\n" +
+                "                                  IN _advisory TEXT, IN _userEmail VARCHAR(45))\n" +
+                "BEGIN\n" +
+                "    DECLARE _hotelId INT;\n" +
+                "\n" +
+                "    DECLARE EXIT HANDLER FOR SQLEXCEPTION\n" +
+                "        BEGIN\n" +
+                "            ROLLBACK;\n" +
+                "            RESIGNAL;\n" +
+                "        END;\n" +
+                "\n" +
+                "    START TRANSACTION;\n" +
+                "\n" +
+                "    SELECT MAX(e.HotelID)\n" +
+                "    INTO _hotelId\n" +
+                "    FROM employee e\n" +
+                "    WHERE e.UserEmail = _userEmail;\n" +
+                "\n" +
+                "    IF _hotelId IS NULL THEN\n" +
+                "        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Access error, you do not work in any hotel';\n" +
+                "    end if;\n" +
+                "\n" +
+                "    IF _endDate <= _startDate THEN\n" +
+                "        SIGNAL SQLSTATE '42000' SET MESSAGE_TEXT = 'End date should be later than start date';\n" +
+                "    end if;\n" +
+                "\n" +
+                "    INSERT INTO season\n" +
+                "        (Name, StartDate, EndDate)\n" +
+                "    VALUES (_name, _startDate, _endDate);\n" +
+                "\n" +
+                "    INSERT INTO hotel_works_during_season\n" +
+                "        (HotelID, SeasonID, Advisory)\n" +
+                "    VALUES (_hotelId, LAST_INSERT_ID(), _advisory);\n" +
                 "    COMMIT;\n" +
                 "END;";
         jdbcTemplate.execute(dropProcedureSql);

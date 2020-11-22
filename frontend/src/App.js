@@ -13,9 +13,10 @@ import PrivateAdminRoute from "./components/PrivateAdminRoute";
 import StoreProvider from "./store/store";
 import Reservations from "./pages/reservations/Reservations";
 import EmployeeSchedule from "./pages/employeeSchedule/EmployeeSchedule";
-import SeasonalRates from "./pages/seasonalRates/SeasonalRates";
 import AdminTableInstance from "./pages/admin-table/Instance";
 import AllReservations from "./pages/allReservations/AllReservations";
+import SeasonalRates from "./pages/seasonal-rates/SeasonalRates";
+import AdminEmployeesTable from "./pages/admin-table/EmployeesTable";
 
 function App() {
   return (
@@ -32,11 +33,12 @@ function App() {
             <PrivateRoute path="/profile" component={ProfilePage} />
             <PrivateRoute path="/all-reservations" component={AllReservations} />
             <PrivateRoute path="/employee-schedules" component={EmployeeSchedule} />
-            <PrivateRoute path="/seasonal-rates" component={SeasonalRates} />
+            <Route path="/seasonal-rates" component={SeasonalRates} />
             <PrivateAdminRoute path="/admin" component={AdminPage} />
             <Route path="/admin-table-example" component={AdminTableInstance} />
+            <Route path="/admin-employees-table" component={AdminEmployeesTable} />
             <Route path="*" render={() => (<Redirect to="/" />)} />
-            
+
           </Switch>
         </Root>
       </BrowserRouter>

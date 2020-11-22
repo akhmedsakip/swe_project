@@ -64,6 +64,9 @@ const AdminTableInstance = () => {
                        tableName={'fuck'}
                        onEditSubmit={(values) => console.log('edit', values)}
                        onEditSuccess={() => console.log('success edit')}
+                       onDelete={(values) => console.log('delete', values)}
+                       onDeleteSuccess={() => console.log('deleted successfully')}
+                       onRowClick={() => console.log('row clicked')}
                        addableColumns={addableColumns}
                        onAddSubmit={(values) => console.log('add', values)}
                        onAddSuccess={() => console.log('success add')}
@@ -71,6 +74,7 @@ const AdminTableInstance = () => {
                        editValidationSchema={schema}
                        searchableColumns={Object.keys(objects[0])} objects={objects}
                        isAddable={true}
+                       isDeletable={false}
     />
 }
 

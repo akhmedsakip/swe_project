@@ -65,6 +65,7 @@ const DynamicForm = ({onSubmitAction, onSuccess, columns, initialValues, initial
                                     label={mapping[column]}
                                     errorMessage={errors[column]} margin="dense" name={column}
                                     type={mappingInput[column]}
+                                    multiline={mappingInput[column] === 'multiline'}
                                     value={values[column]}
                                     onChange={handleChange(column)}
                                     InputLabelProps={{

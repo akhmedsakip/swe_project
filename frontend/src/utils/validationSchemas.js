@@ -94,3 +94,10 @@ export const allReservationSchema = yup.object().shape({
     checkInDate: yup.date().required("Check in date is empty"),
     checkOutDate: yup.date().required("Check out date is empty"),
 })
+
+export const seasonValidationSchema = yup.object().shape({
+    name: yup.string().required("Season name is empty"),
+    startDate: yup.string().required("Season start date is empty"),
+    endDate: yup.string().required("Season end date is empty"),
+    advisory: yup.string().required("Advisory is empty")
+})
