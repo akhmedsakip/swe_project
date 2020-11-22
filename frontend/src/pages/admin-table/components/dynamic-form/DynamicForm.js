@@ -9,31 +9,27 @@ import React, {useContext, useEffect, useState} from "react";
 import AdminTableContext from "../../../../contexts/AdminTableContext";
 import PropTypes from 'prop-types';
 import {makeStyles} from "@material-ui/core/styles";
-import * as yup from 'yup';
 
-const DynamicForm = ({onSubmitAction, onSuccess, columns, initialValues, initialErrors, validationSchema}) => {
+const DynamicForm = ({row, onSubmitAction, onSuccess, columns, initialValues, initialErrors, validationSchema}) => {
     const {mapping, mappingInput} = useContext(AdminTableContext);
     const [serverError, setServerError] = useState('');
     const [success, setSuccess] = useState('');
     const classes = useStyles();
 
-    const action = async(values) => onSubmitAction(values);
-    const {loading, onSubmit, result, error} = useFetch(action);
+    const {loading, onSubmit, result, error} = useFetch(onSubmitAction);
 
     const {touched, values, errors, handleChange, handleBlur, handleSubmit, setFieldError, isValid } = useFormik({
         initialValues,
         initialErrors,
         validationSchema: validationSchema,
-        onSubmit: (values) => onSubmit(values)
+        onSubmit: (values) => onSubmit(values, row)
     });
 
     useEffect(() => {
         if(result === null) {
             return;
         }
-        onSuccess();
-        setSuccess('Success');
-
+        Promise.resolve(onSuccess()).then(() => setSuccess('Success'))
     }, [result])
 
     useEffect(() => {
@@ -91,6 +87,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 DynamicForm.propTypes = {
+    row: PropTypes.object,
     onSubmitAction: PropTypes.func.isRequired,
     onSuccess: PropTypes.func.isRequired,
     columns: PropTypes.arrayOf(PropTypes.string).isRequired,

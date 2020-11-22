@@ -84,3 +84,13 @@ INNER JOIN hotel_works_during_season h on s.SeasonID = h.SeasonID
 INNER JOIN employee e ON e.HotelID = h.HotelID
 WHERE e.UserEmail = 'akhmed.sakip@nu.edu.kz' AND s.SeasonID = 2;
 
+UPDATE season s
+    INNER JOIN hotel_works_during_season hwds ON s.SeasonID = hwds.SeasonID
+    INNER JOIN employee e ON e.HotelID = hwds.HotelID
+SET Name      = 'Winter',
+    StartDate = '2021-01-02',
+    EndDate   = '2021-02-28',
+    Advisory  = 'a'
+WHERE S.SeasonID = 123123
+  AND e.UserEmail = 'admin_1@amita.kz';
+

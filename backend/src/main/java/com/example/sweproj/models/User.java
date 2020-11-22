@@ -24,7 +24,7 @@ public class User implements UserDetails {
     public User() {}
 
     public User(String email, String password) {
-        this.email = email;
+        this.setEmail(email);
         this.password = password;
     }
 
@@ -84,6 +84,11 @@ public class User implements UserDetails {
     @Override
     public String getPassword() {
         return this.password;
+    }
+
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -149,6 +154,10 @@ public class User implements UserDetails {
 
     public ArrayList<String> getPrivileges() {
         return privileges;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
 

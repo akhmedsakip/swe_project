@@ -56,4 +56,21 @@ public class SeasonDataAccessService {
         return jdbcTemplate.update(sql, season.getName(), season.getStartDate(), season.getEndDate(),
                 season.getAdvisory(), user.getEmail());
     }
+
+    int editHotelSeason(Season season) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String sql = "UPDATE season s\n" +
+                "    INNER JOIN hotel_works_during_season hwds ON s.SeasonID = hwds.SeasonID\n" +
+                "    INNER JOIN employee e ON e.HotelID = hwds.HotelID\n" +
+                "SET Name      = ?,\n" +
+                "    StartDate = ?,\n" +
+                "    EndDate   = ?,\n" +
+                "    Advisory  = ?\n" +
+                "WHERE S.SeasonID = ?\n" +
+                "  AND e.UserEmail = ?;";
+
+        return jdbcTemplate.update(sql, season.getName(), season.getStartDate(), season.getEndDate(),
+                season.getAdvisory(), season.getSeasonId(), user.getEmail());
+    }
 }
