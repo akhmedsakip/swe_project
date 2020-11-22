@@ -14,8 +14,7 @@ const DeleteDialog = () => {
 
     useEffect(() => {
         if(result !== null) {
-            onDeleteSuccess();
-            setDeleteRow(null);
+            Promise.resolve(onDeleteSuccess()).then(() => setDeleteRow(null));
         }
     }, [result])
 

@@ -5,12 +5,12 @@ const useFetch = (action) => {
     const [result, setResult] = useState(null);
     const [error, setError] = useState(null);
 
-    async function onSubmit(values) {
+    async function onSubmit(values, row) {
         let serverErrors = null;
         let result = null;
         try {
             setLoading(true);
-            result = await action(values);
+            result = await action(values, row);
         } catch(error) {
             serverErrors = error.response.data;
         } finally {

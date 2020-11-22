@@ -8,7 +8,9 @@ const EditDialogForm = () => {
         .filter(([prop]) => editableColumns.includes(prop))) : {};
     const initialErrors = Object.fromEntries(Object.entries(initialValues).map(([prop]) => [prop, '']));
 
-    return <DynamicForm onSubmitAction={onEditSubmit}
+    return <DynamicForm
+                row={editRow}
+                onSubmitAction={onEditSubmit}
                  onSuccess={onEditSuccess} columns={editableColumns}
                  initialValues={initialValues} initialErrors={initialErrors} validationSchema={editValidationSchema} />
 
