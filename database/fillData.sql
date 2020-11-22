@@ -420,6 +420,26 @@ SELECT 'ROLE_ADMIN',
        Privilege
 FROM privilege;
 
+INSERT INTO role_has_privilege
+    (Role, Privilege)
+VALUES ('ROLE_MODERATOR', 'READ_ALL_ORDERS');
+
+INSERT INTO role_has_privilege
+    (Role, Privilege)
+VALUES ('ROLE_MODERATOR', 'WRITE_ALL_ORDERS');
+
+INSERT INTO role_has_privilege
+    (Role, Privilege)
+VALUES ('ROLE_MODERATOR', 'WRITE_ALL_USERS');
+
+INSERT INTO role_has_privilege
+    (Role, Privilege)
+VALUES ('ROLE_MODERATOR', 'READ_ALL_EMPLOYEES');
+
+INSERT INTO role_has_privilege
+    (Role, Privilege)
+VALUES ('ROLE_MODERATOR', 'READ_ALL_SEASONS');
+
 INSERT INTO administrative_position
 VALUES ('Manager');
 
@@ -428,3 +448,6 @@ VALUES ('Desk Clerk');
 
 INSERT INTO cleaning_position
 VALUES ('Cleaner');
+
+INSERT INTO cleaning_position
+VALUES ('Housekeeping Manager');

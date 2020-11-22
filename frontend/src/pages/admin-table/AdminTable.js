@@ -82,8 +82,15 @@ const AdminTable = (props) => {
                                     <TableCell align={'center'} colSpan={colSpan}>
                                         <Spinner size={'big'} />
                                     </TableCell>
-                                </TableRow> : <AdminTableRows />
-
+                                </TableRow> : null
+                            }
+                            {
+                                !loading && objects.length ?
+                                    <AdminTableRows /> : <TableRow>
+                                        <TableCell align={'center'} colSpan={colSpan}>
+                                            Table is empty
+                                        </TableCell>
+                                    </TableRow>
                             }
                         </TableHead>
                     </Table>

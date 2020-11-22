@@ -8,6 +8,7 @@ import reservationReducer, {initialReservationsState} from "./reservations/reser
 import allReservationReducer, {initialAllReservationsState} from "./manager/allReservations/allReservationsReducer";
 import employeesReducer, {initialEmployeesState} from './manager/employees/employeesReducer';
 import adminTableReducer, {initialAdminTableState} from "./admin-table/adminTableReducers";
+import seasonalRatesReducer, {initialSeasonalRatesState} from "./seasonal-rates/seasonalRatesReducer";
 
 
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
     allReservations: initialAllReservationsState,
     employees: initialEmployeesState,
     adminTable: initialAdminTableState,
+    seasonalRates: initialSeasonalRatesState,
 };
 
 const combineReducers = (slices) => (state, action) =>
@@ -36,6 +38,7 @@ const reducer = combineReducers({
     allReservations: allReservationReducer,
     employees: employeesReducer,
     adminTable: adminTableReducer,
+    seasonalRates: seasonalRatesReducer,
 });
 
 const StoreProvider = ({children}) => {

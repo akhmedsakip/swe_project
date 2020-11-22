@@ -52,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/seasons").hasAnyAuthority("READ_ALL_SEASONS")
                 .antMatchers(HttpMethod.GET, "/api/seasons/**").hasAnyAuthority("READ_ALL_SEASONS")
                 .antMatchers(HttpMethod.POST, "/api/seasons").hasAnyAuthority("WRITE_ALL_SEASONS")
+                .antMatchers(HttpMethod.PUT, "/api/seasons").hasAnyAuthority("WRITE_ALL_SEASONS")
                 .antMatchers(HttpMethod.PUT, "/api/seasons/**").hasAnyAuthority("WRITE_ALL_SEASONS")
                 .antMatchers(HttpMethod.DELETE, "/api/seasons").hasAnyAuthority("WRITE_ALL_SEASONS")
                 .antMatchers(HttpMethod.DELETE, "/api/seasons/**").hasAnyAuthority("WRITE_ALL_SEASONS")
