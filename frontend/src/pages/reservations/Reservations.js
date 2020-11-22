@@ -4,7 +4,6 @@ import ReservationsTable from './components/ReservationsTable';
 import AppContext from "../../store/AppContext";
 import fetchReservationsAction from "../../actions/reservations/fetchReservationsAction";
 import { RESERVATIONS_SET_LOADING, RESERVATIONS_UNSET_LOADING } from "../../store/reservations/reservationActionTypes";
-import withTableContent from '../../components/hocs/withTableContent';
 
 const Reservations = () => {
     const classes = useStyles();

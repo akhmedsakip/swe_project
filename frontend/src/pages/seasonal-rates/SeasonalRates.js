@@ -1,8 +1,13 @@
 import Box from "@material-ui/core/Box";
-import React from "react";
+import React, {useContext, useEffect, useRef} from "react";
 import {makeStyles} from "@material-ui/core";
 import AdminTable from "../admin-table/AdminTable";
 import {seasonValidationSchema} from "../../utils/validationSchemas";
+import AppContext from "../../store/AppContext";
+import {ADMIN_TABLE_SET_LOADING, ADMIN_TABLE_UNSET_LOADING} from "../../store/admin-table/adminTableActionTypes";
+import fetchSeasonsAction from "../../actions/seasonal-rates/fetchSeasonsAction";
+import addSeasonAction from "../../actions/seasonal-rates/addSeasonAction";
+import deleteSeasonAction from "../../actions/seasonal-rates/deleteSeasonAction";
 
 const objects = [
     {
@@ -43,20 +48,47 @@ const mappingInputs = {
 
 const SeasonalRates = () => {
     const classes = useStyles();
+    const {state, dispatch} = useContext(AppContext);
+    const timeout = useRef(setTimeout(() => {}));
+
+    const {seasons} = state.seasonalRates;
+
+    useEffect(() => {
+        if(seasons.length === 0) {
+            dispatch({type: ADMIN_TABLE_SET_LOADING});
+            fetchSeasons();
+        }
+        return () => clearTimeout(timeout.current);
+    }, [seasons]);
+
+    const onAddSubmit = async ({name, startDate, endDate, advisory}) => {
+        await addSeasonAction({name, startDate, endDate, advisory});
+    }
+    const fetchSeasons = async () => {
+        await fetchSeasonsAction(dispatch);
+        let a = setTimeout(() => {
+            dispatch({type: ADMIN_TABLE_UNSET_LOADING})
+        }, 500);
+    }
+    const onDeleteSubmit = async ({seasonId}) => {
+        await deleteSeasonAction(seasonId);
+    }
+
     return <Box className={classes.root} display={'flex'} flexDirection={'column'} alignItems='center'>
-        <AdminTable objects={objects}
+        <AdminTable objects={seasons}
                     showableColumns={showableColumns} searchableColumns={showableColumns}
                     editableColumns={editableColumns} addableColumns={showableColumns}
                     mapping={mapping}
                     mappingInput={mappingInputs}
-                    onEditSubmit={(values) => console.log('edit', values)}
+                    onEditSubmit={(values, row) => console.log('edit', values, row)}
                     onEditSuccess={() => console.log('hi edit')}
                     isDeletable={true}
-                    onDelete={(values) => console.log('delete', values)}
-                    onDeleteSuccess={() => console.log('hi delete')}
-                    isAddable={true} hasWritePrivilege={true}
-                    onAddSubmit={(values) => console.log('add', values)}
-                    onAddSuccess={() => console.log('hi add')}
+                    onDelete={onDeleteSubmit}
+                    onDeleteSuccess={fetchSeasons}
+                    isAddable={true}
+                    hasWritePrivilege={true}
+                    onAddSubmit={onAddSubmit}
+                    onAddSuccess={fetchSeasons}
                     onRowClick={() => console.log('row clicked')}
                     editValidationSchema={seasonValidationSchema}
                     addValidationSchema={seasonValidationSchema}
