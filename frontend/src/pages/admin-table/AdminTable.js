@@ -19,7 +19,7 @@ import AdminTableRows from "./components/table/AdminTableRows";
 import EditDialog from "./components/edit-dialog/EditDialog";
 import Button from "@material-ui/core/Button";
 import AddDialog from "./components/add-dialog/AddDialog";
-import * as yup from 'yup';
+import DeleteDialog from "./components/delete-dialog/DeleteDialog";
 
 const AdminTable = (props) => {
     const {objects, tableName, hasWritePrivilege, isAddable} = props
@@ -30,6 +30,7 @@ const AdminTable = (props) => {
     const [rows, setRows] = useState([]);
 
     const [editRow, setEditRow] = useState(null);
+    const [deleteRow, setDeleteRow] = useState(null);
     const [isAddingRow, setIsAddingRow] = useState(false);
 
     useEffect(() => {
@@ -48,7 +49,8 @@ const AdminTable = (props) => {
     return (
         <AdminTableContext.Provider value={{searchColumn,
             setSearchColumn, searchValue, setSearchValue, rows,
-            editRow, setEditRow, isAddingRow, setIsAddingRow, ...props}}>
+            editRow, setEditRow, isAddingRow, setIsAddingRow,
+            deleteRow, setDeleteRow, ...props}}>
             <Toolbar className={classes.topBar}>
                 <Typography variant="h5" id="tableTitle" component="div" className={classes.title}>
                     {tableName}
@@ -75,6 +77,7 @@ const AdminTable = (props) => {
             </TableContainer>
         <EditDialog />
         {isAddable ? <AddDialog /> : null}
+        <DeleteDialog />
         </AdminTableContext.Provider>
     )
 }
@@ -91,6 +94,9 @@ AdminTable.propTypes = {
     mappingInput: PropTypes.object.isRequired,
     onEditSubmit: PropTypes.func.isRequired,
     onEditSuccess: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    onDeleteSuccess: PropTypes.func.isRequired,
+    onRowClick: PropTypes.func,
     onAddSubmit: PropTypes.func,
     onAddSuccess: PropTypes.func,
     isAddable: PropTypes.bool.isRequired,
