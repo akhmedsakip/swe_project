@@ -12,7 +12,13 @@ const useFetch = (action) => {
             setLoading(true);
             result = await action(values, row);
         } catch(error) {
-            serverErrors = error.response.data;
+            if(error?.response?.data) {
+                serverErrors = error.response.data;
+            } else if(error.message) {
+                serverErrors = error.message;
+            } else {
+                serverErrors = "Server error";
+            }
         } finally {
             setTimeout(() => {
                 setLoading(false);
