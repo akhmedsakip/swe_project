@@ -21,6 +21,8 @@ public class Person {
     private String lastName;
 
     @JsonProperty @NotBlank(message = "PhoneNumber is empty")
+    @Pattern(regexp = "^\\+[0-9]?()[0-9](\\s|\\S)(\\d[0-9]{7})$",
+            message = "Phone number is in incorrect format", flags = Pattern.Flag.CASE_INSENSITIVE)
     private String phoneNumber;
 
     @JsonProperty
