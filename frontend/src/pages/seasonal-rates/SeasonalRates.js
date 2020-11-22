@@ -38,6 +38,7 @@ const showableColumns = ['seasonId', 'name', 'startDate', 'endDate', 'advisory']
 const addableColumns = ['name', 'startDate', 'endDate', 'advisory'];
 const editableColumns = ['name', 'startDate', 'endDate', 'advisory'];
 const mapping = {
+    'seasonId': 'Season ID',
     'name': 'Name',
     'startDate': 'Start Date',
     'endDate': 'End Date',
