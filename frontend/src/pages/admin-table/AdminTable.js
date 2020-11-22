@@ -22,7 +22,7 @@ import AddDialog from "./components/add-dialog/AddDialog";
 import * as yup from 'yup';
 
 const AdminTable = (props) => {
-    const {objects, tableName, hasWritePrivilege} = props
+    const {objects, tableName, hasWritePrivilege, isAddable} = props
     const classes = useStyles();
 
     const [searchColumn, setSearchColumn] = useState('all');
@@ -56,7 +56,7 @@ const AdminTable = (props) => {
                 <Box display={'flex'}>
                     <SearchToolbar />
                     {
-                        hasWritePrivilege ? <Box ml={'10px'}>
+                        hasWritePrivilege && isAddable ? <Box ml={'10px'}>
                             <Button variant={'outlined'} onClick={() => setIsAddingRow(true)}>
                                 Add new row
                             </Button>
@@ -74,7 +74,7 @@ const AdminTable = (props) => {
                 </Table>
             </TableContainer>
         <EditDialog />
-        <AddDialog />
+        {isAddable ? <AddDialog /> : null}
         </AdminTableContext.Provider>
     )
 }
@@ -93,6 +93,7 @@ AdminTable.propTypes = {
     onEditSuccess: PropTypes.func.isRequired,
     onAddSubmit: PropTypes.func,
     onAddSuccess: PropTypes.func,
+    isAddable: PropTypes.bool.isRequired,
     hasWritePrivilege: PropTypes.bool.isRequired,
     editValidationSchema: PropTypes.object.isRequired,
     addValidationSchema: PropTypes.object,
