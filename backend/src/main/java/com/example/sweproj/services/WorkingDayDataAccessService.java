@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 @Repository
 public class WorkingDayDataAccessService {
@@ -40,6 +41,23 @@ public class WorkingDayDataAccessService {
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> mapFromDB(rs), user.getEmail(), info.getEmployeeId(),
                 info.getDayOfWeek()).get(0);
+    }
+
+    List<WorkingDay> getWorkingDays(int employeeId) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String sql = "SELECT ewodow.DayOfWeek, ewodow.StartTime, ewodow.EndTime\n" +
+                "FROM employee e\n" +
+                "INNER JOIN employee em ON em.UserEmail = ?\n" +
+                "RIGHT OUTER JOIN employee_works_on_day_of_week ewodow on e.EmployeeID = ewodow.EmployeeID\n" +
+                "WHERE e.HotelID = em.HotelID AND e.EmployeeID = ?;";
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+                    WorkingDay workingDay = mapFromDB(rs);
+                    workingDay.setDayOfWeek(rs.getString("DayOfWeek"));
+                    return workingDay;
+                },
+                user.getEmail(), employeeId);
     }
 
     int changeSchedule(InsertWorkingDayRequest info) {
