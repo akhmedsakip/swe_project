@@ -40,8 +40,9 @@ const useStyles = makeStyles(() => ({
     },
     cell: {
         width: '100%',
-        maxHeight: 40,
-        overflowY: 'scroll',
+        maxHeight: 80,
+        overflowY: 'auto',
+        maxWidth: 400,
     }
 }))
 
