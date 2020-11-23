@@ -110,3 +110,8 @@ export const weekdayValidationSchema = yup.object().shape({
         return val >= 0.01 && val <= 3;
     })
 });
+
+export const employeeWeekdayValidationSchema = yup.object().shape({
+    startTime: yup.string().required("Start Time is empty"),
+    endTime: yup.string().required("End Time is empty"),
+});

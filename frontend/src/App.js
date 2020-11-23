@@ -14,7 +14,7 @@ import AdminTableInstance from "./components/interactive-table/Instance";
 import SeasonalRates from "./pages/seasonal-rates/SeasonalRates";
 import SeasonWeekDays from "./pages/seasonal-rates/season-weekdays/SeasonWeekDays";
 import Employees from "./pages/employees/Employees";
-import EmployeesWorkingDays from "./pages/employees/employeesSchedules/EmployeeWorkingDays";
+import EmployeesWorkingDays from "./pages/employees/employee-working-days/EmployeeWorkingDays";
 import AdminReservations from "./pages/admin-reservations/AdminReservations";
 import {READ_ALL_ORDERS} from "./store/user/userPrivelegesTypes";
 
