@@ -8,7 +8,7 @@ import { EMPLOYEES_SET_LOADING, EMPLOYEES_UNSET_LOADING } from '../../store/empl
 import fetchEmployeesAction from '../../actions/employees/fetchEmployeesAction';
 import Box from "@material-ui/core/Box";
 import {makeStyles} from "@material-ui/core/styles";
-import {WRITE_ALL_EMPLOYEES} from "../../store/user/userPrivelegesTypes";
+import {READ_ALL_SCHEDULES, WRITE_ALL_EMPLOYEES} from "../../store/user/userPrivelegesTypes";
 
 const mapping = {
     "employeeId": "Employee ID",
@@ -26,8 +26,6 @@ const mapping = {
 const editableColumns = [
     "baseSalaryPerHour"
 ];
-
-const addableColumns = [];
 
 const mappingInput = {
     "baseSalaryPerHour": "text"
@@ -82,7 +80,8 @@ const Employees = () => {
                               isEditable={true}
                               onEditSubmit={onEditSubmit}
                               onEditSuccess={fetchEmployees}
-                              onRowClick={({employeeId}) => history.push(`/employees-working-days/${employeeId}`)}
+                              onRowClick={userInfo?.privileges?.includes(READ_ALL_SCHEDULES)?(({employeeId}) =>
+                                  history.push(`/employees-working-days/${employeeId}`)):null}
                               hasWritePrivilege={userInfo?.privileges?.includes(WRITE_ALL_EMPLOYEES)}
                               editValidationSchema={schema}
                               searchableColumns={Object.keys(mapping)}

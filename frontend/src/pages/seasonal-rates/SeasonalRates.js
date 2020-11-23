@@ -9,31 +9,8 @@ import fetchSeasonsAction from "../../actions/seasonal-rates/fetchSeasonsAction"
 import addSeasonAction from "../../actions/seasonal-rates/addSeasonAction";
 import deleteSeasonAction from "../../actions/seasonal-rates/deleteSeasonAction";
 import {useHistory} from 'react-router-dom';
-import editWeekdayAction from "../../actions/seasonal-rates/editWeekdayAction";
 import editSeasonAction from "../../actions/seasonal-rates/editSeasonAction";
 import {WRITE_ALL_SEASONS} from "../../store/user/userPrivelegesTypes";
-
-
-const objects = [
-    {
-        seasonId: 1,
-        name: 'Winter',
-        startDate: '2020-01-01',
-        endDate: '2020-02-02',
-        advisory: 'Text text text text text text text text text text text text text' +
-            ' text text text text text text text text text text text text text text ' +
-            'text text text text text text text text text text text text text text'
-    },
-    {
-        seasonId: 2,
-        name: 'Winter',
-        startDate: '2020-03-03',
-        endDate: '2020-04-04',
-        advisory: 'Text text text text text text text text text text text text text' +
-            ' text text text text text text text text text text text text text text ' +
-            'text text text text text text text text text text text text text text'
-    }
-]
 
 const showableColumns = ['seasonId', 'name', 'startDate', 'endDate', 'advisory'];
 const addableColumns = ['name', 'startDate', 'endDate', 'advisory'];
