@@ -1,7 +1,7 @@
 import InteractiveTable from "../../../components/interactive-table/InteractiveTable";
 import {weekdayValidationSchema} from "../../../utils/validationSchemas";
 import Box from "@material-ui/core/Box";
-import React, {useContext, useEffect, useRef, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core";
 import AppContext from "../../../store/AppContext";
 import fetchWeekdaysAction from "../../../actions/seasonal-rates/fetchWeekdaysAction";
@@ -51,7 +51,6 @@ const SeasonWeekDays = () => {
     }, []);
 
     useEffect(() => {
-        console.log(fillAllDays(weekdays));
         setSeasonWeekDays(fillAllDays(weekdays));
     }, [weekdays])
 

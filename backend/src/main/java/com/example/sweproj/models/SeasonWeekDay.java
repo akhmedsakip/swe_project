@@ -1,9 +1,11 @@
 package com.example.sweproj.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.math3.util.Precision;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.text.DecimalFormat;
 
 @Valid
 public class SeasonWeekDay {
@@ -41,6 +43,6 @@ public class SeasonWeekDay {
     }
 
     public void setCoefficient(double coefficient) {
-        this.coefficient = coefficient;
+        this.coefficient = Precision.round(coefficient, 2);
     }
 }

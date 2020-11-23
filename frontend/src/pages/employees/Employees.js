@@ -4,7 +4,10 @@ import { useHistory } from 'react-router-dom';
 import InteractiveTable from '../../components/interactive-table/InteractiveTable';
 import editEmployeeAction from '../../actions/employees/editEmployeeAction';
 import AppContext from '../../store/AppContext';
-import { EMPLOYEES_SET_LOADING, EMPLOYEES_UNSET_LOADING } from '../../store/employees/employeesActionTypes';
+import {
+    INTERACTIVE_TABLE_SET_LOADING,
+    INTERACTIVE_TABLE_UNSET_LOADING
+} from "../../store/interactive-table/interactiveTableActionTypes";
 import fetchEmployeesAction from '../../actions/employees/fetchEmployeesAction';
 import Box from "@material-ui/core/Box";
 import {makeStyles} from "@material-ui/core/styles";
@@ -56,9 +59,9 @@ const Employees = () => {
     }, [rawEmployees])
 
     const fetchEmployees = async () => {
-        dispatch({ type: EMPLOYEES_SET_LOADING });
+        dispatch({ type: INTERACTIVE_TABLE_SET_LOADING });
         await fetchEmployeesAction(dispatch);
-        timeout.current = setTimeout(() => dispatch({ type: EMPLOYEES_UNSET_LOADING }), 300);
+        timeout.current = setTimeout(() => dispatch({ type: INTERACTIVE_TABLE_UNSET_LOADING }), 500);
     }
 
     const onEditSubmit = async (values, row) => {

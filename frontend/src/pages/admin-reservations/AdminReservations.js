@@ -2,12 +2,7 @@ import InteractiveTable from "../../components/interactive-table/InteractiveTabl
 import fetchAdminReservationsAction from "../../actions/admin-reservations/fetchAdminReservationsAction";
 import deleteAdminReservationAction from "../../actions/admin-reservations/deleteAdminReservationAction";
 import React, {useContext, useEffect, useState} from "react";
-import deleteReservationAction from "../../actions/reservations/deleteReservationAction";
 import editAdminReservationAction from "../../actions/admin-reservations/editAdminReservationAction";
-import {
-    ALL_RESERVATIONS_SET_LOADING,
-    ALL_RESERVATIONS_UNSET_LOADING
-} from "../../store/adminReservations/adminReservationsActionTypes";
 import AppContext from "../../store/AppContext";
 import {editReservationFormSchema} from "../../utils/validationSchemas";
 import Box from "@material-ui/core/Box";
@@ -70,7 +65,7 @@ function AdminReservations() {
     const fetchReservation = async () => {
         dispatch({type: INTERACTIVE_TABLE_SET_LOADING});
         await fetchAdminReservationsAction(dispatch);
-        setTimeout(() => dispatch({type: INTERACTIVE_TABLE_UNSET_LOADING}), 300);
+        setTimeout(() => dispatch({type: INTERACTIVE_TABLE_UNSET_LOADING}), 500);
     }
 
     return <Box className={classes.root} display={'flex'} flexDirection={'column'} alignItems='center'>
