@@ -70,7 +70,7 @@ function RoomTypeCard({ roomTypeName, roomTypeDescription, roomTypeMainPhoto, ro
                     {
                         roomTypeTotalPrice != null ?
                             <Typography variant="body2" component="p" className={classes.price}>
-                                Total Price: {roomTypeTotalPrice}
+                                Total Price: ${roomTypeTotalPrice}
                             </Typography>
                             : null
                     }
