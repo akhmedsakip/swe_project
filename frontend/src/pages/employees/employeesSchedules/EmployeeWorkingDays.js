@@ -1,6 +1,8 @@
 import InteractiveTable from "../../../components/interactive-table/InteractiveTable";
 import React from "react";
 import * as yup from "yup";
+import Box from "@material-ui/core/Box";
+import {makeStyles} from "@material-ui/core/styles";
 
 const objects = [
     {
@@ -71,13 +73,17 @@ const schema = yup.object().shape({
 });
 
 const EmployeeWorkingDays = () => {
-    return <InteractiveTable
+    const classes = useStyles();
+    return <Box className={classes.root} display={'flex'} flexDirection={'column'} alignItems='center'>
+        <InteractiveTable
                        editableColumns={editableColumns}
                        showableColumns={Object.keys(objects[0])}
                        mapping={mapping}
                        mappingInput={mappingInput}
                        showBackButton={true}
                        isEditable={true}
+                       isAddable={false}
+                       isDeletable={true}
                        tableName={'Manager: Employee Working Days'}
                        onEditSubmit={(values) => console.log('edit', values)}
                        onEditSuccess={() => console.log('success edit')}
@@ -87,6 +93,15 @@ const EmployeeWorkingDays = () => {
                        hasWritePrivilege={true}
                        editValidationSchema={schema}
                        searchableColumns={Object.keys(objects[0])} objects={objects}/>
+    </Box>
 }
+
+const useStyles = makeStyles({
+    root: {
+        minHeight: '100vh',
+        padding: 16,
+        backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/bg2.jpg'})`
+    },
+})
 
 export default EmployeeWorkingDays;
