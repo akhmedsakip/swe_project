@@ -16,7 +16,12 @@ import SeasonWeekDays from "./pages/seasonal-rates/season-weekdays/SeasonWeekDay
 import Employees from "./pages/employees/Employees";
 import EmployeesWorkingDays from "./pages/employees/employee-working-days/EmployeeWorkingDays";
 import AdminReservations from "./pages/admin-reservations/AdminReservations";
-import {READ_ALL_ORDERS} from "./store/user/userPrivelegesTypes";
+import {
+  READ_ALL_EMPLOYEES,
+  READ_ALL_ORDERS,
+  READ_ALL_SCHEDULES,
+  READ_ALL_SEASONS
+} from "./store/user/userPrivelegesTypes";
 
 function App() {
   return (
@@ -31,12 +36,11 @@ function App() {
             <Route path="/availability" component={AvailabilityPage} />
             <PrivateRoute path="/reservations" component={Reservations} />
             <PrivateRoute path="/profile" component={ProfilePage} />
-            <PrivateRoute path="/admin-reservations" component={AdminReservations} />
-            <Route path="/employees" component={Employees} />
-            <Route path="/employees-working-days/:id" component={EmployeesWorkingDays} />
-            <Route path="/seasonal-rates" component={SeasonalRates} />
-            <Route path="/seasonal-rates-weekdays/:id" component={SeasonWeekDays} />
-            <PrivateRoute path="/admin-table-example" component={AdminTableInstance} privileges={[READ_ALL_ORDERS]} />
+            <PrivateRoute path="/admin-reservations" component={AdminReservations} privileges={[READ_ALL_ORDERS]} />
+            <PrivateRoute path="/employees" component={Employees} privileges={[READ_ALL_EMPLOYEES]} />
+            <PrivateRoute path="/employees-working-days/:id" component={EmployeesWorkingDays} privileges={[READ_ALL_SCHEDULES]} />
+            <PrivateRoute path="/seasonal-rates" component={SeasonalRates} privileges={[READ_ALL_SEASONS]} />
+            <PrivateRoute path="/seasonal-rates-weekdays/:id" component={SeasonWeekDays} privileges={[READ_ALL_SEASONS]} />
             <Route path="*" render={() => (<Redirect to="/" />)} />
 
           </Switch>

@@ -8,8 +8,10 @@ const PrivateRoute = ({privileges, ...other}) => {
         return <Redirect to={"/"} />
     }
     if(privileges) {
+        console.log(privileges);
+        console.log(state.user.userInfo.privileges);
         const hasAllPrivileges = privileges
-            .reduce((accum, privilege) => accum && state?.user?.userInfo?.privileges.includes(privilege), false);
+            .reduce((accum, privilege) => accum && state?.user?.userInfo?.privileges.includes(privilege), true);
         if(!hasAllPrivileges) {
             return <Redirect to={"/"} />
         }

@@ -11,6 +11,7 @@ import deleteSeasonAction from "../../actions/seasonal-rates/deleteSeasonAction"
 import {useHistory} from 'react-router-dom';
 import editWeekdayAction from "../../actions/seasonal-rates/editWeekdayAction";
 import editSeasonAction from "../../actions/seasonal-rates/editSeasonAction";
+import {WRITE_ALL_SEASONS} from "../../store/user/userPrivelegesTypes";
 
 
 const objects = [
@@ -56,6 +57,7 @@ const SeasonalRates = () => {
     const classes = useStyles();
     const {state, dispatch} = useContext(AppContext);
     const timeout = useRef(setTimeout(() => {}));
+    const {userInfo} = state.user;
     const history = useHistory();
 
     const {seasons} = state.seasonalRates;
@@ -101,7 +103,7 @@ const SeasonalRates = () => {
                           onDelete={onDeleteSubmit}
                           onDeleteSuccess={fetchSeasons}
                           isAddable={true}
-                          hasWritePrivilege={true}
+                          hasWritePrivilege={userInfo?.privileges?.includes(WRITE_ALL_SEASONS)}
                           onAddSubmit={onAddSubmit}
                           onAddSuccess={fetchSeasons}
                           onRowClick={(row) => history.push('/seasonal-rates-weekdays/' + row.seasonId)}

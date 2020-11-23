@@ -61,7 +61,7 @@ const AdminTableInstance = () => {
                              showableColumns={Object.keys(objects[0])}
                              mapping={mapping}
                              mappingInput={mappingInput}
-                             tableName={'fuck'}
+                             tableName={''}
                              onEditSubmit={(values) => console.log('edit', values)}
                              onEditSuccess={() => console.log('success edit')}
                              onDelete={(values) => console.log('delete', values)}

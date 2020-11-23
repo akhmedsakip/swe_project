@@ -6,16 +6,10 @@ import {makeStyles} from "@material-ui/core";
 import AppContext from "../../../store/AppContext";
 import {INTERACTIVE_TABLE_SET_LOADING, INTERACTIVE_TABLE_UNSET_LOADING} from "../../../store/interactive-table/interactiveTableActionTypes";
 import { useParams } from 'react-router-dom';
-import {WRITE_ALL_SCHEDULES} from "../../../store/user/userPrivelegesTypes";
+import {WRITE_ALL_ORDERS, WRITE_ALL_SCHEDULES} from "../../../store/user/userPrivelegesTypes";
 import fetchEmployeeScheduleAction from "../../../actions/employees/fetchEmployeeScheduleAction";
 import editEmployeeScheduleAction from "../../../actions/employees/editEmployeeScheduleAction";
 import deleteEmployeeScheduleAction from "../../../actions/employees/deleteEmployeeScheduleAction";
-
-// const objects = [
-//     {"dayOfWeek":"Monday","startTime":"11:00:00","endTime":"12:00:00"},
-//     {"dayOfWeek":"Sunday","startTime":"11:00:00","endTime":"20:00:00"},
-//     {"dayOfWeek":"Tuesday","startTime":"11:00:00","endTime":"12:00:00"}
-// ];
 
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
@@ -104,111 +98,3 @@ const useStyles = makeStyles({
         backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/bg2.jpg'})`
     },
 });
-
-// import InteractiveTable from "../../../components/interactive-table/InteractiveTable";
-// import React from "react";
-// import * as yup from "yup";
-// import Box from "@material-ui/core/Box";
-// import {makeStyles} from "@material-ui/core/styles";
-//
-// const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-//
-// const showableColumns = ['dayOfWeek', 'startTime', 'endTime'];
-//
-// const objects = [
-//     {
-//         "employeeID": "1",
-//         "dayOfWeek": 'Monday',
-//         "startTime": "07:30",
-//         "endTime": "13:30"
-//     },
-//     {
-//         "employeeID": "2",
-//         "dayOfWeek": 'Tuesday',
-//         "startTime": "08:00",
-//         "endTime": "11:30"
-//     },
-//     {
-//         "employeeID": "3",
-//         "dayOfWeek": 'Wednesday',
-//         "startTime": "09:00",
-//         "endTime": "13:00"
-//     },
-//     {
-//         "employeeID": "4",
-//         "dayOfWeek": 'Thursday',
-//         "startTime": "11:30",
-//         "endTime": "16:30"
-//     },
-//     {
-//         "employeeID": "5",
-//         "dayOfWeek": 'Friday',
-//         "startTime": "12:30",
-//         "endTime": "17:30"
-//     },
-//     {
-//         "employeeID": "6",
-//         "dayOfWeek": 'Saturday',
-//         "startTime": "12:00",
-//         "endTime": "18:00"
-//     }
-// ]
-//
-// const mapping = {
-//     "dayOfWeek": "Day Of Week",
-//     "startTime": "Start Time (hh:mm)",
-//     "endTime": "End Time (hh:mm)"
-// }
-//
-// const editableColumns = [
-//     "startTime", "endTime",
-// ];
-//
-// const mappingInput = {
-//     "startTime": "time",
-//     "endTime": "time"
-// }
-//
-// function fillAllDays(coefficients) {
-//     return days.map((day) => coefficients.find((weekday) => weekday.dayOfWeek === day)
-//         || {dayOfWeek: day, coefficient: 1})
-// }
-//
-// const schema = yup.object().shape({
-//     startTime: yup.string().required("Start Time is empty"),
-//     endTime: yup.string().required("End Time is empty"),
-// });
-//
-// const EmployeeWorkingDays = () => {
-//     const classes = useStyles();
-//     console.log(showableColumns.length);
-//     return <Box className={classes.root} display={'flex'} flexDirection={'column'} alignItems='center'>
-//         <InteractiveTable
-//                        editableColumns={editableColumns}
-//                        showableColumns={showableColumns}
-//                        searchableColumns={showableColumns}
-//                        mapping={mapping}
-//                        mappingInput={mappingInput}
-//                        showBackButton={true}
-//                        isEditable={true}
-//                        isAddable={false}
-//                        isDeletable={true}
-//                        tableName={'Employee Working Days'}
-//                        onEditSubmit={(values) => console.log('edit', values)}
-//                        onEditSuccess={() => console.log('success edit')}
-//                        onAddSubmit={(values) => console.log('add', values)}
-//                        onAddSuccess={() => console.log('success add')}
-//                        hasWritePrivilege={true}
-//                        editValidationSchema={schema}/>
-//     </Box>
-// }
-//
-// const useStyles = makeStyles({
-//     root: {
-//         minHeight: '100vh',
-//         padding: 16,
-//         backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/bg2.jpg'})`
-//     },
-// })
-//
-// export default EmployeeWorkingDays;

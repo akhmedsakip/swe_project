@@ -42,7 +42,6 @@ const useStyles = makeStyles(() => ({
         width: '100%',
         maxHeight: 80,
         overflowY: 'auto',
-        maxWidth: 400,
     }
 }))
 

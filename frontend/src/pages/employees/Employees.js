@@ -8,6 +8,7 @@ import { EMPLOYEES_SET_LOADING, EMPLOYEES_UNSET_LOADING } from '../../store/empl
 import fetchEmployeesAction from '../../actions/employees/fetchEmployeesAction';
 import Box from "@material-ui/core/Box";
 import {makeStyles} from "@material-ui/core/styles";
+import {WRITE_ALL_EMPLOYEES} from "../../store/user/userPrivelegesTypes";
 
 const mapping = {
     "employeeId": "Employee ID",
@@ -44,6 +45,7 @@ const Employees = () => {
     const history = useHistory();
     const [employees, setEmployees] = useState([])
     const {employees: rawEmployees} = state.employees;
+    const {userInfo} = state.user;
     const classes = useStyles();
 
     useEffect(() => {
@@ -81,7 +83,7 @@ const Employees = () => {
                               onEditSubmit={onEditSubmit}
                               onEditSuccess={fetchEmployees}
                               onRowClick={({employeeId}) => history.push(`/employees-working-days/${employeeId}`)}
-                              hasWritePrivilege={true}
+                              hasWritePrivilege={userInfo?.privileges?.includes(WRITE_ALL_EMPLOYEES)}
                               editValidationSchema={schema}
                               searchableColumns={Object.keys(mapping)}
                               objects={employees}

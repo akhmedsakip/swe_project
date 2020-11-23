@@ -16,6 +16,7 @@ import {
     INTERACTIVE_TABLE_SET_LOADING,
     INTERACTIVE_TABLE_UNSET_LOADING
 } from "../../store/interactive-table/interactiveTableActionTypes";
+import {WRITE_ALL_ORDERS} from "../../store/user/userPrivelegesTypes";
 
 const mapping = {
     "orderId": "Order ID",
@@ -46,6 +47,7 @@ function AdminReservations() {
     const {state, dispatch} = useContext(AppContext);
     const [adminReservations, setAdminReservations] = useState([]);
     const {reservations} = state.adminReservations;
+    const {userInfo} = state.user;
 
     const classes = useStyles();
 
@@ -85,9 +87,9 @@ function AdminReservations() {
             onDeleteSuccess={fetchReservation}
             isAddable={false}
             isEditable={true}
-            hasWritePrivilege={true}
+            hasWritePrivilege={userInfo?.privileges?.includes(WRITE_ALL_ORDERS)}
             editValidationSchema={editReservationFormSchema}
-            tableName={'Manager: All reservations'}
+            tableName={'All reservations'}
             isDeletable={true}
         />
     </Box>
