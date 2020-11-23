@@ -1,5 +1,6 @@
 import InteractiveTable from "../../components/interactive-table/InteractiveTable";
 import fetchAdminReservationsAction from "../../actions/admin-reservations/fetchAdminReservationsAction";
+import deleteAdminReservationAction from "../../actions/admin-reservations/deleteAdminReservationAction";
 import React, {useContext, useEffect, useState} from "react";
 import deleteReservationAction from "../../actions/reservations/deleteReservationAction";
 import editAdminReservationAction from "../../actions/admin-reservations/editAdminReservationAction";
@@ -61,7 +62,7 @@ function AdminReservations() {
     }
 
     const onDeleteSubmit = async ({orderId}) => {
-        await deleteReservationAction(orderId);
+        await deleteAdminReservationAction(orderId);
     }
 
     const fetchReservation = async () => {
