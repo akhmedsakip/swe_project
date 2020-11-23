@@ -1,7 +1,7 @@
 import InteractiveTable from "../../../components/interactive-table/InteractiveTable";
 import {employeeWeekdayValidationSchema} from "../../../utils/validationSchemas";
 import Box from "@material-ui/core/Box";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import {makeStyles} from "@material-ui/core";
 import AppContext from "../../../store/AppContext";
 import {INTERACTIVE_TABLE_SET_LOADING, INTERACTIVE_TABLE_UNSET_LOADING} from "../../../store/interactive-table/interactiveTableActionTypes";
@@ -37,6 +37,7 @@ function fillAllDays(weekdays) {
 const EmployeeWorkingDays = () => {
     const classes = useStyles();
     let { id } = useParams();
+    const timeout = useRef(0);
     const {state, dispatch} = useContext(AppContext);
     const { weekdays } = state.employees;
     const {userInfo} = state.user;
@@ -44,14 +45,17 @@ const EmployeeWorkingDays = () => {
 
     useEffect(() => {
         fetchEmployeeWeekDays();
+        return () => clearTimeout(timeout.current);
     }, []);
 
     useEffect(() => {
         setEmployeeWeekDays(fillAllDays(weekdays).map((weekday) => {
-            if (weekday.startTime)
-                weekday.startTime = weekday.startTime.split(":")[0] + ":" + weekday.startTime.split(":")[1];
-            if (weekday.endTime)
-                weekday.endTime = weekday.endTime.split(":")[0] + ":" + weekday.endTime.split(":")[1];
+            if(weekday.startTime) {
+                weekday.startTime = weekday.startTime.substr(0, 5);
+            }
+            if (weekday.endTime) {
+                weekday.endTime = weekday.endTime.substr(0, 5);
+            }
             return weekday;
         }));
     }, [weekdays])
@@ -59,15 +63,13 @@ const EmployeeWorkingDays = () => {
     const fetchEmployeeWeekDays = async () => {
         dispatch({type: INTERACTIVE_TABLE_SET_LOADING})
         await fetchEmployeeScheduleAction(id, dispatch);
-        setTimeout(() => {
+        timeout.current = setTimeout(() => {
             dispatch({type: INTERACTIVE_TABLE_UNSET_LOADING})
         }, 500);
     }
 
     const onEditSubmit = async({startTime, endTime}, {dayOfWeek}) => {
-        await editEmployeeScheduleAction({employeeId: id,
-            startTime: startTime.split(":")[0] + ":" + startTime.split(":")[1],
-            endTime: endTime.split(":")[0] + ":" + endTime.split(":")[1], dayOfWeek});
+        await editEmployeeScheduleAction({employeeId: id, dayOfWeek, startTime, endTime})
     }
 
     const onDelete = async({dayOfWeek}) => {

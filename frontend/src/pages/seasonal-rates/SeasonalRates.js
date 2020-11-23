@@ -40,12 +40,8 @@ const SeasonalRates = () => {
     const {seasons} = state.seasonalRates;
 
     useEffect(() => {
-        if(seasons.length === 0) {
-            fetchSeasons();
-        } else {
-            emptySpinner();
-        }
-    }, [seasons]);
+        fetchSeasons();
+    }, []);
 
     useEffect(() => {
         return () => clearTimeout(timeout.current);
@@ -54,12 +50,7 @@ const SeasonalRates = () => {
     const onAddSubmit = async ({name, startDate, endDate, advisory}) => {
         await addSeasonAction({name, startDate, endDate, advisory});
     }
-    const emptySpinner = async () => {
-        dispatch({ type: INTERACTIVE_TABLE_SET_LOADING });
-        timeout.current = setTimeout(() => {
-            dispatch({type: INTERACTIVE_TABLE_UNSET_LOADING})
-        }, 500);
-    }
+
     const fetchSeasons = async () => {
         dispatch({ type: INTERACTIVE_TABLE_SET_LOADING });
         await fetchSeasonsAction(dispatch);

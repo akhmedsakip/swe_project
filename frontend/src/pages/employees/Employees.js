@@ -84,7 +84,7 @@ const Employees = () => {
                               onEditSubmit={onEditSubmit}
                               onEditSuccess={fetchEmployees}
                               onRowClick={userInfo?.privileges?.includes(READ_ALL_SCHEDULES)?(({employeeId}) =>
-                                  history.push(`/employees-working-days/${employeeId}`)):null}
+                                  history.push(`/employees-working-days/${employeeId}`)) : null}
                               hasWritePrivilege={userInfo?.privileges?.includes(WRITE_ALL_EMPLOYEES)}
                               editValidationSchema={schema}
                               searchableColumns={Object.keys(mapping)}
