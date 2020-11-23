@@ -1,4 +1,4 @@
-import AdminTable from "../../admin-table/AdminTable";
+import InteractiveTable from "../../../components/interactive-table/InteractiveTable";
 import React from "react";
 import * as yup from "yup";
 
@@ -71,11 +71,13 @@ const schema = yup.object().shape({
 });
 
 const EmployeeWorkingDays = () => {
-    return <AdminTable 
+    return <InteractiveTable
                        editableColumns={editableColumns}
                        showableColumns={Object.keys(objects[0])}
                        mapping={mapping}
                        mappingInput={mappingInput}
+                       showBackButton={true}
+                       isEditable={true}
                        tableName={'Manager: Employee Working Days'}
                        onEditSubmit={(values) => console.log('edit', values)}
                        onEditSuccess={() => console.log('success edit')}

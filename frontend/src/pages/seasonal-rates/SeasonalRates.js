@@ -1,10 +1,10 @@
 import Box from "@material-ui/core/Box";
 import React, {useContext, useEffect, useRef} from "react";
 import {makeStyles} from "@material-ui/core";
-import AdminTable from "../admin-table/AdminTable";
+import InteractiveTable from "../../components/interactive-table/InteractiveTable";
 import {seasonValidationSchema} from "../../utils/validationSchemas";
 import AppContext from "../../store/AppContext";
-import {ADMIN_TABLE_SET_LOADING, ADMIN_TABLE_UNSET_LOADING} from "../../store/admin-table/adminTableActionTypes";
+import {INTERACTIVE_TABLE_SET_LOADING, INTERACTIVE_TABLE_UNSET_LOADING} from "../../store/interactive-table/interactiveTableActionTypes";
 import fetchSeasonsAction from "../../actions/seasonal-rates/fetchSeasonsAction";
 import addSeasonAction from "../../actions/seasonal-rates/addSeasonAction";
 import deleteSeasonAction from "../../actions/seasonal-rates/deleteSeasonAction";
@@ -62,7 +62,7 @@ const SeasonalRates = () => {
 
     useEffect(() => {
         if(seasons.length === 0) {
-            dispatch({type: ADMIN_TABLE_SET_LOADING});
+            dispatch({type: INTERACTIVE_TABLE_SET_LOADING});
             fetchSeasons();
         }
     }, [seasons]);
@@ -77,7 +77,7 @@ const SeasonalRates = () => {
     const fetchSeasons = async () => {
         await fetchSeasonsAction(dispatch);
         timeout.current = setTimeout(() => {
-            dispatch({type: ADMIN_TABLE_UNSET_LOADING})
+            dispatch({type: INTERACTIVE_TABLE_UNSET_LOADING})
         }, 500);
     }
     const onDeleteSubmit = async ({seasonId}) => {
@@ -89,24 +89,25 @@ const SeasonalRates = () => {
     }
 
     return <Box className={classes.root} display={'flex'} flexDirection={'column'} alignItems='center'>
-        <AdminTable objects={seasons}
-                    showableColumns={showableColumns} searchableColumns={showableColumns}
-                    editableColumns={editableColumns} addableColumns={addableColumns}
-                    mapping={mapping}
-                    mappingInput={mappingInputs}
-                    onEditSubmit={onEditSubmit}
-                    onEditSuccess={fetchSeasons}
-                    isDeletable={true}
-                    onDelete={onDeleteSubmit}
-                    onDeleteSuccess={fetchSeasons}
-                    isAddable={true}
-                    hasWritePrivilege={true}
-                    onAddSubmit={onAddSubmit}
-                    onAddSuccess={fetchSeasons}
-                    onRowClick={(row) => history.push('/seasonal-rates-weekdays/' + row.seasonId)}
-                    editValidationSchema={seasonValidationSchema}
-                    addValidationSchema={seasonValidationSchema}
-                    tableName={'Seasonal rates'} />
+        <InteractiveTable objects={seasons}
+                          showableColumns={showableColumns} searchableColumns={showableColumns}
+                          editableColumns={editableColumns} addableColumns={addableColumns}
+                          mapping={mapping}
+                          mappingInput={mappingInputs}
+                          onEditSubmit={onEditSubmit}
+                          onEditSuccess={fetchSeasons}
+                          isDeletable={true}
+                          isEditable={true}
+                          onDelete={onDeleteSubmit}
+                          onDeleteSuccess={fetchSeasons}
+                          isAddable={true}
+                          hasWritePrivilege={true}
+                          onAddSubmit={onAddSubmit}
+                          onAddSuccess={fetchSeasons}
+                          onRowClick={(row) => history.push('/seasonal-rates-weekdays/' + row.seasonId)}
+                          editValidationSchema={seasonValidationSchema}
+                          addValidationSchema={seasonValidationSchema}
+                          tableName={'Seasonal rates'} />
     </Box>
 }
 

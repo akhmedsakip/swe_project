@@ -1,0 +1,103 @@
+import InteractiveTable from "../../components/interactive-table/InteractiveTable";
+import fetchAdminReservationsAction from "../../actions/admin-reservations/fetchAdminReservationsAction";
+import React, {useContext, useEffect, useState} from "react";
+import deleteReservationAction from "../../actions/reservations/deleteReservationAction";
+import editAdminReservationAction from "../../actions/admin-reservations/editAdminReservationAction";
+import {
+    ALL_RESERVATIONS_SET_LOADING,
+    ALL_RESERVATIONS_UNSET_LOADING
+} from "../../store/adminReservations/adminReservationsActionTypes";
+import AppContext from "../../store/AppContext";
+import {editReservationFormSchema} from "../../utils/validationSchemas";
+import Box from "@material-ui/core/Box";
+import {makeStyles} from "@material-ui/core/styles";
+import {
+    INTERACTIVE_TABLE_SET_LOADING,
+    INTERACTIVE_TABLE_UNSET_LOADING
+} from "../../store/interactive-table/interactiveTableActionTypes";
+
+const mapping = {
+    "orderId": "Order ID",
+    "firstName":'First Name',
+    "lastName":'Last Name',
+    'phoneNumber':'Phone Number',
+    'gender':'Gender',
+    "hotel": "Hotel",
+    "roomType": "Room Type",
+    "checkInDate": "Check In Date",
+    "checkOutDate": "Check Out Date",
+    "orderDateTime": "Reservation Date",
+    'orderPrice':'Price',
+    "status": "Status",
+}
+
+const editableColumns = [
+    'firstName', 'lastName', 'phoneNumber'
+];
+
+const mappingInput = {
+    "firstName": "text",
+    "lastName": "text",
+    "phoneNumber": "text"
+}
+
+function AdminReservations() {
+    const {state, dispatch} = useContext(AppContext);
+    const [adminReservations, setAdminReservations] = useState([]);
+    const {reservations} = state.adminReservations;
+
+    const classes = useStyles();
+
+    useEffect(() => {
+        fetchReservation();
+    }, []);
+
+    useEffect(() => {
+        setAdminReservations(reservations.map(({person, reservation}) => ({...person, ...reservation})))
+    }, [reservations])
+
+    const onEditSubmit = async ({firstName, lastName, phoneNumber}, {orderId, gender}) => {
+        await editAdminReservationAction({firstName, lastName, phoneNumber, gender, orderId});
+    }
+
+    const onDeleteSubmit = async ({orderId}) => {
+        await deleteReservationAction(orderId);
+    }
+
+    const fetchReservation = async () => {
+        dispatch({type: INTERACTIVE_TABLE_SET_LOADING});
+        await fetchAdminReservationsAction(dispatch);
+        setTimeout(() => dispatch({type: INTERACTIVE_TABLE_UNSET_LOADING}), 300);
+    }
+
+    return <Box className={classes.root} display={'flex'} flexDirection={'column'} alignItems='center'>
+        <InteractiveTable
+            objects={adminReservations}
+            showableColumns={Object.keys(mapping)}
+            searchableColumns={Object.keys(mapping)}
+            editableColumns={editableColumns}
+            mapping={mapping}
+            mappingInput={mappingInput}
+            onEditSubmit={onEditSubmit}
+            onEditSuccess={fetchReservation}
+            onDelete={onDeleteSubmit}
+            onDeleteSuccess={fetchReservation}
+            isAddable={false}
+            isEditable={true}
+            hasWritePrivilege={true}
+            editValidationSchema={editReservationFormSchema}
+            tableName={'Manager: All reservations'}
+            isDeletable={true}
+        />
+    </Box>
+}
+
+const useStyles = makeStyles(() => ({
+    root: {
+        minHeight: '100vh',
+        padding: 16,
+        backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/bg2.jpg'})`
+    },
+}))
+
+export default AdminReservations;

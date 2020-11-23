@@ -22,7 +22,7 @@ const useFetch = (action) => {
         } finally {
             setTimeout(() => {
                 setLoading(false);
-                setResult(result);
+                setResult({data: result});
                 setError(serverErrors);
             }, 500);
         }

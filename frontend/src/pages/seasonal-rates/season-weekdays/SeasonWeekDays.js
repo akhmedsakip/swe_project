@@ -1,11 +1,11 @@
-import AdminTable from "../../admin-table/AdminTable";
+import InteractiveTable from "../../../components/interactive-table/InteractiveTable";
 import {weekdayValidationSchema} from "../../../utils/validationSchemas";
 import Box from "@material-ui/core/Box";
 import React, {useContext, useEffect, useRef, useState} from "react";
 import {makeStyles} from "@material-ui/core";
 import AppContext from "../../../store/AppContext";
 import fetchWeekdaysAction from "../../../actions/seasonal-rates/fetchWeekdaysAction";
-import {ADMIN_TABLE_SET_LOADING, ADMIN_TABLE_UNSET_LOADING} from "../../../store/admin-table/adminTableActionTypes";
+import {INTERACTIVE_TABLE_SET_LOADING, INTERACTIVE_TABLE_UNSET_LOADING} from "../../../store/interactive-table/interactiveTableActionTypes";
 import { useParams } from 'react-router-dom';
 import editWeekdayAction from "../../../actions/seasonal-rates/editWeekdayAction";
 import {WRITE_ALL_SCHEDULES} from "../../../store/user/userPrivelegesTypes";
@@ -56,10 +56,10 @@ const SeasonWeekDays = () => {
     }, [weekdays])
 
     const fetchWeekDays = async () => {
-        dispatch({type: ADMIN_TABLE_SET_LOADING})
+        dispatch({type: INTERACTIVE_TABLE_SET_LOADING})
         await fetchWeekdaysAction(id, dispatch);
         setTimeout(() => {
-            dispatch({type: ADMIN_TABLE_UNSET_LOADING})
+            dispatch({type: INTERACTIVE_TABLE_UNSET_LOADING})
         }, 500);
     }
 
@@ -72,22 +72,23 @@ const SeasonWeekDays = () => {
     }
 
     return <Box className={classes.root} display={'flex'} flexDirection={'column'} alignItems='center'>
-        <AdminTable objects={seasonWeekDays}
-                    showableColumns={showableColumns} searchableColumns={showableColumns}
-                    editableColumns={editableColumns}
-                    mapping={mapping}
-                    mappingInput={mappingInputs}
-                    onEditSubmit={onEditSubmit}
-                    onEditSuccess={fetchWeekDays}
-                    isDeletable={true}
-                    onDelete={onDelete}
-                    onDeleteSuccess={fetchWeekDays}
-                    isAddable={false}
-                    hasWritePrivilege={userInfo?.privileges?.includes(WRITE_ALL_SCHEDULES)}
-                    showBackButton={true}
-                    editValidationSchema={weekdayValidationSchema}
-                    addValidationSchema={weekdayValidationSchema}
-                    tableName={'Season weekdays'} />
+        <InteractiveTable objects={seasonWeekDays}
+                          showableColumns={showableColumns} searchableColumns={showableColumns}
+                          editableColumns={editableColumns}
+                          mapping={mapping}
+                          mappingInput={mappingInputs}
+                          onEditSubmit={onEditSubmit}
+                          onEditSuccess={fetchWeekDays}
+                          isDeletable={true}
+                          isEditable={true}
+                          onDelete={onDelete}
+                          onDeleteSuccess={fetchWeekDays}
+                          isAddable={false}
+                          hasWritePrivilege={userInfo?.privileges?.includes(WRITE_ALL_SCHEDULES)}
+                          showBackButton={true}
+                          editValidationSchema={weekdayValidationSchema}
+                          addValidationSchema={weekdayValidationSchema}
+                          tableName={'Season weekdays'} />
     </Box>
 }
 

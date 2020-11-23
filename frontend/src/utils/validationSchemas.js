@@ -56,15 +56,8 @@ export const changePasswordSchema = yup.object().shape({
 const phoneRegExp = /^\+[0-9]?()[0-9](\s|\S)(\d[0-9]{7})$/
 // Taken from https://www.regextester.com/94816
 
+
 export const editReservationFormSchema = yup.object().shape({
-    FirstName: yup.string().required("First name is empty").nullable(),
-    LastName: yup.string().required("Second name is empty").min(6, "Minimum length of Last Name is 6"),
-    PhoneNumber: yup.string().required("Phone number is empty").matches(phoneRegExp, "Invalid phone"),
-    Gender: yup.string().required("Gender is empty"),
-});
-
-
-export const editReservationFormSchemaa = yup.object().shape({
     firstName: yup.string().required("First name is empty").nullable(),
     lastName: yup.string().required("Second name is empty"),
     phoneNumber: yup.string().required("Phone number is empty").matches(phoneRegExp, "Invalid phone"),

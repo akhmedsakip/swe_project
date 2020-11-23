@@ -66,8 +66,8 @@ const DesktopMenu = () => {
                     open={open}
                     onClose={() => setOpen(false)}>
                     <MenuItem onClick={() => setOpen(false)}>
-                        <Link to="/all-reservations" className={classes.link}>
-                            All Reservations
+                        <Link to="/admin-reservations" className={classes.link}>
+                            Admin Reservations
                     </Link>
                     </MenuItem>
                     <MenuItem onClick={() => setOpen(false)}>

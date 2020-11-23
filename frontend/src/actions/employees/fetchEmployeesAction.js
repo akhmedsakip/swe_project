@@ -1,5 +1,5 @@
 import axios from "axios";
-import { EMPLOYEES_SET_EMPLOYEES } from "../../store/manager/employees/employeesActionTypes";
+import { EMPLOYEES_SET_EMPLOYEES } from "../../store/employees/employeesActionTypes";
 
 async function fetchEmployeesAction(dispatch) {
     try {
