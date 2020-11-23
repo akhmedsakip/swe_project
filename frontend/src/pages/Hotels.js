@@ -9,10 +9,10 @@ function Hotels() {
     const [hotels, setHotels] = useState([]);
 
     useEffect(() => {
-        fetchRooms();
+        fetchHotels();
     }, []);
 
-    const fetchRooms = async () => {
+    const fetchHotels = async () => {
         axios.get("/api/hotels")
             .then(response => {
                 setHotels(response.data);
@@ -34,7 +34,7 @@ function Hotels() {
                 hotels.map(hotel => {
                     return (
                         <Grid key={hotel.hotelId} >
-                            <HotelCard hotelName={hotel.name} hotelDescription={hotel.description} hotelMainPhoto={hotel.mainHotelPicture} hotelStars={hotel.starCount}/>
+                            <HotelCard hotelId={hotel.hotelId} hotelName={hotel.name} hotelDescription={hotel.description} hotelMainPhoto={hotel.mainHotelPicture} hotelStars={hotel.starCount}/>
                         </Grid>
                     );
                 })
