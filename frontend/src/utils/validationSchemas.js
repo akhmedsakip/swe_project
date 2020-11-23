@@ -112,6 +112,6 @@ export const weekdayValidationSchema = yup.object().shape({
 });
 
 export const employeeWeekdayValidationSchema = yup.object().shape({
-    startTime: yup.string().required("Start Time is empty"),
-    endTime: yup.string().required("End Time is empty"),
+    startTime: yup.string().required("Start Time is empty").nullable(),
+    endTime: yup.string().required("End Time is empty").nullable(),
 });
