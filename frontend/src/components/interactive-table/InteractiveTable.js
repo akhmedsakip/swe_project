@@ -25,12 +25,16 @@ import Spinner from "../Spinner";
 import AppContext from "../../store/AppContext";
 import {ArrowBackOutlined} from "@material-ui/icons";
 import {useHistory} from 'react-router-dom';
+import {
+    INTERACTIVE_TABLE_SET_SEARCH_COLUMN,
+    INTERACTIVE_TABLE_SET_SEARCH_VALUE
+} from "../../store/interactive-table/interactiveTableActionTypes";
 
 const InteractiveTable = (props) => {
     const history = useHistory();
     const {objects, tableName, hasWritePrivilege, isAddable, isDeletable, isEditable, showableColumns, showBackButton} = props
     const classes = useStyles({showBackButton});
-    const {state} = useContext(AppContext);
+    const {state, dispatch} = useContext(AppContext);
     const {searchColumn, searchValue, loading} = state.adminTable;
     const [rows, setRows] = useState([]);
 
@@ -41,14 +45,19 @@ const InteractiveTable = (props) => {
     const colSpan = hasWritePrivilege ? showableColumns.length + 1 : showableColumns.length;
 
     useEffect(() => {
+        dispatch({type: INTERACTIVE_TABLE_SET_SEARCH_COLUMN, payload: 'all'});
+        dispatch({type: INTERACTIVE_TABLE_SET_SEARCH_VALUE, payload: ''});
+    }, []);
+
+    useEffect(() => {
         const newRows = objects.filter((object) => {
             if(!searchValue) {
                 return true;
             }
             if(searchColumn === 'all')  {
-                return Object.values(object).reduce(((accum, curr) => curr.toString().includes(searchValue) || accum), false);
+                return Object.values(object).reduce(((accum, curr) => (curr && curr.toString().includes(searchValue)) || accum), false);
             }
-            return object[searchColumn].toString().includes(searchValue)
+            return object[searchColumn] && object[searchColumn].toString().includes(searchValue)
         });
         setRows(newRows);
     }, [searchColumn, searchValue, objects]);
