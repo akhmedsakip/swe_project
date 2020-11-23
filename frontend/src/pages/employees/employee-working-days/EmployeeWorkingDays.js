@@ -37,7 +37,6 @@ function fillAllDays(weekdays) {
 const EmployeeWorkingDays = () => {
     const classes = useStyles();
     let { id } = useParams();
-    // const timeout = useRef(0);
     const {state, dispatch} = useContext(AppContext);
     const { weekdays } = state.employees;
     const {userInfo} = state.user;
@@ -48,7 +47,13 @@ const EmployeeWorkingDays = () => {
     }, []);
 
     useEffect(() => {
-        setEmployeeWeekDays(fillAllDays(weekdays));
+        setEmployeeWeekDays(fillAllDays(weekdays).map((weekday) => {
+            if (weekday.startTime)
+                weekday.startTime = weekday.startTime.split(":")[0] + ":" + weekday.startTime.split(":")[1];
+            if (weekday.endTime)
+                weekday.endTime = weekday.endTime.split(":")[0] + ":" + weekday.endTime.split(":")[1];
+            return weekday;
+        }));
     }, [weekdays])
 
     const fetchEmployeeWeekDays = async () => {
