@@ -10,11 +10,6 @@ import { useParams } from 'react-router-dom';
 import editWeekdayAction from "../../../actions/seasonal-rates/editWeekdayAction";
 import {WRITE_ALL_SCHEDULES} from "../../../store/user/userPrivelegesTypes";
 
-// const objects = [
-//     {"dayOfWeek":"Monday","startTime":"11:00:00","endTime":"12:00:00"},
-//     {"dayOfWeek":"Sunday","startTime":"11:00:00","endTime":"20:00:00"},
-//     {"dayOfWeek":"Tuesday","startTime":"11:00:00","endTime":"12:00:00"}
-// ];
 
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
