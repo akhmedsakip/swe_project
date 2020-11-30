@@ -298,7 +298,7 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`room` (
   `HotelID` INT NOT NULL,
   `RoomNumber` VARCHAR(10) NOT NULL,
   `Floor#` INT NOT NULL,
-  `StayingGuests#` INT NOT NULL,
+  `StayingGuests#` INT NULL,
   `LastCleanDate` DATE NULL,
   `RoomTypeHotelID` INT NOT NULL,
   `RoomTypeName` VARCHAR(45) NOT NULL,
@@ -323,12 +323,13 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `sweproj`.`special_category` ;
 
 CREATE TABLE IF NOT EXISTS `sweproj`.`special_category` (
-  `HotelID` INT NOT NULL,
+  `SpecialCategoryID` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(45) NOT NULL,
-  `DiscountCoefficient` INT NOT NULL,
-  `EditableByManager` TINYINT NOT NULL,
-  PRIMARY KEY (`HotelID`, `Name`),
-  CONSTRAINT `fk_SPECIALCATEGORY_HOTEL1`
+  `DiscountCoefficient` FLOAT NOT NULL,
+  `HotelID` INT NULL,
+  PRIMARY KEY (`SpecialCategoryID`),
+  INDEX `fk_special_category_hotel1_idx` (`HotelID` ASC) VISIBLE,
+  CONSTRAINT `fk_special_category_hotel1`
     FOREIGN KEY (`HotelID`)
     REFERENCES `sweproj`.`hotel` (`HotelID`)
     ON DELETE NO ACTION
@@ -343,18 +344,18 @@ DROP TABLE IF EXISTS `sweproj`.`guest` ;
 
 CREATE TABLE IF NOT EXISTS `sweproj`.`guest` (
   `GuestID` INT NOT NULL,
-  `SpecialCategoryHotelID` INT NULL,
-  INDEX `fk_GUEST_SPECIALCATEGORY1_idx` (`SpecialCategoryHotelID` ASC) VISIBLE,
+  `SpecialCategoryID` INT NULL,
   PRIMARY KEY (`GuestID`),
   INDEX `fk_GUEST_PERSON1_idx` (`GuestID` ASC) VISIBLE,
-  CONSTRAINT `fk_GUEST_SPECIALCATEGORY1`
-    FOREIGN KEY (`SpecialCategoryHotelID`)
-    REFERENCES `sweproj`.`special_category` (`HotelID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+  INDEX `fk_guest_special_category1_idx` (`SpecialCategoryID` ASC) VISIBLE,
   CONSTRAINT `fk_GUEST_PERSON1`
     FOREIGN KEY (`GuestID`)
     REFERENCES `sweproj`.`person` (`PersonID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_guest_special_category1`
+    FOREIGN KEY (`SpecialCategoryID`)
+    REFERENCES `sweproj`.`special_category` (`SpecialCategoryID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -391,7 +392,7 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`order` (
   `OrderID` INT NOT NULL AUTO_INCREMENT,
   `HotelID` INT NOT NULL,
   `PaymentDateTime` DATETIME NULL,
-  `OrderPrice` INT NOT NULL,
+  `OrderPrice` INT NULL,
   `OrderDateTime` DATETIME NOT NULL,
   `PaidServicesTotal` INT NULL,
   `CheckInDate` DATE NULL,
@@ -596,6 +597,8 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`order_details` (
   `RoomHotelID` INT NOT NULL,
   `RoomNumber` VARCHAR(10) NOT NULL,
   `GuestID` INT NOT NULL,
+  `StaysInRoom` TINYINT NULL,
+  `NumberOfPeople` INT NULL,
   PRIMARY KEY (`OrderID`, `OrderHotelID`, `RoomTypeHotelID`, `RoomType`, `RoomHotelID`, `RoomNumber`, `GuestID`),
   INDEX `fk_ORDERDETAILS_ORDER1_idx` (`OrderID` ASC, `OrderHotelID` ASC) VISIBLE,
   INDEX `fk_ORDERDETAILS_ROOMTYPE1_idx` (`RoomTypeHotelID` ASC, `RoomType` ASC) VISIBLE,
