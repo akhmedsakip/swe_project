@@ -89,7 +89,7 @@ CREATE PROCEDURE addRoomToOrder(IN _orderId INT, IN _phoneNumber VARCHAR(45),
 BEGIN
     DECLARE _capacity INT;
     DECLARE _personId INT;
-    DECLARE _roomNumber DATE;
+    DECLARE _roomNumber VARCHAR(10);
     DECLARE _checkInDate DATE;
     DECLARE _checkOutDate DATE;
     DECLARE _hotelId INT;
