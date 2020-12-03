@@ -136,3 +136,12 @@ VALUES (
         1,
         1
        );
+
+
+# services
+INSERT INTO service_type (HotelID, ServiceName, Price, IsPersonal) value (
+    1, 'Breakfast', 7, true);
+
+INSERT INTO service_type (HotelID, ServiceName, Price, IsPersonal) value (
+    1, 'Refill the refrigerator', 30, false);
+

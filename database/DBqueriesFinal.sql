@@ -232,3 +232,38 @@ WHERE (O.OrderID IS NULL
 # --
 
 #------------
+
+
+# 4
+
+DROP PROCEDURE IF EXISTS orderExtraService;
+
+CREATE PROCEDURE orderExtraService(IN _hotelId INT, IN _serviceId INT, IN _guestId INT, IN _roomNumber INT)
+BEGIN
+    DECLARE _isPersonal BOOL;
+    DECLARE _orderId INT;
+
+    SELECT ST.IsPersonal, service.OrderID FROM service
+        INNER JOIN service_type ST on service.ServiceTypeHotelID = ST.HotelID and service.ServiceType = ST.ServiceName
+    WHERE ServiceID = _serviceId INTO _isPersonal, _orderId;
+
+    IF _isPersonal IS TRUE THEN
+        IF _guestId IS NULL THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Service is personal, however, guest id is null';
+        end if;
+        INSERT INTO service_made_for_guest (HotelID, OrderID, ServiceID, GuestID)
+                VALUE (_hotelId, _orderId, _serviceId, _guestId);
+    ELSE
+        IF _orderId IS NULL THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Service is dedicated for room, however, room id is null';
+        end if;
+        INSERT INTO service_made_for_room (ServiceID, ServiceHotelID, OrderID, RoomHotelID, RoomNumber)
+        VALUE (_serviceId, _hotelId, _orderId, _hotelId, _roomNumber);
+    END IF;
+END;
+
+INSERT INTO service (HotelID, OrderID, ServiceDate, ServiceTypeHotelID, ServiceType)
+         VALUE (1, 1, NOW(), 1, 'breakfast');
+
+CALL orderExtraService(1, 1, 1,NULL);
+CALL orderExtraService(1, 1, 1,NULL);

@@ -1,0 +1,6 @@
+4. Two services are available (could be more): breakfast for person and refilling the refrigerator of the room.
+They are stored inside 'service_type' table. Attribute 'isPersonal' indicates whether this service
+is dedicated for a person or for a room. In this case, breakfast is personal service, while service
+of refilling the refrigerator is not.
+
+
