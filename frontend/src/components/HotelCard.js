@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import Rating from '@material-ui/lab/Rating';
+import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles({
   root: {
@@ -41,7 +42,7 @@ const useStyles = makeStyles({
   }
 });
 
-function HotelCard({ hotelName, hotelDescription, hotelMainPhoto, hotelStars, onClick }) {
+function HotelCard({ hotelId, hotelName, hotelDescription, hotelMainPhoto, hotelStars, onClick }) {
   const classes = useStyles();
   return (
     <Card className={classes.root} onClick={onClick}>
@@ -63,13 +64,13 @@ function HotelCard({ hotelName, hotelDescription, hotelMainPhoto, hotelStars, on
           <Rating className={classes.rating} name="half-rating-read" defaultValue={hotelStars} precision={0.5} readOnly />
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        {/*<Link to="/roomTypes" className={classes.link}>*/}
-          <Button size="small" color="primary" onClick={onClick}>
-            Rooms
-          </Button>
-        {/*</Link>*/}
-      </CardActions>
+      {/*<CardActions>*/}
+      {/*  <Link to="/roomTypes/${hotelId}" className={classes.link}>*/}
+      {/*    <Button size="small" color="primary" onClick={onClick}>*/}
+      {/*      Rooms*/}
+      {/*    </Button>*/}
+      {/*  </Link>*/}
+      {/*</CardActions>*/}
     </Card>
   );
 }

@@ -1,11 +1,13 @@
+import axios from "axios";
+import {
+  EMPLOYEES_SET_SCHEDULE
+} from "../../store/employees/employeesActionTypes";
 
-async function fetchEmployeeScheduleAction(dispatch, values) {
+export default async function fetchEmployeeScheduleAction(employeeId, dispatch) {
   try {
-    // const { data } = (await axios.get('/api/schedules?employeeId=1&dayOfWeek=Monday'));
-    // dispatch({ type: EMPLOYEES_SET_SCHEDULE, payload: data });
-  } catch (error) {
+    const res = await axios.get('/api/schedules/' + employeeId);
+    dispatch({type: EMPLOYEES_SET_SCHEDULE, payload: res.data});
+  } catch(error) {
     throw error;
   }
 }
-
-export default fetchEmployeeScheduleAction

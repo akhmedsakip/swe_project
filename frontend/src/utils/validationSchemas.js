@@ -1,4 +1,6 @@
 import * as yup from "yup";
+const today = new Date();
+const minDate = new Date(1900, 1);
 
 export const registrationSchema = yup.object().shape({
     firstName: yup.string().required("First name is empty"),
@@ -6,7 +8,7 @@ export const registrationSchema = yup.object().shape({
     email: yup.string().required("Email is empty").email("Email is invalid"),
     password: yup.string().required("Password is empty").min(6, "Minimum length of password is 6"),
     passwordConfirm: yup.string().required("Please, confirm your password").oneOf([yup.ref('password'), null], "The passwords don't match"),
-    dateOfBirth: yup.date("Date of birth is invalid").required("Date of birth is empty"),
+    dateOfBirth: yup.date("Date of birth is invalid").max(today, 'Birth Date cannot be later than today').min(minDate, 'Birth Date cannot be earlier than 1900').required("Date of birth is empty"),
     gender: yup.string().required("Gender is empty"),
 });
 
@@ -16,11 +18,15 @@ export const loginSchema = yup.object().shape({
 });
 
 export const searchSchema = yup.object().shape({
-    numberOfPeople: yup.number().required("Number of people is empty"),
-    checkInDate: yup.date("From date is invalid").required("From date is empty"),
+    numberOfPeople: yup.number().test('Number of people should be more than 0','Number of people should be more than 0',(val)=>{
+        return val > 0;
+    }).required("Number of people is empty"),
+    checkInDate: yup.date("From date is invalid").test('From date cannot be earlier than today', 'From date cannot be earlier than today', (val)=>{
+        return new Date(val) >= new Date().setHours(0,0,0,0);
+    }).required("From date is empty"),
     checkOutDate: yup.date("To date is invalid").when(
         'checkInDate',
-        (checkInDate, schema) => (checkInDate && schema.min(nextDay(checkInDate)))
+        (checkInDate, schema) => (checkInDate && schema.min(nextDay(checkInDate), 'To date cannot be earlier than From date'))
     )
     .required("To date is empty"),
     city: yup.string().required("City is empty"),
@@ -31,8 +37,6 @@ const nextDay = (date) => {
     dateObject.setDate(dateObject.getDate() + 2);
     return dateObject.toISOString().split("T")[0];
 }
-
-
 
 export const editInfoSchema = yup.object().shape({
     firstName: yup.string().required("First name is empty"),
@@ -52,11 +56,11 @@ export const changePasswordSchema = yup.object().shape({
 const phoneRegExp = /^\+[0-9]?()[0-9](\s|\S)(\d[0-9]{7})$/
 // Taken from https://www.regextester.com/94816
 
+
 export const editReservationFormSchema = yup.object().shape({
-    FirstName: yup.string().required("First name is empty").nullable(),
-    LastName: yup.string().required("Second name is empty").min(6, "Minimum length of Last Name is 6"),
-    PhoneNumber: yup.string().required("Phone number is empty").matches(phoneRegExp, "Invalid phone"),
-    Gender: yup.string().required("Gender is empty"),
+    firstName: yup.string().required("First name is empty").nullable(),
+    lastName: yup.string().required("Second name is empty"),
+    phoneNumber: yup.string().required("Phone number is empty").matches(phoneRegExp, "Invalid phone"),
 });
 
 
@@ -105,4 +109,9 @@ export const weekdayValidationSchema = yup.object().shape({
         }
         return val >= 0.01 && val <= 3;
     })
+});
+
+export const employeeWeekdayValidationSchema = yup.object().shape({
+    startTime: yup.string().required("Start Time is empty").nullable(),
+    endTime: yup.string().required("End Time is empty").nullable(),
 });

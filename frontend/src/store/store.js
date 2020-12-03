@@ -5,9 +5,9 @@ import userReducer, {initialUserState} from "./user/userReducer";
 import authReducer, {initialAuthState} from "./auth/authReducer";
 import availabilityReducer, {initialRoomTypeState} from "./availability/availavilityReducer";
 import reservationReducer, {initialReservationsState} from "./reservations/reservationReducer";
-import allReservationReducer, {initialAllReservationsState} from "./manager/allReservations/allReservationsReducer";
-import employeesReducer, {initialEmployeesState} from './manager/employees/employeesReducer';
-import adminTableReducer, {initialAdminTableState} from "./admin-table/adminTableReducers";
+import adminReservationsReducer, {initialAdminReservationsState} from "./adminReservations/adminReservationsReducer";
+import employeesReducer, {initialEmployeesState} from './employees/employeesReducer';
+import interactiveTableReducer, {initialInteractiveTableState} from "./interactive-table/interactiveTableReducer";
 import seasonalRatesReducer, {initialSeasonalRatesState} from "./seasonal-rates/seasonalRatesReducer";
 
 
@@ -16,9 +16,9 @@ const initialState = {
     auth: initialAuthState,
     availability: initialRoomTypeState,
     reservations: initialReservationsState,
-    allReservations: initialAllReservationsState,
+    adminReservations: initialAdminReservationsState,
     employees: initialEmployeesState,
-    adminTable: initialAdminTableState,
+    adminTable: initialInteractiveTableState,
     seasonalRates: initialSeasonalRatesState,
 };
 
@@ -35,9 +35,9 @@ const reducer = combineReducers({
     auth: authReducer,
     availability: availabilityReducer,
     reservations: reservationReducer,
-    allReservations: allReservationReducer,
+    adminReservations: adminReservationsReducer,
     employees: employeesReducer,
-    adminTable: adminTableReducer,
+    adminTable: interactiveTableReducer,
     seasonalRates: seasonalRatesReducer,
 });
 

@@ -57,7 +57,7 @@ function LoginForm() {
                 />
                 <TextFieldWithError margin="dense" id="password" label="Password"
                     type="password" fullWidth error={touched.password && !!errors.password}
-                    errorMessage={errors.email} autocomplete={"on"}
+                    errorMessage={errors.email} autoComplete={"on"}
                 />
                 <LoadingButton loading={loading} disabled={!isValid} className={classes.marginTop16} type={'submit'}
                         variant={'outlined'} color={'primary'}>

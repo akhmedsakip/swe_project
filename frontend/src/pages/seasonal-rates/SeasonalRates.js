@@ -1,43 +1,22 @@
 import Box from "@material-ui/core/Box";
 import React, {useContext, useEffect, useRef} from "react";
 import {makeStyles} from "@material-ui/core";
-import AdminTable from "../admin-table/AdminTable";
+import InteractiveTable from "../../components/interactive-table/InteractiveTable";
 import {seasonValidationSchema} from "../../utils/validationSchemas";
 import AppContext from "../../store/AppContext";
-import {ADMIN_TABLE_SET_LOADING, ADMIN_TABLE_UNSET_LOADING} from "../../store/admin-table/adminTableActionTypes";
+import {INTERACTIVE_TABLE_SET_LOADING, INTERACTIVE_TABLE_UNSET_LOADING} from "../../store/interactive-table/interactiveTableActionTypes";
 import fetchSeasonsAction from "../../actions/seasonal-rates/fetchSeasonsAction";
 import addSeasonAction from "../../actions/seasonal-rates/addSeasonAction";
 import deleteSeasonAction from "../../actions/seasonal-rates/deleteSeasonAction";
 import {useHistory} from 'react-router-dom';
-import editWeekdayAction from "../../actions/seasonal-rates/editWeekdayAction";
 import editSeasonAction from "../../actions/seasonal-rates/editSeasonAction";
-
-
-const objects = [
-    {
-        seasonId: 1,
-        name: 'Winter',
-        startDate: '2020-01-01',
-        endDate: '2020-02-02',
-        advisory: 'Text text text text text text text text text text text text text' +
-            ' text text text text text text text text text text text text text text ' +
-            'text text text text text text text text text text text text text text'
-    },
-    {
-        seasonId: 2,
-        name: 'Winter',
-        startDate: '2020-03-03',
-        endDate: '2020-04-04',
-        advisory: 'Text text text text text text text text text text text text text' +
-            ' text text text text text text text text text text text text text text ' +
-            'text text text text text text text text text text text text text text'
-    }
-]
+import {WRITE_ALL_SEASONS} from "../../store/user/userPrivelegesTypes";
 
 const showableColumns = ['seasonId', 'name', 'startDate', 'endDate', 'advisory'];
 const addableColumns = ['name', 'startDate', 'endDate', 'advisory'];
 const editableColumns = ['name', 'startDate', 'endDate', 'advisory'];
 const mapping = {
+    'seasonId': 'Season ID',
     'name': 'Name',
     'startDate': 'Start Date',
     'endDate': 'End Date',
@@ -55,14 +34,16 @@ const SeasonalRates = () => {
     const classes = useStyles();
     const {state, dispatch} = useContext(AppContext);
     const timeout = useRef(setTimeout(() => {}));
+    const {userInfo} = state.user;
     const history = useHistory();
 
     const {seasons} = state.seasonalRates;
 
     useEffect(() => {
         if(seasons.length === 0) {
-            dispatch({type: ADMIN_TABLE_SET_LOADING});
             fetchSeasons();
+        } else {
+            emptySpinner();
         }
     }, [seasons]);
 
@@ -73,10 +54,17 @@ const SeasonalRates = () => {
     const onAddSubmit = async ({name, startDate, endDate, advisory}) => {
         await addSeasonAction({name, startDate, endDate, advisory});
     }
+    const emptySpinner = async () => {
+        dispatch({ type: INTERACTIVE_TABLE_SET_LOADING });
+        timeout.current = setTimeout(() => {
+            dispatch({type: INTERACTIVE_TABLE_UNSET_LOADING})
+        }, 500);
+    }
     const fetchSeasons = async () => {
+        dispatch({ type: INTERACTIVE_TABLE_SET_LOADING });
         await fetchSeasonsAction(dispatch);
         timeout.current = setTimeout(() => {
-            dispatch({type: ADMIN_TABLE_UNSET_LOADING})
+            dispatch({type: INTERACTIVE_TABLE_UNSET_LOADING})
         }, 500);
     }
     const onDeleteSubmit = async ({seasonId}) => {
@@ -88,24 +76,25 @@ const SeasonalRates = () => {
     }
 
     return <Box className={classes.root} display={'flex'} flexDirection={'column'} alignItems='center'>
-        <AdminTable objects={seasons}
-                    showableColumns={showableColumns} searchableColumns={showableColumns}
-                    editableColumns={editableColumns} addableColumns={addableColumns}
-                    mapping={mapping}
-                    mappingInput={mappingInputs}
-                    onEditSubmit={onEditSubmit}
-                    onEditSuccess={fetchSeasons}
-                    isDeletable={true}
-                    onDelete={onDeleteSubmit}
-                    onDeleteSuccess={fetchSeasons}
-                    isAddable={true}
-                    hasWritePrivilege={true}
-                    onAddSubmit={onAddSubmit}
-                    onAddSuccess={fetchSeasons}
-                    onRowClick={(row) => history.push('/seasonal-rates-weekdays/' + row.seasonId)}
-                    editValidationSchema={seasonValidationSchema}
-                    addValidationSchema={seasonValidationSchema}
-                    tableName={'Seasonal rates'} />
+        <InteractiveTable objects={seasons}
+                          showableColumns={showableColumns} searchableColumns={showableColumns}
+                          editableColumns={editableColumns} addableColumns={addableColumns}
+                          mapping={mapping}
+                          mappingInput={mappingInputs}
+                          onEditSubmit={onEditSubmit}
+                          onEditSuccess={fetchSeasons}
+                          isDeletable={true}
+                          isEditable={true}
+                          onDelete={onDeleteSubmit}
+                          onDeleteSuccess={fetchSeasons}
+                          isAddable={true}
+                          hasWritePrivilege={userInfo?.privileges?.includes(WRITE_ALL_SEASONS)}
+                          onAddSubmit={onAddSubmit}
+                          onAddSuccess={fetchSeasons}
+                          onRowClick={(row) => history.push('/seasonal-rates-weekdays/' + row.seasonId)}
+                          editValidationSchema={seasonValidationSchema}
+                          addValidationSchema={seasonValidationSchema}
+                          tableName={'Seasonal rates'} />
     </Box>
 }
 

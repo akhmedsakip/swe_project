@@ -7,17 +7,21 @@ import Home from './pages/Home';
 import AvailabilityPage from "./pages/availability/AvailabilityPage";
 import Root from "./components/Root";
 import ProfilePage from "./pages/profile/ProfilePage";
-import AdminPage from "./pages/admin/AdminPage";
 import PrivateRoute from "./components/PrivateRoute";
-import PrivateAdminRoute from "./components/PrivateAdminRoute";
 import StoreProvider from "./store/store";
 import Reservations from "./pages/reservations/Reservations";
-import EmployeeSchedule from "./pages/employeeSchedule/EmployeeSchedule";
-import AdminTableInstance from "./pages/admin-table/Instance";
-import AllReservations from "./pages/allReservations/AllReservations";
+import AdminTableInstance from "./components/interactive-table/Instance";
 import SeasonalRates from "./pages/seasonal-rates/SeasonalRates";
-import AdminEmployeesTable from "./pages/admin-table/EmployeesTable";
 import SeasonWeekDays from "./pages/seasonal-rates/season-weekdays/SeasonWeekDays";
+import Employees from "./pages/employees/Employees";
+import EmployeesWorkingDays from "./pages/employees/employee-working-days/EmployeeWorkingDays";
+import AdminReservations from "./pages/admin-reservations/AdminReservations";
+import {
+  READ_ALL_EMPLOYEES,
+  READ_ALL_ORDERS,
+  READ_ALL_SCHEDULES,
+  READ_ALL_SEASONS
+} from "./store/user/userPrivelegesTypes";
 
 function App() {
   return (
@@ -32,13 +36,11 @@ function App() {
             <Route path="/availability" component={AvailabilityPage} />
             <PrivateRoute path="/reservations" component={Reservations} />
             <PrivateRoute path="/profile" component={ProfilePage} />
-            <PrivateRoute path="/all-reservations" component={AllReservations} />
-            <PrivateRoute path="/employee-schedules" component={EmployeeSchedule} />
-            <Route path="/seasonal-rates" component={SeasonalRates} />
-            <Route path="/seasonal-rates-weekdays/:id" component={SeasonWeekDays} />
-            <PrivateAdminRoute path="/admin" component={AdminPage} />
-            <Route path="/admin-table-example" component={AdminTableInstance} />
-            <Route path="/admin-employees-table" component={AdminEmployeesTable} />
+            <PrivateRoute path="/admin-reservations" component={AdminReservations} privileges={[READ_ALL_ORDERS]} />
+            <PrivateRoute path="/employees" component={Employees} privileges={[READ_ALL_EMPLOYEES]} />
+            <PrivateRoute path="/employees-working-days/:id" component={EmployeesWorkingDays} privileges={[READ_ALL_SCHEDULES]} />
+            <PrivateRoute path="/seasonal-rates" component={SeasonalRates} privileges={[READ_ALL_SEASONS]} />
+            <PrivateRoute path="/seasonal-rates-weekdays/:id" component={SeasonWeekDays} privileges={[READ_ALL_SEASONS]} />
             <Route path="*" render={() => (<Redirect to="/" />)} />
 
           </Switch>

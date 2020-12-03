@@ -1,49 +1,52 @@
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import React, { useContext } from 'react';
-import withTableContent from '../../../components/hocs/withTableContent';
-import Spinner from "../../../components/Spinner";
+import React, {useContext, useEffect, useRef} from 'react';
 import AppContext from "../../../store/AppContext";
-import DesktopTableRow from "./DesktopTableRow";
+import InteractiveTable from "../../../components/interactive-table/InteractiveTable";
+import fetchReservationsAction from "../../../actions/reservations/fetchReservationsAction";
+import {INTERACTIVE_TABLE_SET_LOADING, INTERACTIVE_TABLE_UNSET_LOADING} from "../../../store/interactive-table/interactiveTableActionTypes";
+import deleteReservationAction from "../../../actions/reservations/deleteReservationAction";
 
-const tableName = 'My Orders';
-const columnNames = ['Order ID', 'Hotel', 'Room Type', 'Check In', 'Check Out', 'Reservation Date', 'Price', 'Status', 'Action']
+const mapping = {
+  'orderId': 'Order ID',
+  'hotel': 'Hotel',
+  'roomType': 'Room Type',
+  'checkInDate': 'Check In Date',
+  'checkOutDate': 'Check Out Date',
+  'orderDateTime': 'Order Date Time',
+  'orderPrice': 'Order Price',
+  'status': 'Status'
+}
 
-const DesktopTable = ({ searchTerm }) => {
+const DesktopTable = () => {
+  const timeout = useRef(0)
+  const { state, dispatch } = useContext(AppContext)
+  const { reservations } = state.reservations;
 
-  const { state } = useContext(AppContext)
-  let { reservations, loading } = state.reservations;
+  useEffect(() => {
+    fetchReservations();
+    return () => clearTimeout(timeout.current);
+  }, []);
 
-  searchTerm = searchTerm.toLocaleLowerCase();
+  const fetchReservations = async () => {
+    dispatch({type: INTERACTIVE_TABLE_SET_LOADING});
+    await fetchReservationsAction(dispatch)
+    timeout.current = setTimeout(() => dispatch({type: INTERACTIVE_TABLE_UNSET_LOADING}), 300);
+  }
 
+  const deleteReservations = async ({orderId}) => {
+    await deleteReservationAction(orderId);
+  }
   return (
-    <TableBody>
-      {
-        loading ? <TableRow>
-          <TableCell colSpan={8} align={'center'}>
-            <Spinner size={'big'} />
-          </TableCell>
-        </TableRow> : null
-      }
-      {
-        reservations.length && !loading ? reservations.map((row, i) => (
-          row.hotel.toLocaleLowerCase().includes(searchTerm)
-          || row.roomType.toLocaleLowerCase().includes(searchTerm)
-            ? <DesktopTableRow row={row} key={row.orderId} />
-            : null
-        )) : null
-      }
-      {
-        !reservations.length && !loading ? <TableRow>
-          <TableCell colSpan={8} align={'center'}>
-            No reservations made yet
-      </TableCell>
-        </TableRow> : null
-      }
-    </TableBody>
-
+    <InteractiveTable objects={reservations} showableColumns={Object.keys(mapping)}
+                      searchableColumns={Object.keys(mapping)}
+                      editableColumns={[]} mapping={mapping} mappingInput={{}}
+                      isDeletable={true}
+                      onDelete={deleteReservations}
+                      onDeleteSuccess={fetchReservations}
+                      isEditable={false}
+                      isAddable={false}
+                      hasWritePrivilege={true}
+                      tableName={'My Orders'} />
   );
 }
 
-export default withTableContent(DesktopTable, tableName, columnNames);
+export default DesktopTable;
