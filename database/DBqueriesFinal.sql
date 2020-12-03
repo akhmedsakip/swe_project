@@ -192,7 +192,7 @@ FROM `order` O
          INNER JOIN order_details OD ON O.OrderID = OD.OrderID AND OD.IsPayer IS TRUE
          INNER JOIN guest G ON OD.GuestID = G.GuestID
          LEFT OUTER JOIN special_category SC ON G.SpecialCategoryID = SC.SpecialCategoryID
-WHERE O.OrderID = 2) room_prices;
+WHERE O.OrderID = 1) room_prices;
 
 #--
 
@@ -209,7 +209,7 @@ SELECT room.*
 FROM room
          INNER JOIN hotel ON hotel.HotelID = room.HotelID
          INNER JOIN room_type ON room_type.HotelID = room.HotelID AND room.RoomTypeName = room_type.Name
-         INNER JOIN `order` O1 ON O1.OrderID = 1
+         INNER JOIN `order` O1 ON O1.OrderID = 2
          LEFT JOIN order_details OD on room.HotelID = OD.RoomHotelID and room.RoomNumber = OD.RoomNumber
          LEFT JOIN `order` O ON hotel.HotelID = O.HotelID and OD.OrderID = O.OrderID
 WHERE (O.OrderID IS NULL
@@ -221,13 +221,44 @@ WHERE (O.OrderID IS NULL
                     AND (`order`.CheckInDate BETWEEN O1.CheckInDate AND DATE_SUB(O1.CheckOutDate, INTERVAL 1 DAY) OR
                          `order`.CheckOutDate BETWEEN DATE_ADD(O1.CheckInDate, INTERVAL 1 DAY) AND O1.CheckOutDate))
     OR O.OrderID = O1.OrderID)
-  AND hotel.HotelID = 1
+  AND hotel.HotelID = 2
   AND room_type.Name = 'Double'
   AND room.LastCleanDate = O1.CheckInDate;
 
 # --
 
+## DO NOT INCLUDE IN REPORT
+INSERT INTO `order` (HotelID, OrderDateTime, CheckInDate, CheckOutDate, OrderStatus, PaymentMethod,
+                     UserEmail)
+VALUES (2,
+        NOW(),
+        '2020-12-15',
+        '2020-12-17',
+        'Reserved',
+        'Cash',
+        'jon.smith@some.email');
+
+CALL addRoomToOrder(2, '+77766666666', 'Double', 3);
+## ----
+
 # b
+
+INSERT INTO person (Gender, FirstName, LastName, PhoneNumber)
+VALUES ('Female', 'SomeFemaleName', 'Smith', '+77011111111');
+
+INSERT INTO guest (GuestID)
+VALUES (LAST_INSERT_ID());
+
+DELETE FROM order_details
+WHERE OrderID = 2 AND OrderHotelID = 2;
+
+INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID,
+                           RoomNumber, GuestID, StaysInRoom, NumberOfPeople)
+VALUES (TRUE, 2, 2, 2, 'Double', 2, '1.04', 2, TRUE, null);
+
+INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID,
+                           RoomNumber, GuestID, StaysInRoom, NumberOfPeople)
+VALUES (FALSE, 2, 2, 2, 'Double', 2, '1.04', 3, TRUE, null);
 
 # --
 
@@ -238,10 +269,23 @@ WHERE (O.OrderID IS NULL
 
 DROP PROCEDURE IF EXISTS orderExtraService;
 
-CREATE PROCEDURE orderExtraService(IN _hotelId INT, IN _serviceId INT, IN _guestId INT, IN _roomNumber INT)
+CREATE PROCEDURE orderExtraService(IN _hotelId INT, IN _serviceId INT, IN _quantity INT, IN _guestId INT, IN _roomNumber VARCHAR(10))
 BEGIN
     DECLARE _isPersonal BOOL;
     DECLARE _orderId INT;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+        BEGIN
+            ROLLBACK;
+            RESIGNAL;
+        END;
+
+    START TRANSACTION;
+
+    IF NOT _quantity > 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Quantity ';
+    END IF;
+
 
     SELECT ST.IsPersonal, service.OrderID FROM service
         INNER JOIN service_type ST on service.ServiceTypeHotelID = ST.HotelID and service.ServiceType = ST.ServiceName
@@ -251,19 +295,27 @@ BEGIN
         IF _guestId IS NULL THEN
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Service is personal, however, guest id is null';
         end if;
-        INSERT INTO service_made_for_guest (HotelID, OrderID, ServiceID, GuestID)
-                VALUE (_hotelId, _orderId, _serviceId, _guestId);
+        INSERT INTO service_made_for_guest (HotelID, OrderID, ServiceID, GuestID, Quantity)
+                VALUE (_hotelId, _orderId, _serviceId, _guestId, _quantity);
     ELSE
         IF _orderId IS NULL THEN
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Service is dedicated for room, however, room id is null';
         end if;
-        INSERT INTO service_made_for_room (ServiceID, ServiceHotelID, OrderID, RoomHotelID, RoomNumber)
-        VALUE (_serviceId, _hotelId, _orderId, _hotelId, _roomNumber);
+        INSERT INTO service_made_for_room (ServiceID, ServiceHotelID, OrderID, RoomHotelID, RoomNumber, Quantity)
+        VALUE (_serviceId, _hotelId, _orderId, _hotelId, _roomNumber, _quantity);
     END IF;
+    COMMIT;
 END;
 
-INSERT INTO service (HotelID, OrderID, ServiceDate, ServiceTypeHotelID, ServiceType)
-         VALUE (1, 1, NOW(), 1, 'breakfast');
+INSERT INTO service (HotelID, OrderID, ServiceDateTime, ServiceTypeHotelID, ServiceType)
+         VALUE (2, 2, NOW(), 1, 'breakfast');
 
-CALL orderExtraService(1, 1, 1,NULL);
-CALL orderExtraService(1, 1, 1,NULL);
+INSERT INTO service (HotelID, OrderID, ServiceDateTime, ServiceTypeHotelID, ServiceType)
+         VALUE (2, 2, NOW(), 1, 'Refill the refrigerator');
+
+CALL orderExtraService(2, 2, 2,2, NULL);
+CALL orderExtraService(2, 2, 2,NULL, NULL);
+
+
+CALL orderExtraService(2, 4, 1, NULL,'1.04')
+# CALL orderExtraService(1, 1, 1,);
