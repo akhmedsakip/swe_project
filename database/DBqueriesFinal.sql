@@ -3,7 +3,7 @@
 DROP FUNCTION IF EXISTS getRoomPrice;
 
 CREATE FUNCTION getRoomPrice(_hotelId INT, _checkInDate DATE, _checkOutDate DATE,
-                                _roomTypeName VARCHAR(45))
+                             _roomTypeName VARCHAR(45))
     RETURNS FLOAT
     READS SQL DATA
     DETERMINISTIC
@@ -61,7 +61,7 @@ END;
 
 SELECT DISTINCT room_type.Name,
                 getRoomPrice(1, '2020-12-15', '2020-12-17',
-                                room_type.Name) / DATEDIFF('2020-12-17', '2020-12-15') AveragePricePerNight
+                             room_type.Name) / DATEDIFF('2020-12-17', '2020-12-15') AveragePricePerNight
 FROM room
          INNER JOIN hotel ON hotel.HotelID = room.HotelID
          INNER JOIN room_type ON room_type.HotelID = room.HotelID AND room.RoomTypeName = room_type.Name
@@ -110,7 +110,8 @@ BEGIN
     SELECT Capacity
     INTO _capacity
     FROM room_type
-    WHERE HotelID = _hotelId AND Name = _roomTypeName;
+    WHERE HotelID = _hotelId
+      AND Name = _roomTypeName;
 
     IF _numberOfPeople > _capacity OR _numberOfPeople < 1 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'The room type can not accommodate that amount of people';
@@ -184,21 +185,20 @@ CALL addRoomToOrder(1, '+77777777777', 'Single', 2);
 
 # c
 
-SELECT SUM(RoomPrice) FROM (SELECT DISTINCT OD.RoomNumber,
-                SC.DiscountCoefficient,
-                ROUND(getRoomPrice(O.HotelID, O.CheckInDate,
-                                   O.CheckOutDate, OD.RoomType) * SC.DiscountCoefficient, 2) RoomPrice
-FROM `order` O
-         INNER JOIN order_details OD ON O.OrderID = OD.OrderID AND OD.IsPayer IS TRUE
-         INNER JOIN guest G ON OD.GuestID = G.GuestID
-         LEFT OUTER JOIN special_category SC ON G.SpecialCategoryID = SC.SpecialCategoryID
-WHERE O.OrderID = 1) room_prices;
+SELECT SUM(RoomPrice)
+FROM (SELECT DISTINCT OD.RoomNumber,
+                      SC.DiscountCoefficient,
+                      ROUND(getRoomPrice(O.HotelID, O.CheckInDate,
+                                         O.CheckOutDate, OD.RoomType) * SC.DiscountCoefficient, 2) RoomPrice
+      FROM `order` O
+               INNER JOIN order_details OD ON O.OrderID = OD.OrderID AND OD.IsPayer IS TRUE
+               INNER JOIN guest G ON OD.GuestID = G.GuestID
+               LEFT OUTER JOIN special_category SC ON G.SpecialCategoryID = SC.SpecialCategoryID
+      WHERE O.OrderID = 1) room_prices;
 
 #--
 
 #------------
-
-
 
 
 # 2
@@ -249,8 +249,10 @@ VALUES ('Female', 'SomeFemaleName', 'Smith', '+77011111111');
 INSERT INTO guest (GuestID)
 VALUES (LAST_INSERT_ID());
 
-DELETE FROM order_details
-WHERE OrderID = 2 AND OrderHotelID = 2;
+DELETE
+FROM order_details
+WHERE OrderID = 2
+  AND OrderHotelID = 2;
 
 INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID,
                            RoomNumber, GuestID, StaysInRoom, NumberOfPeople)
@@ -264,8 +266,62 @@ VALUES (FALSE, 2, 2, 2, 'Double', 2, '1.04', 3, TRUE, null);
 
 #------------
 
+# 3
+
+SELECT DISTINCT p.FirstName, p.LastName, p.City, p.CountryCode, p.ZIPCode, p.Street, p.PhoneNumber
+FROM `order` allOrders
+         INNER JOIN order_details details ON allOrders.OrderID = details.OrderID
+         INNER JOIN guest ON details.GuestID = guest.GuestID
+         INNER JOIN person p ON guest.GuestID = p.PersonID
+WHERE details.StaysInRoom = TRUE
+  AND '2020-10-15' BETWEEN DATE_ADD(allOrders.CheckInDate, INTERVAL 1 DAY) AND allOrders.CheckOutDate
+  AND details.RoomNumber = '311'
+  AND allOrders.HotelID = 1;
+
+#------------
 
 # 4
+
+DELETE
+FROM order_details
+WHERE OrderID = 1
+  AND OrderHotelID = 1;
+
+INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID,
+                           RoomNumber, GuestID, StaysInRoom, NumberOfPeople)
+VALUES (TRUE, 1, 1, 1, 'Single', 1, '1.01', 1, TRUE, null);
+
+INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID,
+                           RoomNumber, GuestID, StaysInRoom, NumberOfPeople)
+VALUES (TRUE, 1, 1, 1, 'Single', 1, '1.01', 7, TRUE, null);
+
+INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID,
+                           RoomNumber, GuestID, StaysInRoom, NumberOfPeople)
+VALUES (TRUE, 1, 1, 1, 'Double', 1, '1.03', 3, TRUE, null);
+
+INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID,
+                           RoomNumber, GuestID, StaysInRoom, NumberOfPeople)
+VALUES (TRUE, 1, 1, 1, 'Double', 1, '1.03', 4, TRUE, null);
+
+INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID,
+                           RoomNumber, GuestID, StaysInRoom, NumberOfPeople)
+VALUES (TRUE, 1, 1, 1, 'Double', 1, '1.03', 5, TRUE, null);
+
+INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID,
+                           RoomNumber, GuestID, StaysInRoom, NumberOfPeople)
+VALUES (TRUE, 1, 1, 1, 'Double', 1, '1.04', 6, TRUE, null);
+
+INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID,
+                           RoomNumber, GuestID, StaysInRoom, NumberOfPeople)
+VALUES (TRUE, 1, 1, 1, 'Double', 1, '1.04', 8, TRUE, null);
+
+INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID,
+                           RoomNumber, GuestID, StaysInRoom, NumberOfPeople)
+VALUES (TRUE, 1, 1, 1, 'Double', 1, '1.04', 9, TRUE, null);
+
+INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID,
+                           RoomNumber, GuestID, StaysInRoom, NumberOfPeople)
+VALUES (TRUE, 1, 1, 1, 'Double', 1, '1.04', 10, TRUE, null);
 
 DROP PROCEDURE IF EXISTS orderExtraService;
 
@@ -298,7 +354,7 @@ BEGIN
         INSERT INTO service_made_for_guest (HotelID, OrderID, ServiceID, GuestID, Quantity)
                 VALUE (_hotelId, _orderId, _serviceId, _guestId, _quantity);
     ELSE
-        IF _orderId IS NULL THEN
+        IF _roomNumber IS NULL THEN
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Service is dedicated for room, however, room id is null';
         end if;
         INSERT INTO service_made_for_room (ServiceID, ServiceHotelID, OrderID, RoomHotelID, RoomNumber, Quantity)
@@ -308,14 +364,48 @@ BEGIN
 END;
 
 INSERT INTO service (HotelID, OrderID, ServiceDateTime, ServiceTypeHotelID, ServiceType)
-         VALUE (2, 2, NOW(), 1, 'breakfast');
+         VALUE (1, 1, NOW(), 1, 'breakfast');
 
 INSERT INTO service (HotelID, OrderID, ServiceDateTime, ServiceTypeHotelID, ServiceType)
-         VALUE (2, 2, NOW(), 1, 'Refill the refrigerator');
+         VALUE (1, 1, NOW(), 1, 'Refill the refrigerator');
 
-CALL orderExtraService(2, 2, 2,2, NULL);
-CALL orderExtraService(2, 2, 2,NULL, NULL);
+CALL orderExtraService(1, 1, 2,7, NULL);
+CALL orderExtraService(1, 1, 1,1, NULL);
 
 
-CALL orderExtraService(2, 4, 1, NULL,'1.04')
-# CALL orderExtraService(1, 1, 1,);
+CALL orderExtraService(1, 2, 1, NULL,'1.01');
+
+#------------------
+
+# 5
+
+## DO NOT INCLUDE IN REPORT
+INSERT INTO `order` (HotelID, OrderDateTime, CheckInDate, CheckOutDate, OrderStatus, PaymentMethod,
+                     UserEmail)
+VALUES (1,
+        NOW(),
+        '2020-12-15',
+        '2020-12-17',
+        'Reserved',
+        'Cash',
+        'mona.rizvi@nu.edu.kz');
+
+CALL addRoomToOrder(3, '+77777777777', 'Single', 2);
+## ----
+
+UPDATE guest G
+    INNER JOIN (SELECT GuestID, IFNULL(SUM(OrderPrice), 0) TotalSpent
+                FROM (SELECT G.GuestID, O.OrderPrice
+                      FROM guest G
+                               INNER JOIN order_details OD ON G.GuestID = OD.GuestID
+                               INNER JOIN `order` O ON O.OrderID = OD.OrderID
+                      WHERE OD.IsPayer = TRUE
+                        AND O.OrderDateTime >= '2020-01-01 00:00:00'
+                      GROUP BY O.OrderID) GuestOrders
+                GROUP BY GuestID) GuestTotals ON GuestTotals.GuestID = G.GuestID
+SET G.SpecialCategoryID = (CASE
+                               WHEN TotalSpent >= 1000 AND SpecialCategoryID = 1 THEN 2
+                               ELSE SpecialCategoryID
+                           END);
+
+#------------

@@ -221,8 +221,42 @@ INSERT INTO guest (GuestID, SpecialCategoryID)
 VALUES (2, null);
 
 # services
+
+INSERT INTO person (Gender, FirstName, LastName, PhoneNumber)
+VALUES ('Female', 'MonaFriend1', 'Smith', '+77778884411');
+INSERT INTO guest (GuestID) VALUE (LAST_INSERT_ID());
+
+INSERT INTO person (Gender, FirstName, LastName, PhoneNumber)
+VALUES ('Female', 'MonaFriend2', 'Smith', '+77778884412');
+INSERT INTO guest (GuestID) VALUE (LAST_INSERT_ID());
+
+
+INSERT INTO person (Gender, FirstName, LastName, PhoneNumber)
+VALUES ('Female', 'MonaFriend3', 'Smith', '+77778884413');
+INSERT INTO guest (GuestID) VALUE (LAST_INSERT_ID());
+
+INSERT INTO person (Gender, FirstName, LastName, PhoneNumber)
+VALUES ('Female', 'MonaFriend4', 'Smith', '+77778884414');
+INSERT INTO guest (GuestID) VALUE (LAST_INSERT_ID());
+
+INSERT INTO person (Gender, FirstName, LastName, PhoneNumber)
+VALUES ('Male', 'MonaFriend5', 'Smith', '+77778884415');
+INSERT INTO guest (GuestID) VALUE (LAST_INSERT_ID());
+
+INSERT INTO person (Gender, FirstName, LastName, PhoneNumber)
+VALUES ('Male', 'MonaFriend6', 'Smith', '+77778884416');
+INSERT INTO guest (GuestID) VALUE (LAST_INSERT_ID());
+
+INSERT INTO person (Gender, FirstName, LastName, PhoneNumber)
+VALUES ('Male', 'MonaFriend7', 'Smith', '+77778884417');
+INSERT INTO guest (GuestID) VALUE (LAST_INSERT_ID());
+
+INSERT INTO person (Gender, FirstName, LastName, PhoneNumber)
+VALUES ('Male', 'MonaFriend8', 'Smith', '+77778884418');
+INSERT INTO guest (GuestID) VALUE (LAST_INSERT_ID());
+
+
 INSERT INTO service_type (HotelID, ServiceName, Price, IsPersonal) value (
     1, 'Breakfast', 7, true);
-
 INSERT INTO service_type (HotelID, ServiceName, Price, IsPersonal) value (
     1, 'Refill the refrigerator', 30, false);
