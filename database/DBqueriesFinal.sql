@@ -392,7 +392,7 @@ CALL addServiceToServiceOrder(1, 2, 1, NULL, '1.01');
 # c
 
 UPDATE `order` O
-SET O.PaidServicesTotal = (SELECT SUM(ST.Price * IFNULL(SMFR.Quantity, SMFG.Quantity))
+SET O.PaidServicesTotal = IFNULL((SELECT SUM(ST.Price * IFNULL(SMFR.Quantity, SMFG.Quantity))
                            FROM service S
                                     INNER JOIN service_type ST
                                                ON S.ServiceTypeHotelID = st.HotelID AND S.ServiceType = st.ServiceName
@@ -402,7 +402,7 @@ SET O.PaidServicesTotal = (SELECT SUM(ST.Price * IFNULL(SMFR.Quantity, SMFG.Quan
                                     LEFT OUTER JOIN service_made_for_guest SMFG
                                                     ON S.HotelID = SMFG.HotelID AND S.OrderID = SMFG.OrderID AND
                                                        S.ServiceID = SMFG.ServiceID
-                           WHERE S.OrderID = O.OrderID),
+                           WHERE S.OrderID = O.OrderID), 0),
     O.OrderPrice        = (SELECT SUM(RoomPrice)
                            FROM (SELECT DISTINCT OD.RoomNumber,
                                                  SC.DiscountCoefficient,
@@ -413,10 +413,14 @@ SET O.PaidServicesTotal = (SELECT SUM(ST.Price * IFNULL(SMFR.Quantity, SMFG.Quan
                                           INNER JOIN order_details OD ON O_inner.OrderID = OD.OrderID
                                           INNER JOIN guest G ON O_inner.PayerID = G.GuestID
                                           LEFT OUTER JOIN special_category SC ON G.SpecialCategoryID = SC.SpecialCategoryID
-                                 WHERE O_inner.OrderID = O.OrderID) room_prices) + O.PaidServicesTotal,
-    O.PaymentDateTime = NOW()
+                                 WHERE O_inner.OrderID = O.OrderID) room_prices) + O.PaidServicesTotal
 WHERE O.OrderID = 1
   AND O.HotelID = 1;
+
+UPDATE `order`
+SET PaymentDateTime = NOW()
+WHERE OrderID = 1
+  AND HotelID = 1;
 
 UPDATE `order`
 SET OrderStatus = 'Past'
@@ -448,10 +452,8 @@ UPDATE guest G
     INNER JOIN (SELECT GuestID, IFNULL(SUM(OrderPrice), 0) TotalSpent
                 FROM (SELECT G.GuestID, O.OrderPrice
                       FROM guest G
-                               INNER JOIN order_details OD ON G.GuestID = OD.GuestID
-                               INNER JOIN `order` O ON O.OrderID = OD.OrderID
-                      WHERE OD.IsPayer = TRUE
-                        AND O.OrderDateTime >= '2020-01-01 00:00:00'
+                               INNER JOIN `order` O ON O.PayerID = G.GuestID
+                      WHERE O.OrderDateTime >= '2020-01-01 00:00:00'
                       GROUP BY O.OrderID) GuestOrders
                 GROUP BY GuestID) GuestTotals ON GuestTotals.GuestID = G.GuestID
 SET G.SpecialCategoryID = (CASE
