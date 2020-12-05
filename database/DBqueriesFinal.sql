@@ -302,7 +302,7 @@ FROM `order` allOrders
          INNER JOIN guest ON details.GuestID = guest.GuestID
          INNER JOIN person p ON guest.GuestID = p.PersonID
 WHERE details.StaysInRoom = TRUE
-  AND '2020-10-17' BETWEEN DATE_ADD(allOrders.CheckInDate, INTERVAL 1 DAY) AND allOrders.CheckOutDate
+  AND '2020-10-15' BETWEEN DATE_ADD(allOrders.CheckInDate, INTERVAL 1 DAY) AND allOrders.CheckOutDate
   AND details.RoomNumber = '311'
   AND allOrders.HotelID = 1;
 
