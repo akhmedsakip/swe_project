@@ -95,6 +95,10 @@ INSERT INTO room(HotelID, RoomNumber, `Floor#`,
                          `StayingGuests#`, LastCleanDate, RoomTypeHotelID, RoomTypeName)
                           VALUE (1, '1.04', 1, null, null, 1, 'Double');
 
+INSERT INTO room(HotelID, RoomNumber, `Floor#`,
+                         `StayingGuests#`, LastCleanDate, RoomTypeHotelID, RoomTypeName)
+                          VALUE (1, '311', 1, null, null, 1, 'Single');
+
 INSERT INTO hotel (Name,
                    `Floors#`,
                    `Rooms#`,
@@ -192,9 +196,9 @@ VALUES (1, 3);
 
 INSERT INTO season (Name, StartDate, EndDate)
 VALUES (
-        'Test Season',
-        '2020-12-15',
-        '2020-12-15'
+        'Winter',
+        '2020-12-01',
+        '2021-02-28'
        );
 
 INSERT INTO season_has_day_of_week (SeasonID, DayOfWeek, Coefficient) VALUES (1, 'Sunday', 1.01);

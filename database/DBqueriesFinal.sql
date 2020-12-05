@@ -204,13 +204,13 @@ FROM room
          INNER JOIN hotel ON hotel.HotelID = room.HotelID
          INNER JOIN room_type ON room_type.HotelID = room.HotelID AND room.RoomTypeName = room_type.Name
          INNER JOIN `order` O1 ON O1.OrderID = 2
-         LEFT JOIN order_details OD on room.HotelID = OD.RoomHotelID and room.RoomNumber = OD.RoomNumber
-         LEFT JOIN `order` O ON hotel.HotelID = O.HotelID and OD.OrderID = O.OrderID
+         LEFT JOIN order_details OD on room.HotelID = OD.RoomHotelID AND room.RoomNumber = OD.RoomNumber
+         LEFT JOIN `order` O ON hotel.HotelID = O.HotelID AND OD.OrderID = O.OrderID
 WHERE (O.OrderID IS NULL
     OR NOT EXISTS(SELECT `order`.CheckOutDate
                   FROM `order`
                            INNER JOIN order_details d
-                                      on `order`.OrderID = d.OrderID and `order`.HotelID = d.OrderHotelID
+                                      ON `order`.OrderID = d.OrderID AND `order`.HotelID = d.OrderHotelID
                   WHERE d.RoomNumber = room.RoomNumber
                     AND (`order`.CheckInDate BETWEEN O1.CheckInDate AND DATE_SUB(O1.CheckOutDate, INTERVAL 1 DAY) OR
                          `order`.CheckOutDate BETWEEN DATE_ADD(O1.CheckInDate, INTERVAL 1 DAY) AND O1.CheckOutDate))
@@ -260,7 +260,7 @@ VALUES (TRUE, 2, 2, 2, 'Double', 2, '1.04', 2, TRUE, null);
 
 INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID,
                            RoomNumber, GuestID, StaysInRoom, NumberOfPeople)
-VALUES (FALSE, 2, 2, 2, 'Double', 2, '1.04', 3, TRUE, null);
+VALUES (FALSE, 2, 2, 2, 'Double', 2, '1.04', 11, TRUE, null);
 
 # --
 
