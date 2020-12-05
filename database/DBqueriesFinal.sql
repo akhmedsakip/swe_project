@@ -84,11 +84,10 @@ WHERE (O.OrderID IS NULL
 
 DROP PROCEDURE IF EXISTS addRoomToOrder;
 
-CREATE PROCEDURE addRoomToOrder(IN _orderId INT, IN _phoneNumber VARCHAR(45),
+CREATE PROCEDURE addRoomToOrder(IN _orderId INT, IN _personId INT,
                                 IN _roomTypeName varchar(45), IN _numberOfPeople INT)
 BEGIN
     DECLARE _capacity INT;
-    DECLARE _personId INT;
     DECLARE _roomNumber VARCHAR(10);
     DECLARE _checkInDate DATE;
     DECLARE _checkOutDate DATE;
@@ -116,12 +115,6 @@ BEGIN
     IF _numberOfPeople > _capacity OR _numberOfPeople < 1 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'The room type can not accommodate that amount of people';
     END IF;
-
-    SELECT PersonID
-    INTO _personId
-    FROM guest
-             INNER JOIN person ON person.PersonID = GuestID
-    WHERE person.PhoneNumber = _phoneNumber;
 
     IF _personId IS NULL THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No such person';
@@ -166,20 +159,21 @@ BEGIN
 END;
 
 INSERT INTO `order` (HotelID, OrderDateTime, CheckInDate, CheckOutDate, OrderStatus, PaymentMethod,
-                     UserEmail)
+                     UserEmail, PayerID)
 VALUES (1,
         NOW(),
         '2020-12-15',
         '2020-12-17',
         'Reserved',
         'Cash',
-        'mona.rizvi@nu.edu.kz');
+        'mona.rizvi@nu.edu.kz',
+        1);
 
-CALL addRoomToOrder(1, '+77777777777', 'Double', 3);
+CALL addRoomToOrder(1, 1, 'Double', 3);
 
-CALL addRoomToOrder(1, '+77777777777', 'Double', 4);
+CALL addRoomToOrder(1, 1, 'Double', 4);
 
-CALL addRoomToOrder(1, '+77777777777', 'Single', 2);
+CALL addRoomToOrder(1, 1, 'Single', 2);
 
 #--
 
@@ -191,8 +185,8 @@ FROM (SELECT DISTINCT OD.RoomNumber,
                       ROUND(getRoomPrice(O.HotelID, O.CheckInDate,
                                          O.CheckOutDate, OD.RoomType) * SC.DiscountCoefficient, 2) RoomPrice
       FROM `order` O
-               INNER JOIN order_details OD ON O.OrderID = OD.OrderID AND OD.IsPayer IS TRUE
-               INNER JOIN guest G ON OD.GuestID = G.GuestID
+               INNER JOIN order_details OD ON O.OrderID = OD.OrderID
+               INNER JOIN guest G ON O.PayerID = G.GuestID
                LEFT OUTER JOIN special_category SC ON G.SpecialCategoryID = SC.SpecialCategoryID
       WHERE O.OrderID = 1) room_prices;
 
@@ -229,16 +223,17 @@ WHERE (O.OrderID IS NULL
 
 ## DO NOT INCLUDE IN REPORT
 INSERT INTO `order` (HotelID, OrderDateTime, CheckInDate, CheckOutDate, OrderStatus, PaymentMethod,
-                     UserEmail)
+                     UserEmail, PayerID)
 VALUES (2,
         NOW(),
         '2020-12-15',
         '2020-12-17',
         'Reserved',
         'Cash',
-        'jon.smith@some.email');
+        'jon.smith@some.email',
+        2);
 
-CALL addRoomToOrder(2, '+77766666666', 'Double', 3);
+CALL addRoomToOrder(2, 2, 'Double', 3);
 ## ----
 
 # b
@@ -289,10 +284,16 @@ WHERE details.StaysInRoom = TRUE
 
 # b
 
+## DO NOT INCLUDE IN REPORT
 DELETE
 FROM order_details
 WHERE OrderID = 1
   AND OrderHotelID = 1;
+
+UPDATE `order`
+SET OrderStatus = 'Active'
+WHERE OrderID = 1
+  AND HotelID = 1;
 
 INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID,
                            RoomNumber, GuestID, StaysInRoom, NumberOfPeople)
@@ -329,6 +330,7 @@ VALUES (FALSE, 1, 1, 1, 'Double', 1, '1.04', 9, TRUE, null);
 INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID,
                            RoomNumber, GuestID, StaysInRoom, NumberOfPeople)
 VALUES (FALSE, 1, 1, 1, 'Double', 1, '1.04', 10, TRUE, null);
+# --
 
 DROP PROCEDURE IF EXISTS addServiceToServiceOrder;
 
@@ -389,31 +391,37 @@ CALL addServiceToServiceOrder(1, 2, 1, NULL, '1.01');
 
 # c
 
-UPDATE 'order' O
+UPDATE `order` O
 SET O.PaidServicesTotal = (SELECT SUM(ST.Price * IFNULL(SMFR.Quantity, SMFG.Quantity))
-                         FROM service S
-                                  INNER JOIN service_type ST
-                                             ON S.ServiceTypeHotelID = st.HotelID AND S.ServiceType = st.ServiceName
-                                  LEFT OUTER JOIN service_made_for_room SMFR ON S.ServiceID = SMFR.ServiceID AND
-                                                                                S.HotelID = SMFR.ServiceHotelID AND
-                                                                                S.OrderID = SMFR.OrderID
-                                  LEFT OUTER JOIN service_made_for_guest SMFG
-                                                  ON S.HotelID = SMFG.HotelID AND S.OrderID = SMFG.OrderID AND
-                                                     S.ServiceID = SMFG.ServiceID
-                         WHERE S.OrderID = O.OrderID),
+                           FROM service S
+                                    INNER JOIN service_type ST
+                                               ON S.ServiceTypeHotelID = st.HotelID AND S.ServiceType = st.ServiceName
+                                    LEFT OUTER JOIN service_made_for_room SMFR ON S.ServiceID = SMFR.ServiceID AND
+                                                                                  S.HotelID = SMFR.ServiceHotelID AND
+                                                                                  S.OrderID = SMFR.OrderID
+                                    LEFT OUTER JOIN service_made_for_guest SMFG
+                                                    ON S.HotelID = SMFG.HotelID AND S.OrderID = SMFG.OrderID AND
+                                                       S.ServiceID = SMFG.ServiceID
+                           WHERE S.OrderID = O.OrderID),
     O.OrderPrice        = (SELECT SUM(RoomPrice)
-                         FROM (SELECT DISTINCT OD.RoomNumber,
-                                               SC.DiscountCoefficient,
-                                               ROUND(getRoomPrice(O_room.HotelID, O_room.CheckInDate,
-                                                                  O_room.CheckOutDate, OD.RoomType) *
-                                                     SC.DiscountCoefficient, 2) RoomPrice
-                               FROM `order` O_room
-                                        INNER JOIN order_details OD ON O_room.OrderID = OD.OrderID AND OD.IsPayer IS TRUE
-                                        INNER JOIN guest G ON OD.GuestID = G.GuestID
-                                        LEFT OUTER JOIN special_category SC ON G.SpecialCategoryID = SC.SpecialCategoryID
-                               WHERE O_room.OrderID = O.OrderID) room_prices)
+                           FROM (SELECT DISTINCT OD.RoomNumber,
+                                                 SC.DiscountCoefficient,
+                                                 ROUND(getRoomPrice(O_inner.HotelID, O_inner.CheckInDate,
+                                                                    O_inner.CheckOutDate, OD.RoomType) *
+                                                       SC.DiscountCoefficient, 2) RoomPrice
+                                 FROM `order` O_inner
+                                          INNER JOIN order_details OD ON O_inner.OrderID = OD.OrderID
+                                          INNER JOIN guest G ON O_inner.PayerID = G.GuestID
+                                          LEFT OUTER JOIN special_category SC ON G.SpecialCategoryID = SC.SpecialCategoryID
+                                 WHERE O_inner.OrderID = O.OrderID) room_prices) + O.PaidServicesTotal,
+    O.PaymentDateTime = NOW()
 WHERE O.OrderID = 1
   AND O.HotelID = 1;
+
+UPDATE `order`
+SET OrderStatus = 'Past'
+WHERE OrderID = 1
+  AND HotelID = 1;
 
 ## ----
 
@@ -423,16 +431,17 @@ WHERE O.OrderID = 1
 
 ## DO NOT INCLUDE IN REPORT
 INSERT INTO `order` (HotelID, OrderDateTime, CheckInDate, CheckOutDate, OrderStatus, PaymentMethod,
-                     UserEmail)
+                     UserEmail, PayerID)
 VALUES (1,
         NOW(),
         '2020-12-15',
         '2020-12-17',
         'Reserved',
         'Cash',
-        'mona.rizvi@nu.edu.kz');
+        'mona.rizvi@nu.edu.kz',
+        1);
 
-CALL addRoomToOrder(3, '+77777777777', 'Single', 2);
+CALL addRoomToOrder(3, 1, 'Single', 2);
 ## ----
 
 UPDATE guest G

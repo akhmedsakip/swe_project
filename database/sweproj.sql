@@ -400,10 +400,12 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`order` (
   `OrderStatus` VARCHAR(45) NOT NULL,
   `PaymentMethod` VARCHAR(45) NOT NULL,
   `UserEmail` VARCHAR(45) NULL,
+  `PayerID` INT NOT NULL,
   PRIMARY KEY (`OrderID`, `HotelID`),
   INDEX `fk_ORDER_ORDERSTATUS1_idx` (`OrderStatus` ASC) VISIBLE,
   INDEX `fk_ORDER_PAYMENTMETHOD1_idx` (`PaymentMethod` ASC) VISIBLE,
   INDEX `fk_order_user1_idx` (`UserEmail` ASC) VISIBLE,
+  INDEX `fk_order_guest1_idx` (`PayerID` ASC) VISIBLE,
   CONSTRAINT `fk_ORDER_HOTEL1`
     FOREIGN KEY (`HotelID`)
     REFERENCES `sweproj`.`hotel` (`HotelID`)
@@ -422,6 +424,11 @@ CREATE TABLE IF NOT EXISTS `sweproj`.`order` (
   CONSTRAINT `fk_order_user1`
     FOREIGN KEY (`UserEmail`)
     REFERENCES `sweproj`.`user` (`Email`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_order_guest1`
+    FOREIGN KEY (`PayerID`)
+    REFERENCES `sweproj`.`guest` (`GuestID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
