@@ -268,13 +268,41 @@ VALUES (FALSE, 2, 2, 2, 'Double', 2, '1.04', 3, TRUE, null);
 
 # 3
 
+## DO NOT INCLUDE IN REPORT
+INSERT INTO `order` (HotelID, OrderDateTime, CheckInDate, CheckOutDate, OrderStatus, PaymentMethod,
+                     UserEmail, PayerID)
+VALUES (1,
+        NOW(),
+        '2020-10-15',
+        '2020-10-17',
+        'Past',
+        'Cash',
+        'mona.rizvi@nu.edu.kz',
+        1);
+
+CALL addRoomToOrder(LAST_INSERT_ID(), 1, 'Single', 1);
+
+DELETE
+FROM order_details
+WHERE OrderID = 3
+  AND OrderHotelID = 1;
+
+INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID,
+                           RoomNumber, GuestID, StaysInRoom, NumberOfPeople)
+VALUES (TRUE, 3, 1, 1, 'Single', 1, '311', 1, TRUE, null);
+
+INSERT INTO order_details (IsPayer, OrderID, OrderHotelID, RoomTypeHotelID, RoomType, RoomHotelID,
+                           RoomNumber, GuestID, StaysInRoom, NumberOfPeople)
+VALUES (FALSE, 3, 1, 1, 'Single', 1, '311', 3, TRUE, null);
+## ----
+
 SELECT DISTINCT p.FirstName, p.LastName, p.City, p.CountryCode, p.ZIPCode, p.Street, p.PhoneNumber
 FROM `order` allOrders
          INNER JOIN order_details details ON allOrders.OrderID = details.OrderID
          INNER JOIN guest ON details.GuestID = guest.GuestID
          INNER JOIN person p ON guest.GuestID = p.PersonID
 WHERE details.StaysInRoom = TRUE
-  AND '2020-10-15' BETWEEN DATE_ADD(allOrders.CheckInDate, INTERVAL 1 DAY) AND allOrders.CheckOutDate
+  AND '2020-10-17' BETWEEN DATE_ADD(allOrders.CheckInDate, INTERVAL 1 DAY) AND allOrders.CheckOutDate
   AND details.RoomNumber = '311'
   AND allOrders.HotelID = 1;
 
@@ -393,16 +421,17 @@ CALL addServiceToServiceOrder(1, 2, 1, NULL, '1.01');
 
 UPDATE `order` O
 SET O.PaidServicesTotal = IFNULL((SELECT SUM(ST.Price * IFNULL(SMFR.Quantity, SMFG.Quantity))
-                           FROM service S
-                                    INNER JOIN service_type ST
-                                               ON S.ServiceTypeHotelID = st.HotelID AND S.ServiceType = st.ServiceName
-                                    LEFT OUTER JOIN service_made_for_room SMFR ON S.ServiceID = SMFR.ServiceID AND
-                                                                                  S.HotelID = SMFR.ServiceHotelID AND
-                                                                                  S.OrderID = SMFR.OrderID
-                                    LEFT OUTER JOIN service_made_for_guest SMFG
-                                                    ON S.HotelID = SMFG.HotelID AND S.OrderID = SMFG.OrderID AND
-                                                       S.ServiceID = SMFG.ServiceID
-                           WHERE S.OrderID = O.OrderID), 0),
+                                  FROM service S
+                                           INNER JOIN service_type ST
+                                                      ON S.ServiceTypeHotelID = st.HotelID AND S.ServiceType = st.ServiceName
+                                           LEFT OUTER JOIN service_made_for_room SMFR
+                                                           ON S.ServiceID = SMFR.ServiceID AND
+                                                              S.HotelID = SMFR.ServiceHotelID AND
+                                                              S.OrderID = SMFR.OrderID
+                                           LEFT OUTER JOIN service_made_for_guest SMFG
+                                                           ON S.HotelID = SMFG.HotelID AND S.OrderID = SMFG.OrderID AND
+                                                              S.ServiceID = SMFG.ServiceID
+                                  WHERE S.OrderID = O.OrderID), 0),
     O.OrderPrice        = (SELECT SUM(RoomPrice)
                            FROM (SELECT DISTINCT OD.RoomNumber,
                                                  SC.DiscountCoefficient,
@@ -445,7 +474,7 @@ VALUES (1,
         'mona.rizvi@nu.edu.kz',
         1);
 
-CALL addRoomToOrder(3, 1, 'Single', 2);
+CALL addRoomToOrder(4, 1, 'Single', 2);
 ## ----
 
 UPDATE guest G
