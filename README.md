@@ -1,5 +1,5 @@
 
-(**It is strongly adviced to follow suggested credentials for username and database**) <br>
+(**It is strongly advised to follow suggested credentials for username and database**) <br>
 Firstly, install mysql server on your computer.
 
 After that on your computer, 
